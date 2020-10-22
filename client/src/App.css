@@ -1,38 +1,64 @@
-.App {
-  text-align: center;
+body {
+    background-color: #121212;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.logo-main {
+    font-family: 'Paytone One', sans-serif;
+    font-size: 40pt;
+    color: #F2E7FE;
+    transform: translateY(-15px);
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.banner-primary {
+    position: absolute;
+    top: 50%;
+    left: 50px;
+    transform: translateY(-100%);
+    font-family: 'Paytone One', sans-serif;
+    font-size: 70pt;
+    color: #F2E7FE;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.banner-secondary {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 200;
+    font-size: 30pt;
+    padding: 0 0 0 15px;
 }
 
-.App-link {
-  color: #61dafb;
+.home {
+    width: 100%;
+    height: 100vh;
+    padding: 50px;
+    background-image: url('/images/home/landing-mockup.png');
+    background-size: 50%;
+    background-position: 95% 50%;
+    background-repeat: no-repeat;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.home-btn {
+    margin: 0 50px 0 0;
+}
+
+
+.primary-btn {
+    width: 130px;
+    height: 45px;
+    background-color: #3700B3;
+    color: #F2E7FE;
+    border-radius: 8px;
+    border: none;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 700;
+}
+
+.secondary-btn {
+    width: 130px;
+    height: 45px;
+    background-color: transparent;
+    color: #f2e7fe;
+    border-radius: 8px;
+    border: 3px solid #f2e7fe;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 700;
 }
