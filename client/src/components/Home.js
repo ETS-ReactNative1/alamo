@@ -8,18 +8,10 @@ class Home  extends Component {
     render() {
         return (
             <div className="container-fluid home">
-                <div className="row align-items-center">
-                    <div className="logo-main col-lg-10">
-                        alamo
-                    </div>
-                    <div className="col-lg-1">
-                        <button className="primary-btn">Login</button>
-                    </div>
-                    <div className="col-lg-1">
-                        <button className="secondary-btn">Register</button>
-                    </div>
-                </div>
-
+                <nav class="navbar justify-content-between">
+                    <a class="logo-main">alamo</a>
+                    <button class="btn primary-btn my-2 my-sm-0">Login</button>
+                </nav>
                 <div className="row">
                     <div className="col-lg-10 banner-primary">
                         Share the moment.
