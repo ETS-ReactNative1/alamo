@@ -3,10 +3,6 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-var cors = require('cors');
-
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
 
 var app = express();
 
@@ -20,10 +16,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
-
-const whitelist = ['http://localhost:3000', 'http://localhost:8080', 'https://alamo-d19124355.herokuapp.com/']
+const whitelist = ['http://localhost:3000', 'http://localhost:8080', 'https://alamo-d19124355.herokuapp.com/]
 const corsOptions = {
   origin: function (origin, callback) {
     console.log("** Origin of request " + origin)
@@ -38,12 +31,14 @@ const corsOptions = {
 }
 app.use(cors(corsOptions))
 
-// Serve any static files
-app.use(express.static(path.join(__dirname, 'client/build')));
+if (process.env.NODE_ENV === 'production') {
+  // Serve any static files
+  app.use(express.static(path.join(__dirname, 'client/build')));
 // Handle React routing, return all requests to React app
-app.get('*', function(req, res) {
+  app.get('*', function(req, res) {
     res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
-});
+  });
+}
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
