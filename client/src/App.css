@@ -2,6 +2,10 @@ body {
     background-color: #121212;
 }
 
+h1, h2, h3, h4, h5, h6, p {
+    color: #F2E7FE !important;
+}
+
 .logo-main {
     font-family: 'Paytone One', sans-serif;
     font-size: 40pt;
@@ -135,4 +139,46 @@ body {
     .home {
         background-size: 80%;
     }
+}
+
+.dots {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  margin: 6.25rem auto 0;
+  width: 7.375rem;
+  text-align: center;
+}
+
+.dots > div {
+  width: 2.125rem;
+  height: 2.125rem;
+  background: #3700B3;
+  border-radius: 100%;
+  display: inline-block;
+  animation: andydots 1.4s infinite ease-in-out both;
+}
+
+.dots .dot1 {
+  animation-delay: -0.32s;
+}
+
+.dots .dot2 {
+  animation-delay: -0.16s;
+}
+
+@-webkit-keyframes andydots {
+  0%, 80%, 100% { -webkit-transform: scale(0)}
+  40% { -webkit-transform: scale(0.5) }
+}
+
+@keyframes andydots {
+  0%, 80%, 100% {
+    -webkit-transform: scale(0);
+    transform: scale(0);
+  } 40% {
+    -webkit-transform: scale(0.5);
+    transform: scale(0.5);
+  }
 }

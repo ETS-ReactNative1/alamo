@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
+import LoginButton from './LoginButton';
 
-class Home  extends Component {
+class Home extends Component {
     constructor(props) {
         super(props);
     }
@@ -8,9 +9,9 @@ class Home  extends Component {
     render() {
         return (
             <div className="container-fluid home">
-                <nav class="navbar justify-content-between">
-                    <a class="logo-main">alamo</a>
-                    <button class="btn primary-btn my-2 my-sm-0">Login</button>
+                <nav className="navbar justify-content-between">
+                    <a className="logo-main">alamo</a>
+                    <LoginButton></LoginButton>
                 </nav>
                 <div className="row">
                     <div className="col-lg-10 banner-primary">
