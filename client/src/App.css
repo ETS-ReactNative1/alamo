@@ -6,6 +6,22 @@ h1, h2, h3, h4, h5, h6, p {
     color: #F2E7FE !important;
 }
 
+.thin {
+    font-weight: 200;
+}
+
+.bold {
+    font-weight: 700;
+}
+
+.centered {
+    text-align: center;
+}
+
+.margin-bottom {
+    margin: 0 0 25px 0;
+}
+
 .logo-main {
     font-family: 'Paytone One', sans-serif;
     font-size: 40pt;
@@ -77,6 +93,67 @@ h1, h2, h3, h4, h5, h6, p {
     border: 3px solid #f2e7fe;
     font-family: 'Open Sans', sans-serif;
     font-weight: 700;
+}
+
+.sidebar {
+    position: sticky;
+    top: 0;
+    width: 100px;
+    height: calc(100vh);
+    padding: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    background-color: #121212 !important;
+    border-right: 1px solid rgba(242, 231, 254, 0.2);
+}
+
+.sidebar-profile {
+    height: 100px;
+}
+
+.user-avatar {
+    width: 65px;
+    display: inline;
+    margin-left: 16px;
+}
+
+.username {
+    margin: 0 0 0 15px;
+    display: inline;
+}
+
+.user-status {
+    margin: 0 0 0 15px;
+    display: inline;
+}
+
+.sidebar-sticky {
+    padding-top: .5rem;
+}
+
+.sidebar-heading {
+    margin-bottom: 0 !important;
+    height: 50px;
+    background-color: #080808;
+}
+
+.sidebar-subheading {
+    font-size: 1.3em;
+}
+
+.nav-item {
+    padding: 0 0 0 16px;
+    font-size: 1em;
+    color: #F2E7FE !important;
+    height: 50px;
+    list-style: none;
+    -ms-flex-align: center!important;
+    align-items: center!important;
+    display: flex;
+}
+
+.nav-item:nth-child(odd) {
+    background: #1D1D1D;
 }
 
 @media only screen and (max-width: 1480px) {
