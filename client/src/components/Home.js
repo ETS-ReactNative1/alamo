@@ -20,6 +20,11 @@ class Home  extends Component {
                         </div>
                     </div>
                 </div>
+                <div className="row register-btn">
+                    <div className="col">
+                        <button className="secondary-btn">Register</button>
+                    </div>
+                </div>
             </div>
         );
     }
