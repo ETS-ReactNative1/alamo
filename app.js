@@ -6,9 +6,14 @@ var logger = require('morgan');
 var cors = require('cors');
 var app = express();
 
+//Routes
+var user = require('./routes/user');
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
+
+app.use('/user', user);
 
 app.use(logger('dev'));
 app.use(express.json());
