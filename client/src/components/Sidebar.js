@@ -6,19 +6,18 @@ import ProfileCard from './ProfileCard';
 import FriendCard from './FriendCard';
 
 const Sidebar = () => {
-
     const { user } = useAuth0();
     
     return(
-        <nav class="col-md-2 d-none d-md-block sidebar">
-            <div class="sidebar-sticky">
+        <nav className="col-md-2 d-none d-md-block sidebar">
+            <div className="sidebar-sticky">
                 <div className="row">
                     <div className="col">
                         <h1 className="logo-main centered margin-bottom">alamo</h1>
                     </div>
                 </div>
 
-                <ProfileCard username={'Miller'} status={'Watching Valorant...'} avatar={'batman-avatar.png'}/>
+                <ProfileCard username={'miller'} status={'Watching Valorant...'} avatar={'batman-avatar.png'}/>
 
                 <h3 className="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 thin">Rooms</h3>
                 <ul className="nav flex-column">

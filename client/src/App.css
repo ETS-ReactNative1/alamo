@@ -2,8 +2,27 @@ body {
     background-color: #121212;
 }
 
-h1, h2, h3, h4, h5, h6, p {
+h1, h2, h3, h4, h5, h6, p, label {
     color: #F2E7FE !important;
+}
+
+label {
+    margin: 50px 0 25px 0;
+    font-size: 2em;
+    font-weight: 200;
+    display: block;
+}
+
+input {
+    height: 50px;
+    width: 100%;
+    background-color: transparent;
+    border: 0;
+    border-bottom: 1px solid #F2E7FE;
+    display: block;
+    color: #F2E7FE;
+    font-size: 1.5em;
+    margin: 0 0 20px 0;
 }
 
 .thin {
@@ -14,8 +33,16 @@ h1, h2, h3, h4, h5, h6, p {
     font-weight: 700;
 }
 
+.block {
+    display: block;
+}
+
 .centered {
     text-align: center;
+}
+
+.margin-top {
+    margin: 50px 0 25px 0;
 }
 
 .margin-bottom {
@@ -93,6 +120,23 @@ h1, h2, h3, h4, h5, h6, p {
     border: 3px solid #f2e7fe;
     font-family: 'Open Sans', sans-serif;
     font-weight: 700;
+}
+
+.setup-heading {
+    margin: 50px 0 0 0;
+}
+
+.setup-btn {
+    margin-top: 50px;
+}
+
+.avatar-image-selection {
+    padding: 15px;
+    cursor: pointer;
+}
+
+.avatar-image-selection:hover {
+    transform: scale(1.1);
 }
 
 .sidebar {
