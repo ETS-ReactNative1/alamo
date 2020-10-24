@@ -21,21 +21,21 @@ const Dashboard = () => {
 
     if (state.account_setup === false) {
         return(
-            <ProfileSetup/>
+            <ProfileSetup user={user}/>
         )
-    }
-
-    return (
-        <div className="container-fluid">
-            <div className="row">
-                <Sidebar/>
-                <main className="col-md-9 ml-sm-auto col-lg-10 px-4">
-                    <Profile/>
-                    <LogoutButton/>
-                </main>
+    } else {
+        return (
+            <div className="container-fluid">
+                <div className="row">
+                    <Sidebar user={state}/>
+                    <main className="col-md-9 ml-sm-auto col-lg-10 px-4">
+                        <Profile/>
+                        <LogoutButton/>
+                    </main>
+                </div>
             </div>
-        </div>
-    );
+        );
+    }
 }
 
 export default Dashboard;

@@ -37,6 +37,10 @@ input {
     display: block;
 }
 
+.hidden {
+    display: none;
+}
+
 .centered {
     text-align: center;
 }
@@ -133,6 +137,10 @@ input {
 .avatar-image-selection {
     padding: 15px;
     cursor: pointer;
+}
+
+.avatar-selected {
+    border: 3px solid #3700B3;
 }
 
 .avatar-image-selection:hover {

@@ -7,9 +7,9 @@ const user = {
 
 router.get('/', (req, res) => {
     const db = req.app.locals.db;
-    const user = req.query.user
+    const email = req.query.email
     console.log(user)
-    db.collection('users').find().toArray()
+    db.collection('users').find({email: email}).toArray()
     .then(response => res.status(200).json(response))
     .catch(error => console.error(error));
 });

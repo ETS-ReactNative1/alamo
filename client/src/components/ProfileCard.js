@@ -8,7 +8,7 @@ const ProfileCard = (props) => {
     return(
         <div className="row sidebar-profile align-items-center">
             <div className="col-3">
-                <img className="user-avatar rounded-circle w-15" src={'/images/avatars/' + props.avatar} alt={user.name} />
+                <img className="user-avatar rounded-circle w-15" src={'/images/avatars/' + props.avatar + '-avatar.png'} alt={user.name} />
             </div>
             <div className="col-9">
                 <div className="row">

@@ -5,25 +5,33 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const cors = require('cors');
 require('dotenv/config');
+const bodyParser = require('body-parser');
 const MongoClient = require('mongodb').MongoClient
 const mongoose = require('mongoose');
 const app = express();
 
-//Routes
+//Require Routes
 const user = require('./routes/user');
+const completeProfile = require('./routes/completeProfile');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
-
-app.use('/user', user);
 
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json())
 
+//Routes
+app.use('/user', user);
+app.use('/complete-profile', completeProfile);
+
+
+//MongoDB Connection
 const url = process.env.MONGO_DB_URL
 
 MongoClient.connect(url, { useUnifiedTopology: true })
