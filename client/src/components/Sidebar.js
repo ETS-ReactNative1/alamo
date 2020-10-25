@@ -1,15 +1,8 @@
 import React from 'react';
-import axios from 'axios';
-import { useAuth0 } from '@auth0/auth0-react';
-
 import ProfileCard from './ProfileCard';
 import FriendCard from './FriendCard';
 
 class Sidebar extends React.Component {
-    constructor(props) {
-        super(props)
-    }
-
     render() {
         const username = this.props.user.user_metadata && this.props.user.user_metadata.username;
         const avatar = this.props.user.user_metadata && this.props.user.user_metadata.avatar;

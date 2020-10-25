@@ -37,7 +37,6 @@ class ProfileSetup extends React.Component {
     }
 
     render() {
-        let {selectedAvatar} = this.state.avatarSelected;
         return (
           <div className="container">
               <div className="row">
