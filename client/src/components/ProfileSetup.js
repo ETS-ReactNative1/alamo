@@ -8,6 +8,7 @@ class ProfileSetup extends React.Component {
         this.state = {
             avatars : ['afro', 'avacado', 'batman', 'bear', 'chaplin', 'cloud', 'halloween', 'sheep', 'sloth', 'suicide-squad', 'wrestler'],
             avatarSelected: '',
+            usernameAvailable: ''
         }
     }
 
@@ -22,10 +23,11 @@ class ProfileSetup extends React.Component {
         let payload = {username: event.target[0].value, avatar: this.state.avatarSelected, email: this.props.user.email}
 
         axios.post('/complete-profile', payload)
-          .then(function (response) {
-            console.log(response);
-            window.location.reload();
-          })
+            .then(response => {
+              window.location.reload();
+          }).catch(error => {
+              this.setState({usernameAvailable: 'Username already taken. Please enter new username.'})
+          });
     }
 
     render() {
@@ -39,7 +41,7 @@ class ProfileSetup extends React.Component {
                       <form action="post" onSubmit={this.handleSubmit}>
                           <label htmlFor="username">Username</label>
                           <input name="username" autoFocus />
-                          <h6 id="username-available">Username available</h6>
+                          <h6 id="username-available">{this.state.usernameAvailable}</h6>
                           <label htmlFor="avatar">Avatar</label>
 
                           {this.state.avatars.map((avatar) => {

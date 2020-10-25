@@ -179,6 +179,10 @@ input {
     display: inline;
 }
 
+#username-available {
+    color: red !important;
+}
+
 .user-status {
     margin: 0 0 0 15px;
     display: inline;
