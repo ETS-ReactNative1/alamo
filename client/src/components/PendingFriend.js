@@ -1,7 +1,7 @@
 import React from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
 
-const FriendCard = (props) => {
+const PendingFriend = (props) => {
 
     const { user } = useAuth0();
 
@@ -16,9 +16,12 @@ const FriendCard = (props) => {
                         <h3 className="username bold">{props.username}</h3>
                     </div>
                 </div>
-                <div className="row">
-                    <div className="col">
-                        <h6 className="user-status thin">{props.status}</h6>
+                <div className="row invitation-btns">
+                    <div className="col-2 decline">
+                        <i className="fas fa-2x fa-times"></i>
+                    </div>
+                    <div className="col-2 accept">
+                        <i className="fas fa-2x fa-check"></i>
                     </div>
                 </div>
             </div>
@@ -26,4 +29,4 @@ const FriendCard = (props) => {
     )
 }
 
-export default FriendCard;
+export default PendingFriend;

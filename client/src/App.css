@@ -188,7 +188,7 @@ input:focus {
 .sidebar {
     position: sticky;
     top: 0;
-    min-width: 200px !important;
+    min-width: 300px !important;
     max-width: 300px !important;
     height: calc(100vh);
     padding: 0;
@@ -208,6 +208,7 @@ input:focus {
 }
 
 .sidebar-friend {
+    cursor: pointer;
     height: 80px;
 }
 
@@ -244,15 +245,15 @@ input:focus {
     min-height: 150px;
     background-color: #080808;
     border-top: 1px solid rgba(242, 231, 254, 0.2);
-    opacity: 0;
+    display: none;
 }
 
 .add-friends-active {
-    opacity: 1;
+    display: block;
 }
 
 .search-friends-active {
-    opacity: 1;
+    display: block;
 }
 
 #friend-control-heading {
@@ -262,10 +263,37 @@ input:focus {
 
 #friend-control-input {
     font-size: 1em;
+    z-index: 99;
+}
+
+#friend-error-message {
+    color: red;
 }
 
 ::placeholder {
     font-size: 0.9em;
+}
+
+.invitation-btns {
+    padding: 5px 0 0 15px;
+}
+
+.pending-notification {
+    position: absolute;
+    top: 53%;
+    left: 50%;
+    color: red;
+    z-index: 999999 !important;
+}
+
+.decline {
+    transform: scale(0.8);
+    color: red;
+}
+
+.accept {
+    transform: scale(0.8);
+    color: green;
 }
 
 .user-avatar {

@@ -13,6 +13,7 @@ const app = express();
 //Require Routes
 const user = require('./routes/user');
 const completeProfile = require('./routes/completeProfile');
+const searchUser = require('./routes/searchUser');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -29,7 +30,7 @@ app.use(bodyParser.json())
 //Routes
 app.use('/user', user);
 app.use('/complete-profile', completeProfile);
-
+app.use('/search-user', searchUser);
 
 //MongoDB Connection
 const url = process.env.MONGO_DB_URL

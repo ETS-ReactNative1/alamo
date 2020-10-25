@@ -30,13 +30,13 @@ class Sidebar extends React.Component {
                     <h3 className="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 thin">Friends</h3>
                     <h3 className="sidebar-subheading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 thin">Online - 4 Friends</h3>
 
-                    <FriendCard username={'JonnyMul96'} status={'Watching Valorant...'} avatar={'afro-avatar.png'}/>
-                    <FriendCard username={'TheKraken'} status={'Watching Valorant...'} avatar={'chaplin-avatar.png'}/>
-                    <FriendCard username={'Mickmgs1337'} status={'Watching Valorant...'} avatar={'sheep-avatar.png'}/>
-                    <FriendCard username={'RockieePower'} status={'Watching Valorant...'} avatar={'wrestler-avatar.png'}/>
+                    <FriendCard username={'JonnyMul96'} status={'Watching Valorant...'} avatar={'afro'}/>
+                    <FriendCard username={'TheKraken'} status={'Watching Valorant...'} avatar={'chaplin'}/>
+                    <FriendCard username={'Mickmgs1337'} status={'Watching Valorant...'} avatar={'sheep'}/>
+                    <FriendCard username={'RockieePower'} status={'Watching Valorant...'} avatar={'wrestler'}/>
                     <h3 className="sidebar-subheading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 thin">Offline</h3>
-                    <FriendCard username={'nemix'} status={''} avatar={'bear-avatar.png'}/>
-                    <FriendCard username={'paddyg'} status={''} avatar={'sloth-avatar.png'}/>
+                    <FriendCard username={'nemix'} status={''} avatar={'bear'}/>
+                    <FriendCard username={'paddyg'} status={''} avatar={'sloth'}/>
 
                     <SidebarFriendsControls/>
                 </div>
