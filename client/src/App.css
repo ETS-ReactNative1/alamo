@@ -25,6 +25,10 @@ input {
     margin: 0 0 20px 0;
 }
 
+.font-color {
+    color: #F2E7FE !important;
+}
+
 .thin {
     font-weight: 200;
 }
@@ -43,6 +47,10 @@ input {
 
 .centered {
     text-align: center;
+}
+
+.centered-margin {
+    margin: 0 auto 0 auto;
 }
 
 .margin-top {
@@ -150,6 +158,7 @@ input {
     width: 100px;
     height: calc(100vh);
     padding: 0;
+    margin-bottom: 0 !important;
     overflow-x: hidden;
     overflow-y: auto;
     background-color: #121212 !important;
@@ -162,6 +171,32 @@ input {
 
 .sidebar-friend {
     height: 80px;
+}
+
+.sidebar-friends-control-container {
+    position: absolute;
+    left: 0;
+    bottom: 1px;
+    background-color: #080808;
+    height: 50px;
+    width: 100%;
+    border-top: 1px solid rgba(242, 231, 254, 0.2);
+}
+
+.sidebar-friend-control-col {
+    position: relative;
+    padding: 0 !important;
+    margin: 0;
+    height: 50px;
+    border-right: 1px solid rgba(242, 231, 254, 0.2);
+    cursor: pointer;
+}
+
+.sidebar-friend-control-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .user-avatar {
@@ -322,3 +357,4 @@ input {
     transform: scale(0.5);
   }
 }
+

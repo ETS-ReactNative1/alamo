@@ -1,6 +1,7 @@
 import React from 'react';
 import ProfileCard from './ProfileCard';
 import FriendCard from './FriendCard';
+import SidebarFriendsControls from './SidebarFriendsControls';
 
 class Sidebar extends React.Component {
     render() {
@@ -36,6 +37,8 @@ class Sidebar extends React.Component {
                     <h3 className="sidebar-subheading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 thin">Offline</h3>
                     <FriendCard username={'nemix'} status={''} avatar={'bear-avatar.png'}/>
                     <FriendCard username={'paddyg'} status={''} avatar={'sloth-avatar.png'}/>
+
+                    <SidebarFriendsControls/>
                 </div>
             </nav>
         )
