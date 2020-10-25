@@ -8,7 +8,8 @@ class ProfileSetup extends React.Component {
         this.state = {
             avatars : ['afro', 'avacado', 'batman', 'bear', 'chaplin', 'cloud', 'halloween', 'sheep', 'sloth', 'suicide-squad', 'wrestler'],
             avatarSelected: '',
-            usernameAvailable: ''
+            usernameAvailable: '',
+            selectAvatar: ''
         }
     }
 
@@ -21,14 +22,18 @@ class ProfileSetup extends React.Component {
         event.preventDefault();
         console.log(event.target[0].value, this.state.avatarSelected, this.props.user.email)
 
-        let payload = {username: event.target[0].value, avatar: this.state.avatarSelected, email: this.props.user.email}
+        if (this.state.avatarSelected.length === 0) {
+            this.setState({selectAvatar: 'Please selected an avatar.'})
+        } else {
+            let payload = {username: event.target[0].value, avatar: this.state.avatarSelected, email: this.props.user.email}
 
-        axios.post('/complete-profile', payload)
-            .then(response => {
-              window.location.reload();
-          }).catch(error => {
-              this.setState({usernameAvailable: 'Username already taken. Please enter new username.'})
-          });
+            axios.post('/complete-profile', payload)
+                .then(response => {
+                  window.location.reload();
+              }).catch(error => {
+                  this.setState({usernameAvailable: 'Username already taken. Please enter new username.'})
+              });
+        }
     }
 
     render() {
@@ -45,7 +50,7 @@ class ProfileSetup extends React.Component {
                           <input name="username" autoFocus />
                           <h6 id="username-available">{this.state.usernameAvailable}</h6>
                           <label htmlFor="avatar">Avatar</label>
-
+                          <h6 id="avatar-selected-error">{this.state.selectAvatar}</h6>
                           {this.state.avatars.map((avatar) => {
                             let srcPath = `/images/avatars/${avatar}-avatar.png`
                             return(
