@@ -47,7 +47,7 @@ class ProfileSetup extends React.Component {
 
                       <form action="post" onSubmit={this.handleSubmit}>
                           <label htmlFor="username">Username</label>
-                          <input name="username" autoFocus />
+                          <input name="username" autoFocus required minlength="3" />
                           <h6 id="username-available">{this.state.usernameAvailable}</h6>
                           <label htmlFor="avatar">Avatar</label>
                           <h6 id="avatar-selected-error">{this.state.selectAvatar}</h6>
