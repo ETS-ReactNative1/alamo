@@ -25,6 +25,10 @@ input {
     margin: 0 0 20px 0;
 }
 
+input:focus {
+    outline: none;
+}
+
 .font-color {
     color: #F2E7FE !important;
 }
@@ -59,6 +63,35 @@ input {
 
 .margin-bottom {
     margin: 0 0 25px 0;
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 5px;
+    margin-top: 60vh !important;
+    margin-bottom: 50px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    position: absolute;
+    border-radius: 15px;
+    background: transparent;
+    background: #080808;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    margin-bottom: 50px;
+    border-radius: 15px;
+    background: white;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    border-radius: 15px;
+    margin-bottom: 50px;
+    background: #080808;
 }
 
 .logo-main {
@@ -155,14 +188,19 @@ input {
 .sidebar {
     position: sticky;
     top: 0;
-    width: 100px;
+    min-width: 200px !important;
+    max-width: 300px !important;
     height: calc(100vh);
     padding: 0;
     margin-bottom: 0 !important;
     overflow-x: hidden;
-    overflow-y: auto;
+    overflow-y: auto !important;
     background-color: #121212 !important;
     border-right: 1px solid rgba(242, 231, 254, 0.2);
+}
+
+.sidebar-sticky {
+
 }
 
 .sidebar-profile {
@@ -174,7 +212,7 @@ input {
 }
 
 .sidebar-friends-control-container {
-    position: absolute;
+    position: sticky;
     left: 0;
     bottom: 1px;
     background-color: #080808;
@@ -197,6 +235,37 @@ input {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+}
+
+.friends-input-controls {
+    position: absolute;
+    left: 0;
+    bottom: 50px;
+    min-height: 150px;
+    background-color: #080808;
+    border-top: 1px solid rgba(242, 231, 254, 0.2);
+    opacity: 0;
+}
+
+.add-friends-active {
+    opacity: 1;
+}
+
+.search-friends-active {
+    opacity: 1;
+}
+
+#friend-control-heading {
+    font-size: 1.2em;
+    margin-top: 25px;
+}
+
+#friend-control-input {
+    font-size: 1em;
+}
+
+::placeholder {
+    font-size: 0.9em;
 }
 
 .user-avatar {
