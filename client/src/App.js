@@ -5,10 +5,13 @@ import './App.css';
 
 import Home from './components/Home';
 import Dashboard from './components/Dashboard';
+import Room from './components/Room';
 import Loading from './components/Loading';
 
 function App() {
     const { isAuthenticated, isLoading } = useAuth0();
+
+    console.log(isAuthenticated)
 
     if (isLoading) {
         return(
@@ -23,7 +26,12 @@ function App() {
         <div className="App">
             <Router>
                 <Switch>
-                    <Route path="/">
+                    <Route path="/" exact>
+                        <Dashboard></Dashboard>
+                    </Route>
+
+                    <Route path="/room/">
+                        <Room/>
                         <Dashboard></Dashboard>
                     </Route>
                 </Switch>

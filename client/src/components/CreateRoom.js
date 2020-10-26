@@ -1,12 +1,22 @@
 import React from 'react';
+import { withRouter } from 'react-router-dom';
 import io from 'socket.io-client'
 import { v4 as uuid } from 'uuid';
 
+let socket = io.connect('http://localhost:8080')
+
+console.log(socket)
 class CreateRoom extends React.Component {
 
+    redirect = (path) => {
+        this.props.history.push(path);
+    }
+
     handleCreateRoom = () => {
-        let socket = io.connect('http://localhost:8080')
-        socket.emit('join-room', uuid(), localStorage.getItem('userId'))
+        let unique_id = uuid();
+        let roomId = '/room/'+unique_id;
+        socket.emit('join-room', roomId, localStorage.getItem('userId'));
+        this.redirect(roomId);
     }
 
 
@@ -17,4 +27,4 @@ class CreateRoom extends React.Component {
     }
 }
 
-export default CreateRoom;
+export default withRouter(CreateRoom);

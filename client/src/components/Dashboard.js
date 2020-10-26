@@ -8,13 +8,6 @@ import Profile from './Profile';
 import LogoutButton from './LogoutButton';
 import CreateRoom from './CreateRoom';
 
-import io from 'socket.io-client';
-
-const createRoom = () => {
-    let socket =  io.connect('http://localhost:8080');
-    socket.emit('join-room', 829018201, localStorage.getItem('userId'))
-}
-
 const Dashboard = () => {
     const { user } = useAuth0();
     const [state, setState] = React.useState([])
