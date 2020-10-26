@@ -4,9 +4,15 @@ import FriendCard from './FriendCard';
 import SidebarFriendsControls from './SidebarFriendsControls';
 
 class Sidebar extends React.Component {
+    constructor(props) {
+        super(props)
+    }
+
     render() {
+        const userId =  this.props.user._id;
         const username = this.props.user.user_metadata && this.props.user.user_metadata.username;
         const avatar = this.props.user.user_metadata && this.props.user.user_metadata.avatar;
+
         return(
             <nav className="col-md-2 d-none d-md-block sidebar">
                 <div className="sidebar-sticky">
@@ -16,7 +22,7 @@ class Sidebar extends React.Component {
                         </div>
                     </div>
 
-                    <ProfileCard username={username} status={'Watching Valorant...'} avatar={avatar}/>
+                    <ProfileCard userId={userId} username={username} status={'Watching Valorant...'} avatar={avatar}/>
 
                     <h3 className="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 thin">Rooms</h3>
                     <ul className="nav flex-column">
@@ -38,6 +44,7 @@ class Sidebar extends React.Component {
                     <FriendCard username={'nemix'} status={''} avatar={'bear'}/>
                     <FriendCard username={'paddyg'} status={''} avatar={'sloth'}/>
 
+                    <h3 className="sidebar-subheading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 thin">Offline</h3>
                     <SidebarFriendsControls/>
                 </div>
             </nav>

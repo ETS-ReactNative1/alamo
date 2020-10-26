@@ -7,17 +7,35 @@ const cors = require('cors');
 require('dotenv/config');
 const bodyParser = require('body-parser');
 const MongoClient = require('mongodb').MongoClient
+const ObjectId = require('mongodb').ObjectID;
 const mongoose = require('mongoose');
-const app = express();
 
 //Require Routes
 const user = require('./routes/user');
+const userId = require('./routes/userId');
 const completeProfile = require('./routes/completeProfile');
 const searchUser = require('./routes/searchUser');
+const room = require('./routes/room');
+
+
+const app = express();
+var server = require('http').Server(app);
+var io = require('socket.io')(server);
+
+io.on('connection', (socket) => {
+    socket.on('join-room', (roomId, userId) => {
+        console.log(roomId, userId)
+    })
+})
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
+
+app.use(function(req, res, next){
+    app.locals.io = io;
+    next();
+});
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -29,8 +47,10 @@ app.use(bodyParser.json())
 
 //Routes
 app.use('/user', user);
+app.use('/userId', userId);
 app.use('/complete-profile', completeProfile);
 app.use('/search-user', searchUser);
+app.use('/room', room);
 
 //MongoDB Connection
 const url = process.env.MONGO_DB_URL
@@ -80,4 +100,4 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-module.exports = app;
+module.exports = {app: app, server: server};

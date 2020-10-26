@@ -204,6 +204,7 @@ input:focus {
 }
 
 .sidebar-profile {
+    cursor: pointer;
     height: 100px;
 }
 
@@ -284,6 +285,7 @@ input:focus {
     left: 50%;
     color: red;
     z-index: 999999 !important;
+    pointer-events: none;
 }
 
 .decline {
