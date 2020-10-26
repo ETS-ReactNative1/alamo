@@ -8,9 +8,19 @@ class Room extends React.Component {
         super(props)
     }
 
+    playAudio = (stream) => {
+        this.audio.srcObject = stream;
+    }
+
     componentDidMount() {
         setTimeout(() => {
             socket.emit('join-room', window.location.pathname, localStorage.getItem('userId'))
+
+            navigator.mediaDevices.getUserMedia({
+                audio: true
+            }).then(stream => {
+                this.playAudio(stream)
+            })
 
             socket.on('user-connected', (userId) => {
                 console.log('user-connected', userId)
@@ -20,7 +30,11 @@ class Room extends React.Component {
     }
     render() {
         return(
-           <h2>Room</h2>
+            <div>
+               <h2>Room</h2>
+               <video src=""></video>
+                <audio ref={audio => {this.audio = audio}} controls volume="true" autoPlay />
+            </div>
         )
     }
 }
