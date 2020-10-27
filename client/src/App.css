@@ -213,6 +213,12 @@ input:focus {
     margin-left: auto;
 }
 
+.toast {
+    position: absolute;
+    right: 25px;
+    bottom: 25px;
+}
+
 .sidebar {
     position: sticky;
     top: 0;

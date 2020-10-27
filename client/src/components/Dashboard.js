@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import ProfileSetup from './ProfileSetup';
 import Sidebar from './Sidebar';
 import NavigationBar from './NavigationBar';
+import Notification from './Notification';
 import Room from './Room';
 import Profile from './Profile';
 import LogoutButton from './LogoutButton';
@@ -37,6 +38,7 @@ const Dashboard = () => {
                         <Sidebar user={state}/>
                         <main className="col px-4">
                             <NavigationBar/>
+                            <Notification userId={state._id}/>
                             <Route path="/create-room" component={CreateRoom}/>
                             <Route path="/room/" component={Room}/>
                         </main>
