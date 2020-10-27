@@ -15,7 +15,9 @@ const user = require('./routes/user');
 const userId = require('./routes/userId');
 const completeProfile = require('./routes/completeProfile');
 const searchUser = require('./routes/searchUser');
-const room = require('./routes/room');
+const createRoom = require('./routes/createRoom');
+const roomInfo = require('./routes/roomInfo');
+const addRoomToUser = require('./routes/addRoomToUser');
 
 
 const app = express();
@@ -57,7 +59,9 @@ app.use('/user', user);
 app.use('/userId', userId);
 app.use('/complete-profile', completeProfile);
 app.use('/search-user', searchUser);
-app.use('/room', room);
+app.use('/create-room', createRoom);
+app.use('/room-info', roomInfo);
+app.use('/add-user-to-room', addRoomToUser);
 
 //MongoDB Connection
 const url = process.env.MONGO_DB_URL

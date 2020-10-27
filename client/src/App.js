@@ -25,16 +25,7 @@ function App() {
         return (
         <div className="App">
             <Router>
-                <Switch>
-                    <Route path="/" exact>
-                        <Dashboard></Dashboard>
-                    </Route>
-
-                    <Route path="/room/">
-                        <Room/>
-                        <Dashboard></Dashboard>
-                    </Route>
-                </Switch>
+                <Dashboard></Dashboard>
             </Router>
         </div>
       );

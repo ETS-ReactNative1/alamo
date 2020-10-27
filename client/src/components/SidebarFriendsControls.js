@@ -34,7 +34,7 @@ class SidebarFriendsControls extends React.Component {
                         <i class="fas fa-circle pending-notification"></i>
                         <i className="fas fa-1x font-color centered sidebar-friend-control-icon fa-user-plus"></i>
                     </div>
-                    <div className="col-6 sidebar-friend-control-col" onClick={this.handleSearchFriend}>
+                    <div className="col-6 sidebar-friend-control-col" style={{maxWidth: '150px'}} onClick={this.handleSearchFriend}>
                         <i style={{left: 'calc(50% - 10px)'}} className="fas fa-1x font-color centered sidebar-friend-control-icon fa-search"></i>
                     </div>
                 </div>

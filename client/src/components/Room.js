@@ -1,6 +1,8 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import io from 'socket.io-client';
 import Peer from 'peerjs';
+import axios from 'axios';
 
 let socket = io.connect('http://localhost:8080/')
 
@@ -12,6 +14,11 @@ const peer = new Peer(localStorage.getItem('userId'), {
 class Room extends React.Component {
     constructor(props) {
         super(props)
+        
+        this.state = {
+            peers: [],
+            roomTitle: null
+        }
     }
 
     playUserAudio = (audio, stream) => {
@@ -24,10 +31,20 @@ class Room extends React.Component {
         }
     }
 
+    playClientAudio = (stream) => {
+        this.client.srcObject = stream
+    }
+
+    playExternalAudio = (userId, stream) => {
+        return(
+            <h2>hello</h2>
+        )
+    }
+
     connectToNewUser = (userId, stream) => {
         const call = peer.call(userId, stream)
         call.on('stream', userAudioStream  => {
-            this.playUserAudio('audio2', userAudioStream)
+            this.playUserAudio('audio2', stream)
         })
 
         call.on('close', () => {
@@ -37,6 +54,10 @@ class Room extends React.Component {
 
     componentWillMount() {
         socket.on('user-disconnected', (userId) => {
+            //Remove user from peers array
+            const updatePeers = this.state.peers.splice(this.state.peers.indexOf(userId), 1);
+            this.setState({peers: updatePeers})
+            console.log(this.state.peers, 'after user removed')
             console.log('user-disconnected', userId)
         })
     }
@@ -49,7 +70,7 @@ class Room extends React.Component {
             navigator.mediaDevices.getUserMedia({
                 audio: true
             }).then(stream => {
-                this.playUserAudio('audio', stream)
+                this.playClientAudio(stream)
 
 
                 socket.on('user-connected', (userId) => {
@@ -63,24 +84,27 @@ class Room extends React.Component {
 
                 peer.on('call', call => {
                     call.answer(stream)
-                    call.on('stream', userAudioStream => {
-                        this.playUserAudio('audio2', userAudioStream)
-                    })
                     console.log('answered call')
                 })
-
             })
+            
+            axios.get('/room-info', {params: {roomId: window.location.pathname}})
+                .then(response => {
+                    this.setState({roomTitle: response.data[0].roomTitle})
+                })
 
 
-        }, 500)
+        }, 50)
     }
     render() {
         return(
             <div>
-               <h2>Room</h2>
-               <audio id={'1'} muted ref={audio => {this.audio = audio}} controls volume="true" autoPlay />
-               <audio id={'2'} ref={audio2 => {this.audio2 = audio2}} controls volume="true" autoPlay />
-               <audio id={'3'} muted ref={audio3 => {this.audio3 = audio3}} controls volume="true" autoPlay />
+                <h1 className="room-title">{this.state.roomTitle}</h1>
+                <video className="room-video" src="" controls></video>
+                <audio id={'1'} muted ref={client => {this.client = client}} controls volume="true" autoPlay />
+                <audio id={'4'} muted ref={external => {this.external = external}} controls volume="true" autoPlay />
+                <audio id={'2'} ref={audio2 => {this.audio2 = audio2}} controls volume="true" autoPlay />
+                <audio id={'3'} muted ref={audio3 => {this.audio3 = audio3}} controls volume="true" autoPlay />
             </div>
         )
     }

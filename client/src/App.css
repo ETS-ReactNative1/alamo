@@ -70,6 +70,10 @@ input:focus {
     margin: 0 0 25px 0;
 }
 
+.margin-left {
+    margin-left: 15px;
+}
+
 /* width */
 ::-webkit-scrollbar {
     width: 5px;
@@ -161,15 +165,24 @@ input:focus {
     border: 2px solid white;
 }
 
+.plus-create-btn {
+    padding-right: 8px;
+}
+
 .secondary-btn {
     width: 130px;
-    height: 45px;
+    height: 43px;
     background-color: transparent;
     color: #f2e7fe;
     border-radius: 8px;
     border: 3px solid #f2e7fe;
     font-family: 'Open Sans', sans-serif;
     font-weight: 700;
+}
+
+.secondary-btn:hover {
+    color: #f2e7fe;
+    border-color: #3700B3;
 }
 
 .setup-heading {
@@ -190,11 +203,20 @@ input:focus {
     border: 5px solid #3700B3;
 }
 
+.navbar {
+    width: 100%;
+    height: 75px;
+    margin: 0 0 25px 0;
+}
+
+.navbar-right {
+    margin-left: auto;
+}
+
 .sidebar {
     position: sticky;
     top: 0;
     min-width: 300px !important;
-    max-width: 300px !important;
     height: calc(100vh);
     padding: 0;
     margin-bottom: 0 !important;
@@ -361,6 +383,15 @@ input:focus {
     background: #1D1D1D;
 }
 
+.room-title {
+    margin: 0 0 25px 0;
+    font-weight: 200;
+}
+
+.room-video {
+    width: 70%;
+}
+
 @media only screen and (max-width: 1480px) {
     .home {
         background-size: 40%;
@@ -408,7 +439,7 @@ input:focus {
         text-align: center;
     }
 
-    .primary-btn, .logo-main, .register-btn {
+    .primary-btn, .secondary-btn, .logo-main, .register-btn {
         transform: scale(0.7);
     }
 }
@@ -428,7 +459,6 @@ input:focus {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  margin: 6.25rem auto 0;
   width: 7.375rem;
   text-align: center;
 }

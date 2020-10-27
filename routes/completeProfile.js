@@ -1,10 +1,6 @@
 const express = require('express');
 const router = express.Router();
 
-const user = {
-    name: 'miller'
-}
-
 router.post('/', (req, res) => {
     const db = req.app.locals.db;
 
