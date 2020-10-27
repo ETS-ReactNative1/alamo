@@ -2,6 +2,11 @@ body {
     background-color: #121212;
 }
 
+html {
+    scrollbar-color: white #080808;
+    scrollbar-width: thin
+}
+
 h1, h2, h3, h4, h5, h6, p, label {
     color: #F2E7FE !important;
 }
@@ -197,6 +202,8 @@ input:focus {
     overflow-y: auto !important;
     background-color: #121212 !important;
     border-right: 1px solid rgba(242, 231, 254, 0.2);
+    scrollbar-color: white #080808;
+    scrollbar-width: thin
 }
 
 .sidebar-sticky {
@@ -214,9 +221,10 @@ input:focus {
 }
 
 .sidebar-friends-control-container {
-    position: sticky;
+    position: fixed;
+    max-width: 300px;
     left: 0;
-    bottom: 1px;
+    bottom: 0px;
     background-color: #080808;
     height: 50px;
     width: 100%;
