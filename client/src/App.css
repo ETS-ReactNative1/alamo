@@ -231,8 +231,8 @@ input:focus {
 .toast-message {
     position: absolute;
     top: 50%;
-    left: 15px;
-    padding: 0;
+    left: 0;
+    padding: 15px;
     margin: 0;
     transform: translateY(-50%);
 }
@@ -244,6 +244,7 @@ input:focus {
 .close {
     color: #F2E7FE !important;
     margin-left: auto !important;
+    transform: translateY(-8px);
     opacity: 0.3;
 }
 

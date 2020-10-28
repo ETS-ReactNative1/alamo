@@ -9,7 +9,7 @@ router.post('/', (req, res) => {
 
 
     //Add room to user
-    db.collection('users').find(ObjectId(userId)).toArray()
+    db.collection('users').findOneAndUpdate({_id: ObjectId(userId)}, {$push: {rooms: roomId}})
     .then(response => res.status(200).json(response))
     .catch(error => console.error(error));
 

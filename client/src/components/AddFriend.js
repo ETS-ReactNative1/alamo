@@ -10,8 +10,23 @@ class AddFriend extends React.Component {
 
         this.state = { 
             searchResults: [],
-            userNotFound: ''
+            userNotFound: '',
+            pendingInvitations: []
         }
+    }
+
+    renderPendingInvitations = () => {
+        console.log(this.props.pendingInvitations)
+        return(
+            this.props.pendingInvitations.map((userId) => {
+                return(
+                    <PendingFriend userId={userId}/>
+                )
+            })
+        )
+    }
+
+    componentDidMount() {
     }
 
     handleUserSearch = (event) => {
@@ -31,7 +46,9 @@ class AddFriend extends React.Component {
         return (
             <div className={(this.props.addFriendActive) ? "col-12 friends-input-controls add-friends-active" : "col-12 friends-input-controls"} >
                 <label id="friend-control-heading" htmlFor="username">Pending Invitations</label>
-                <PendingFriend userId={'13983290323'} username={'snakesgorman'} avatar={'chaplin'}/>
+
+                { this.props.pendingInvitations && this.renderPendingInvitations() }
+
                 <label id="friend-control-heading" htmlFor="username">Add Friend</label>
                 {this.state.searchResults.map((user) => {
                     console.log(user._id, 'MAP')

@@ -1,19 +1,31 @@
 import React from 'react';
-import { useAuth0 } from '@auth0/auth0-react';
+import axios from 'axios';
 
 const PendingFriend = (props) => {
 
-    const { user } = useAuth0();
+    const [state, setState] = React.useState([])
 
+    React.useEffect(() => {
+        const fetchPendingInvitation = async () => {
+            const response = await axios.get('/userId', {params: {userId: props.userId}})
+            setState(response.data[0])
+        }
+        fetchPendingInvitation();
+    }, [])
+
+    const username = state.user_metadata && state.user_metadata.username;
+    const avatar = state.user_metadata && state.user_metadata.avatar;
+
+    console.log(state)
     return(
         <div id={props.userId} className="row sidebar-friend align-items-center">
             <div className="col-3">
-                <img className="user-avatar rounded-circle w-15" src={'/images/avatars/' + props.avatar + '-avatar.png'} alt={user.name} />
+                <img className="user-avatar rounded-circle w-15" src={'/images/avatars/' + avatar + '-avatar.png'} />
             </div>
             <div className="col-9">
                 <div className="row">
                     <div className="col">
-                        <h3 className="username bold">{props.username}</h3>
+                        <h3 className="username bold">{username}</h3>
                     </div>
                 </div>
                 <div className="row invitation-btns">
