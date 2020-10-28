@@ -12,9 +12,9 @@ class Sidebar extends React.Component {
         const userId =  this.props.user._id;
         const username = this.props.user.user_metadata && this.props.user.user_metadata.username;
         const avatar = this.props.user.user_metadata && this.props.user.user_metadata.avatar;
-        const pendingInvitations = this.props.user.pending_invitations;
-        console.log(pendingInvitations)
+        const pendingInvitation = this.props.user.pending_invitations;
 
+        console.log(pendingInvitation, 'update ')
         return(
             <nav className="col-md-2 d-none d-md-block sidebar">
                 <div className="sidebar-sticky">
@@ -46,8 +46,8 @@ class Sidebar extends React.Component {
                     <FriendCard username={'nemix'} status={''} avatar={'bear'}/>
                     <FriendCard username={'paddyg'} status={''} avatar={'sloth'}/>
 
-                    <h3 className="sidebar-subheading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 thin">Offline</h3>
-                    <SidebarFriendsControls pendingInvitations={pendingInvitations}/>
+                    { pendingInvitation ? <SidebarFriendsControls pendingInvitations={pendingInvitation}/> : null }
+
                 </div>
             </nav>
         )

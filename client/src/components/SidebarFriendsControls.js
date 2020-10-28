@@ -1,4 +1,5 @@
 import React from 'react';
+import io from 'socket.io-client';
 
 import AddFriend from './AddFriend';
 import SearchFriend from './SearchFriend';
@@ -9,8 +10,20 @@ class SidebarFriendsControls extends React.Component {
 
         this.state = {
             addFriend: false,
-            searchFriend: false
+            searchFriend: false,
+            notification: false,
+            senderId: '',
         }
+    }
+
+    componentDidMount() {
+        const socket = io.connect('http://localhost:8080')
+        socket.on('pending-invitation', (senderId, receiverId) => {
+            if (receiverId === localStorage.getItem('userId')) {
+                this.setState({notification: true, senderId: senderId})
+            }
+        })
+
     }
 
     handleAddFriend = () => {
@@ -23,6 +36,7 @@ class SidebarFriendsControls extends React.Component {
 
 
     render() {
+        console.log(this.props.pendingInvitations)
         return(
             <div className="sidebar-friends-control-container">
                 <div className="row">
@@ -31,7 +45,7 @@ class SidebarFriendsControls extends React.Component {
                 </div>
                 <div className="row align-items-center">
                     <div className="col-6 sidebar-friend-control-col" onClick={this.handleAddFriend}>
-                        <i class="fas fa-circle pending-notification"></i>
+                        <i className={this.state.notification ? "fas fa-circle pending-notification" : 'hide'}></i>
                         <i className="fas fa-1x font-color centered sidebar-friend-control-icon fa-user-plus"></i>
                     </div>
                     <div className="col-6 sidebar-friend-control-col" style={{maxWidth: '150px'}} onClick={this.handleSearchFriend}>

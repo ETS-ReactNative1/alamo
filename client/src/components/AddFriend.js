@@ -15,18 +15,24 @@ class AddFriend extends React.Component {
         }
     }
 
-    renderPendingInvitations = () => {
-        console.log(this.props.pendingInvitations)
-        return(
-            this.props.pendingInvitations.map((userId) => {
-                return(
-                    <PendingFriend userId={userId}/>
-                )
-            })
-        )
+    componentDidMount() {
+        this.setState({pendingInvitations: this.props.pendingInvitations})
     }
 
-    componentDidMount() {
+    componentWillReceiveProps(nextProps) {
+        if (nextProps !== this.state.pendingInvitations) {
+            this.setState({pendingInvitations: nextProps.pendingInvitations});
+        }
+    }
+
+    handleDecline = (senderId) => {
+        console.log(senderId, 'THIS IS PASS TO FUNCTIOn')
+        let payload = {senderId: senderId, receiverId: localStorage.getItem('userId')}
+        axios.post('/decline-friend-invite', payload)
+            .then(response => {
+                this.setState({pendingInvitations: []})
+            })
+            .catch(err => console.log(err))
     }
 
     handleUserSearch = (event) => {
@@ -43,15 +49,20 @@ class AddFriend extends React.Component {
     }
 
     render() {
+        console.log(this.props.pendingInvitations)
         return (
             <div className={(this.props.addFriendActive) ? "col-12 friends-input-controls add-friends-active" : "col-12 friends-input-controls"} >
-                <label id="friend-control-heading" htmlFor="username">Pending Invitations</label>
 
-                { this.props.pendingInvitations && this.renderPendingInvitations() }
+                {this.state.pendingInvitations.length > 0 ? <label id="friend-control-heading" htmlFor="username">Pending Invitations</label> : null}
+
+                {this.state.pendingInvitations.map((user) => {
+                    return(
+                        <PendingFriend userPendingInvitation={user} handleDecline={this.handleDecline} userId={this.props.userId}/>
+                    )
+                })}
 
                 <label id="friend-control-heading" htmlFor="username">Add Friend</label>
                 {this.state.searchResults.map((user) => {
-                    console.log(user._id, 'MAP')
                     return(
                         <FriendCard userId={user._id} add={true} username={user.user_metadata.username} status={'Watching Valorant...'} avatar={user.user_metadata.avatar}/>
                     )
@@ -61,8 +72,7 @@ class AddFriend extends React.Component {
                     <input id="friend-control-input" placeholder="Username" name="username" autoFocus required minlength="3" />
                 </form>
             </div>
-        )
-    }
+    )}
 }
 
 export default AddFriend;

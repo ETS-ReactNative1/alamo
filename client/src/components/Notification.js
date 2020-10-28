@@ -8,7 +8,8 @@ class Notification extends React.Component {
 
         this.state = {
             show: false,
-            notification: null
+            notification: null,
+            pendingInvitation: ''
         }
     }
 
@@ -42,7 +43,7 @@ class Notification extends React.Component {
                 axios.get('userId', {params: {userId: senderId}})
                 .then(response => {
                     let message = response.data[0].user_metadata.username + ' would like to add you as a friend'
-                    this.setState({notification: message, show: true})
+                    this.setState({notification: message, show: true, pendingInvitation: senderId})
                 })
 
                 setTimeout(() => {
@@ -55,7 +56,7 @@ class Notification extends React.Component {
 
     render() {
         return(
-            <div className={(this.state.show) ? "toast show" : "toast"} role="alert" aria-live="assertive" aria-atomic="true">
+            <div update={this.state.pendingInvitation} className={(this.state.show) ? "toast show" : "toast"} role="alert" aria-live="assertive" aria-atomic="true">
                     <div className="toast-body bold">
                         <button type="button" className="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
                         <span aria-hidden="true">&times;</span>

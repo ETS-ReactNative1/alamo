@@ -16,8 +16,6 @@ const FriendCard = (props) => {
             .then(response => {
             })
             .catch(err => console.log(err))
-
-
     }
 
 

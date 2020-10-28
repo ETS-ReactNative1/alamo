@@ -19,6 +19,8 @@ const createRoom = require('./routes/createRoom');
 const roomInfo = require('./routes/roomInfo');
 const addRoomToUser = require('./routes/addRoomToUser');
 const addFriend = require('./routes/addFriend');
+const declineFriend = require('./routes/declineFriend');
+const pendingFriends = require('./routes/pendingFriends');
 
 
 const app = express();
@@ -79,6 +81,8 @@ app.use('/create-room', createRoom);
 app.use('/room-info', roomInfo);
 app.use('/add-user-to-room', addRoomToUser);
 app.use('/add-friend', addFriend);
+app.use('/decline-friend-invite', declineFriend);
+app.use('/pending-friends', pendingFriends)
 
 //MongoDB Connection
 const url = process.env.MONGO_DB_URL

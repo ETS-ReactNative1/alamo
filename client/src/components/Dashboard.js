@@ -2,6 +2,8 @@ import React from 'react';
 import axios from 'axios';
 import { useAuth0 } from '@auth0/auth0-react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import io from 'socket.io-client';
+import useForceUpdate from 'use-force-update';
 
 import ProfileSetup from './ProfileSetup';
 import Sidebar from './Sidebar';
@@ -15,15 +17,24 @@ import CreateRoom from './CreateRoom';
 const Dashboard = () => {
     const { user } = useAuth0();
     const [state, setState] = React.useState([])
+    const forceUpdate = useForceUpdate();
+
+    const fetchUserInformation = async () => {
+        const response = await axios.get('/user', {params: {email: user.email}})
+        setState(response.data[0])
+    }
 
     React.useEffect(() => {
-        const fetchUserInformation = async () => {
-            const response = await axios.get('/user', {params: {email: user.email}})
-            setState(response.data[0])
-        }
+        const socket = io.connect('http://localhost:8080')
+
+        socket.on('pending-invitation', (receiverId) => {
+            fetchUserInformation();
+        })
+
         fetchUserInformation();
     }, [])
 
+    console.log(state)
     localStorage.setItem('userId', state._id)
 
     if (state.account_setup === false) {
