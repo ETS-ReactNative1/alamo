@@ -36,7 +36,7 @@ class AddFriend extends React.Component {
                 {this.state.searchResults.map((user) => {
                     console.log(user._id, 'MAP')
                     return(
-                        <FriendCard userId={user._id} username={user.user_metadata.username} status={'Watching Valorant...'} avatar={user.user_metadata.avatar}/>
+                        <FriendCard userId={user._id} add={true} username={user.user_metadata.username} status={'Watching Valorant...'} avatar={user.user_metadata.avatar}/>
                     )
                 })}
                 <h6 id="friend-error-message">{this.state.userNotFound}</h6>

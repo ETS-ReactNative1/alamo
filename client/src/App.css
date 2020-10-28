@@ -313,6 +313,15 @@ input:focus {
     display: none;
 }
 
+.friend-add-icon {
+    position: absolute;
+    right: 23px;
+    top: 50%;
+    transform: translateY(-50%) scale(1.5);
+    color: #BB86FC !important;
+    z-index: 999;
+}
+
 .add-friends-active {
     display: block;
 }

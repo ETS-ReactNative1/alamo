@@ -18,16 +18,23 @@ const searchUser = require('./routes/searchUser');
 const createRoom = require('./routes/createRoom');
 const roomInfo = require('./routes/roomInfo');
 const addRoomToUser = require('./routes/addRoomToUser');
+const addFriend = require('./routes/addFriend');
 
 
 const app = express();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
 
+var clients = {}
+
 io.on('connection', (socket) => {
     socket.on('online', (userId) => {
-       console.log('User ' + userId + ' is now online') 
 
+        clients[userId] = {socketId: socket.id}
+
+        console.log(clients, 'CLIENTS CONNECTED')
+
+        console.log('User ' + userId + ' is now online', 'socketId', socket.id) 
         socket.broadcast.emit('new-user-online', userId);
     })
 
@@ -38,7 +45,11 @@ io.on('connection', (socket) => {
         socket.on('disconnect', () => {
             socket.to(roomId).broadcast.emit('user-disconnected', userId)
         })
+    })
 
+    socket.on('add-friend', (senderId, receiverId) => {
+        console.log(senderId, 'would like to add', receiverId, 'as a friend')
+        socket.broadcast.emit('pending-invitation', senderId, receiverId);
     })
 })
 
@@ -67,6 +78,7 @@ app.use('/search-user', searchUser);
 app.use('/create-room', createRoom);
 app.use('/room-info', roomInfo);
 app.use('/add-user-to-room', addRoomToUser);
+app.use('/add-friend', addFriend);
 
 //MongoDB Connection
 const url = process.env.MONGO_DB_URL
