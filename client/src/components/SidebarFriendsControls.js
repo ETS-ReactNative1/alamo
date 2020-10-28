@@ -45,7 +45,7 @@ class SidebarFriendsControls extends React.Component {
                 </div>
                 <div className="row align-items-center">
                     <div className="col-6 sidebar-friend-control-col" onClick={this.handleAddFriend}>
-                        <i className={this.state.notification ? "fas fa-circle pending-notification" : 'hide'}></i>
+                        <i className={(this.props.pendingInvitations.length > 0) ? "fas fa-circle pending-notification" : 'hide'}></i>
                         <i className="fas fa-1x font-color centered sidebar-friend-control-icon fa-user-plus"></i>
                     </div>
                     <div className="col-6 sidebar-friend-control-col" style={{maxWidth: '150px'}} onClick={this.handleSearchFriend}>

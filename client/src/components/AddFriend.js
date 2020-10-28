@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import io from 'socket.io-client';
 
 import FriendCard from './FriendCard';
 import PendingFriend from './PendingFriend';
@@ -26,11 +27,12 @@ class AddFriend extends React.Component {
     }
 
     handleDecline = (senderId) => {
-        console.log(senderId, 'THIS IS PASS TO FUNCTIOn')
+        const socket = io.connect('http://localhost:8080')
         let payload = {senderId: senderId, receiverId: localStorage.getItem('userId')}
         axios.post('/decline-friend-invite', payload)
             .then(response => {
                 this.setState({pendingInvitations: []})
+                socket.emit('friend-event', 'decline', senderId, localStorage.getItem('userId'))
             })
             .catch(err => console.log(err))
     }

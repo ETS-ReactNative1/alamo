@@ -26,15 +26,22 @@ const Dashboard = () => {
 
     React.useEffect(() => {
         const socket = io.connect('http://localhost:8080')
-
-        socket.on('pending-invitation', (receiverId) => {
-            fetchUserInformation();
+        
+        socket.on('decline-friend-invite', (receiverId) => {
+            if (receiverId === localStorage.getItem('userId')) {
+                console.log('declined invite')
+                fetchUserInformation();
+            }
         })
 
+        socket.on('pending-invitation', (senderId, receiverId) => {
+            if (receiverId === localStorage.getItem('userId')) {
+                fetchUserInformation();
+            }
+        })
         fetchUserInformation();
     }, [])
 
-    console.log(state)
     localStorage.setItem('userId', state._id)
 
     if (state.account_setup === false) {

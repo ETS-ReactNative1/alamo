@@ -53,6 +53,13 @@ io.on('connection', (socket) => {
         console.log(senderId, 'would like to add', receiverId, 'as a friend')
         socket.broadcast.emit('pending-invitation', senderId, receiverId);
     })
+
+    socket.on('friend-event', (type, senderId, receiverId) => {
+        if (type === 'decline') {
+            socket.broadcast.emit('decline-friend-invite', receiverId);
+        }
+        
+    })
 })
 
 // view engine setup
