@@ -217,6 +217,34 @@ input:focus {
     position: absolute;
     right: 25px;
     bottom: 25px;
+    height: 100px;
+    min-width: 300px;
+    background-color: #080808;
+    color: #F2E7FE !important;
+}
+
+.toast-body {
+    position: relative;
+    height: 100%;
+}
+
+.toast-message {
+    position: absolute;
+    top: 50%;
+    left: 15px;
+    padding: 0;
+    margin: 0;
+    transform: translateY(-50%);
+}
+
+.toast-header {
+    background-color: transparent;
+}
+
+.close {
+    color: #F2E7FE !important;
+    margin-left: auto !important;
+    opacity: 0.3;
 }
 
 .sidebar {

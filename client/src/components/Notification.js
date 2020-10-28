@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 import io from 'socket.io-client';
 
 class Notification extends React.Component {
@@ -18,11 +19,14 @@ class Notification extends React.Component {
         socket.on('new-user-online', (userId) => {
             setTimeout(() => {
                 if (userId != this.props.userId) {
-                    let message = userId + ' is now online';
-                    this.setState({notification: message, show: true})
+                    axios.get('userId', {params: {userId: userId}})
+                        .then(response => {
+                            let message = response.data[0].user_metadata.username + ' is now online'
+                            this.setState({notification: message, show: true})
+                        })
 
                     setTimeout(() => {
-                        this.setState({notifcation: null, show: false})
+                        this.setState({notification: null, show: false})
                     }, 3000)
 
                 } else {
@@ -37,15 +41,11 @@ class Notification extends React.Component {
     render() {
         return(
             <div className={(this.state.show) ? "toast show" : "toast"} role="alert" aria-live="assertive" aria-atomic="true">
-                <div className="toast-header">
-                    <strong className="mr-auto">Bootstrap</strong>
-                    <small className="text-muted">11 mins ago</small>
-                    <button type="button" className="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                    <div className="toast-body">
-                        {this.state.notification}
+                    <div className="toast-body bold">
+                        <button type="button" className="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h6 className="toast-message">{this.state.notification}</h6>
                     </div>
             </div>
         )
