@@ -14,10 +14,11 @@ import Profile from './Profile';
 import LogoutButton from './LogoutButton';
 import CreateRoom from './CreateRoom';
 
-const Dashboard = () => {
+const Dashboard = (props) => {
     const { user } = useAuth0();
     const [state, setState] = React.useState([])
     const forceUpdate = useForceUpdate();
+    const socket = io.connect('http://localhost:8080')
 
     const fetchUserInformation = async () => {
         const response = await axios.get('/user', {params: {email: user.email}})
@@ -25,8 +26,7 @@ const Dashboard = () => {
     }
 
     React.useEffect(() => {
-        const socket = io.connect('http://localhost:8080')
-        
+
         socket.on('decline-friend-invite', (receiverId) => {
             if (receiverId === localStorage.getItem('userId')) {
                 console.log('declined invite')
@@ -43,6 +43,10 @@ const Dashboard = () => {
     }, [])
 
     localStorage.setItem('userId', state._id)
+
+    if (state.account_setup === true) {
+        props.changeOnlineStatus(state.account_setup);
+    }
 
     if (state.account_setup === false) {
         return(

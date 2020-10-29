@@ -38,7 +38,7 @@ class PendingFriend extends React.Component {
                             <i className="fas fa-2x fa-times"></i>
                         </div>
                         <div className="col-2 accept">
-                            <i className="fas fa-2x fa-check"></i>
+                            <i className="fas fa-2x fa-check" onClick={() => this.props.handleAcceptFriend(this.props.userPendingInvitation)}></i>
                         </div>
                     </div>
                 </div>

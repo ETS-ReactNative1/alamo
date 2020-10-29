@@ -55,6 +55,30 @@ class AddFriend extends React.Component {
             })
             .catch(err => console.log(err))
     }
+    
+    updatePendingInvitations = (id) => {
+        var array = [...this.state.pendingInvitations];
+        var index = array.indexOf(id)
+        if (index !== -1) {
+            array.splice(index, 1);
+            this.setState({pendingInvitations: array});
+        }
+    }
+
+    handleAcceptFriend = (recipentId) => {
+        let payload = {senderId: localStorage.getItem('userId'), receiverId: recipentId}
+        axios.post('/accept-friend', payload)
+        .then(response => {
+
+                axios.get('/check-friend-status', {params: {searcherId: localStorage.getItem('userId'), recipentId: recipentId}})
+                    .then(friendStatus => {
+                        this.updatePendingInvitations(recipentId)
+                        this.setState({friendStatus: friendStatus.data.friendStatus})
+                    })
+
+        })
+        .catch(err => console.log(err))
+    }
 
 
     handleUserSearch = (event) => {
@@ -85,7 +109,7 @@ class AddFriend extends React.Component {
 
                 {this.state.pendingInvitations.map((user) => {
                     return(
-                        <PendingFriend userPendingInvitation={user} handleDecline={this.handleDecline} userId={this.props.userId}/>
+                        <PendingFriend handleAcceptFriend={this.handleAcceptFriend} userPendingInvitation={user} handleDecline={this.handleDecline} userId={this.props.userId}/>
                     )
                 })}
 

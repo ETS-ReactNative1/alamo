@@ -22,6 +22,7 @@ const addFriend = require('./routes/addFriend');
 const declineFriend = require('./routes/declineFriend');
 const pendingFriends = require('./routes/pendingFriends');
 const checkFriendStatus = require('./routes/checkFriendStatus');
+const acceptFriend = require('./routes/acceptFriend');
 
 
 const app = express();
@@ -31,14 +32,13 @@ var io = require('socket.io')(server);
 var clients = {}
 
 io.on('connection', (socket) => {
+
     socket.on('online', (userId) => {
-
-        clients[userId] = {socketId: socket.id}
-
-        console.log(clients, 'CLIENTS CONNECTED')
-
-        console.log('User ' + userId + ' is now online', 'socketId', socket.id) 
-        socket.broadcast.emit('new-user-online', userId);
+        if (!(userId in clients)) {
+            clients[userId] = {socketId: socket.id}
+            console.log(clients, 'CLIENTS CONNECTED')
+            socket.broadcast.emit('new-user-online', userId);
+        }
     })
 
     socket.on('join-room', (roomId, userId) => {
@@ -61,6 +61,11 @@ io.on('connection', (socket) => {
         }
         
     })
+
+})
+
+io.on('disconnect', (socket) => {
+    console.log('user disconnect', socket.id)
 })
 
 // view engine setup
@@ -92,6 +97,7 @@ app.use('/add-friend', addFriend);
 app.use('/decline-friend-invite', declineFriend);
 app.use('/pending-friends', pendingFriends)
 app.use('/check-friend-status', checkFriendStatus);
+app.use('/accept-friend', acceptFriend);
 
 //MongoDB Connection
 const url = process.env.MONGO_DB_URL
