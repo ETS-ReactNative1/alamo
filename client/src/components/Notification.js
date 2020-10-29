@@ -13,6 +13,13 @@ class Notification extends React.Component {
         }
     }
 
+    closeNotificationTimer = (time) => {
+        setTimeout(() => {
+            this.setState({notification: null, show: false})
+        }, time)
+    }
+
+
     componentWillMount() {
 
         const socket = io.connect('http://localhost:8080')
@@ -24,12 +31,10 @@ class Notification extends React.Component {
                         .then(response => {
                             let message = response.data[0].user_metadata.username + ' is now online'
                             this.setState({notification: message, show: true})
+                            this.closeNotificationTimer(3000)
                         })
 
-                    setTimeout(() => {
-                        this.setState({notification: null, show: false})
-                    }, 3000)
-
+              
                 } else {
                     this.setState({notification: null})
                 }
@@ -44,11 +49,22 @@ class Notification extends React.Component {
                 .then(response => {
                     let message = response.data[0].user_metadata.username + ' would like to add you as a friend'
                     this.setState({notification: message, show: true, pendingInvitation: senderId})
+                    this.closeNotificationTimer(3000)
                 })
 
-                setTimeout(() => {
-                    this.setState({notification: null, show: false})
-                }, 3000)
+            }
+        })
+
+        socket.on('accept-friend-invite', (senderId, receiverId) => {
+            console.log('accepted friends request socket io', receiverId)
+            if (receiverId === localStorage.getItem('userId')) {
+
+                axios.get('userId', {params: {userId: senderId}})
+                .then(response => {
+                    let message = response.data[0].user_metadata.username + ' added you as a friend'
+                    this.setState({notification: message, show: true, pendingInvitation: senderId})
+                    this.closeNotificationTimer(3000)
+                })
             }
         })
         

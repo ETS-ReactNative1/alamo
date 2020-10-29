@@ -26,10 +26,10 @@ const acceptFriend = require('./routes/acceptFriend');
 
 
 const app = express();
-var server = require('http').Server(app);
-var io = require('socket.io')(server);
+const server = require('http').Server(app);
+const io = require('socket.io')(server);
 
-var clients = {}
+const clients = {}
 
 io.on('connection', (socket) => {
 
@@ -58,6 +58,10 @@ io.on('connection', (socket) => {
     socket.on('friend-event', (type, senderId, receiverId) => {
         if (type === 'decline') {
             socket.broadcast.emit('decline-friend-invite', receiverId);
+        }
+
+        if (type === 'accept') {
+            socket.broadcast.emit('accept-friend-invite', senderId, receiverId)
         }
         
     })

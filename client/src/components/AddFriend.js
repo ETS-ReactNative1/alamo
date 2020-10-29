@@ -5,6 +5,8 @@ import io from 'socket.io-client';
 import SearchUserCard from './SearchUserCard';
 import PendingFriend from './PendingFriend';
 
+const socket = io.connect('http://localhost:8080')
+
 class AddFriend extends React.Component {
     constructor(props) {
         super(props)
@@ -27,7 +29,6 @@ class AddFriend extends React.Component {
     }
 
     handleDecline = (senderId) => {
-        const socket = io.connect('http://localhost:8080')
         let payload = {senderId: senderId, receiverId: localStorage.getItem('userId')}
         axios.post('/decline-friend-invite', payload)
             .then(response => {
@@ -74,6 +75,9 @@ class AddFriend extends React.Component {
                     .then(friendStatus => {
                         this.updatePendingInvitations(recipentId)
                         this.setState({friendStatus: friendStatus.data.friendStatus})
+
+                        //Notify user that friend request was accepted
+                        socket.emit('friend-event', 'accept', localStorage.getItem('userId'), recipentId)
                     })
 
         })
