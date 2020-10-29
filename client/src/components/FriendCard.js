@@ -25,7 +25,6 @@ const FriendCard = (props) => {
                 <img className="user-avatar rounded-circle w-15" src={'/images/avatars/' + props.avatar + '-avatar.png'} />
             </div>
             <div className="col-9">
-                <i className={props.add ? "friend-add-icon fas fa-1x fa-plus-square" : null} onClick={() => handleAddFriend(props.userId)}></i>
                 <div className="row">
                     <div className="col">
                         <h3 className="username bold">{props.username}</h3>

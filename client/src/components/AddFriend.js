@@ -2,7 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import io from 'socket.io-client';
 
-import FriendCard from './FriendCard';
+import SearchUserCard from './SearchUserCard';
 import PendingFriend from './PendingFriend';
 
 class AddFriend extends React.Component {
@@ -37,15 +37,41 @@ class AddFriend extends React.Component {
             .catch(err => console.log(err))
     }
 
+    handleAddFriend = (receiverId) => {
+        console.log("ADD FRIEND")
+        let senderId = localStorage.getItem('userId');
+        let payload = {senderId: senderId, receiverId: receiverId}
+
+        let socket = io.connect('http://localhost:8080');
+        socket.emit('add-friend', senderId, receiverId)
+
+        axios.post('add-friend', payload)
+            .then(response => {
+
+                axios.get('/check-friend-status', {params: {searcherId: localStorage.getItem('userId'), recipentId: receiverId}})
+                    .then(friendStatus => {
+                        this.setState({friendStatus: friendStatus.data.friendStatus})
+                    })
+            })
+            .catch(err => console.log(err))
+    }
+
+
     handleUserSearch = (event) => {
         event.preventDefault();
 
-        axios.get('/search-user', {params: {username: event.target.username.value}})
+        axios.get('/search-user', {params: {username: event.target.username.value, clientId: localStorage.getItem('userId')}})
             .then(response => {
-                console.log(response)
-                this.setState({searchResults: [response.data], userNotFound: ''})
+
+                axios.get('/check-friend-status', {params: {searcherId: localStorage.getItem('userId'), recipentId: response.data._id}})
+                    .then(friendStatus => {
+                        console.log(friendStatus.data.friendStatus)
+                        this.setState({friendStatus: friendStatus.data.friendStatus, searchResults: [response.data], userNotFound: ''})
+                    })
+
             })
             .catch(err => {
+                console.log(err)
                 this.setState({searchResults: [], userNotFound: 'No Users Found.'})
             })
     }
@@ -66,12 +92,12 @@ class AddFriend extends React.Component {
                 <label id="friend-control-heading" htmlFor="username">Add Friend</label>
                 {this.state.searchResults.map((user) => {
                     return(
-                        <FriendCard userId={user._id} add={true} username={user.user_metadata.username} status={'Watching Valorant...'} avatar={user.user_metadata.avatar}/>
+                        <SearchUserCard userId={user._id} handleAddFriend={this.handleAddFriend} friendStatus={this.state.friendStatus} username={user.user_metadata.username} status={'Watching Valorant...'} avatar={user.user_metadata.avatar}/>
                     )
                 })}
                 <h6 id="friend-error-message">{this.state.userNotFound}</h6>
                 <form action="post" onSubmit={this.handleUserSearch}>
-                    <input id="friend-control-input" placeholder="Username" name="username" autoFocus required minlength="3" />
+                    <input id="friend-control-input" placeholder="Username" name="username" autoFocus required/>
                 </form>
             </div>
     )}

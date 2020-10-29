@@ -264,7 +264,7 @@ input:focus {
 }
 
 .sidebar-sticky {
-
+    padding-bottom: 50px;
 }
 
 .sidebar-profile {
