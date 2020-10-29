@@ -17,7 +17,7 @@ class AddFriend extends React.Component {
     }
 
     componentDidMount() {
-        this.setState({pendingInvitations: this.props.pendingInvitations})
+        this.setState({searchResults: [], pendingInvitations: this.props.pendingInvitations})
     }
 
     componentWillReceiveProps(nextProps) {
@@ -87,11 +87,16 @@ class AddFriend extends React.Component {
         axios.get('/search-user', {params: {username: event.target.username.value, clientId: localStorage.getItem('userId')}})
             .then(response => {
 
-                axios.get('/check-friend-status', {params: {searcherId: localStorage.getItem('userId'), recipentId: response.data._id}})
-                    .then(friendStatus => {
-                        console.log(friendStatus.data.friendStatus)
-                        this.setState({friendStatus: friendStatus.data.friendStatus, searchResults: [response.data], userNotFound: ''})
-                    })
+                //Prevent searching/adding own profile id
+                if (response.data._id != localStorage.getItem('userId')) {
+                    axios.get('/check-friend-status', {params: {searcherId: localStorage.getItem('userId'), recipentId: response.data._id}})
+                        .then(friendStatus => {
+                            console.log(friendStatus.data.friendStatus)
+                            this.setState({friendStatus: friendStatus.data.friendStatus, searchResults: [response.data], userNotFound: ''})
+                        })
+                } else {
+                    this.setState({searchResults: [], userNotFound: 'Searching yourself aye?'})
+                } 
 
             })
             .catch(err => {
