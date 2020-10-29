@@ -1,6 +1,6 @@
 import React from 'react';
 import ProfileCard from './ProfileCard';
-import FriendCard from './FriendCard';
+import FriendsList from './FriendsList';
 import SidebarFriendsControls from './SidebarFriendsControls';
 
 class Sidebar extends React.Component {
@@ -13,6 +13,7 @@ class Sidebar extends React.Component {
         const username = this.props.user.user_metadata && this.props.user.user_metadata.username;
         const avatar = this.props.user.user_metadata && this.props.user.user_metadata.avatar;
         const pendingInvitation = this.props.user.pending_invitations;
+        const friends = this.props.user.friends;
 
         console.log(pendingInvitation, 'update ')
         return(
@@ -35,16 +36,7 @@ class Sidebar extends React.Component {
                         <li className="nav-item">Dev1ce fan club</li>
                     </ul>
 
-                    <h3 className="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 thin">Friends</h3>
-                    <h3 className="sidebar-subheading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 thin">Online - 4 Friends</h3>
-
-                    <FriendCard username={'JonnyMul96'} status={'Watching Valorant...'} avatar={'afro'}/>
-                    <FriendCard username={'TheKraken'} status={'Watching Valorant...'} avatar={'chaplin'}/>
-                    <FriendCard username={'Mickmgs1337'} status={'Watching Valorant...'} avatar={'sheep'}/>
-                    <FriendCard username={'RockieePower'} status={'Watching Valorant...'} avatar={'wrestler'}/>
-                    <h3 className="sidebar-subheading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 thin">Offline</h3>
-                    <FriendCard username={'nemix'} status={''} avatar={'bear'}/>
-                    <FriendCard username={'paddyg'} status={''} avatar={'sloth'}/>
+                    { friends ? <FriendsList friends={friends}/> : null }
 
                     { pendingInvitation ? <SidebarFriendsControls pendingInvitations={pendingInvitation}/> : null }
 
