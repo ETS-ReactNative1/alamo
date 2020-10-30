@@ -4,6 +4,8 @@ import io from 'socket.io-client'
 import { v4 as uuid } from 'uuid';
 import axios from 'axios';
 
+import AddStreamCard from './AddStreamCard';
+
 let socket = io.connect('http://localhost:8080')
 
 const CreateRoom = (props) => {
@@ -37,8 +39,10 @@ const CreateRoom = (props) => {
         <div>
             <h1 className="setup-heading thin">Create Room</h1>
             <form action="post" onSubmit={handleCreateRoom}>
-              <label htmlFor="roomTitle">Room Title</label>
-              <input name="roomTitle" autoFocus required minlength="3" />
+                <label htmlFor="roomTitle">Room Title</label>
+                <input name="roomTitle" autoFocus required minlength="3" />
+                <label htmlFor="roomTitle">Stream</label>
+                <AddStreamCard/>
                 <button type="submit" className="primary-btn setup-btn block">Create Room</button>
             </form>
         </div>

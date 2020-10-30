@@ -39,14 +39,13 @@ class AddFriend extends React.Component {
     }
 
     handleAddFriend = (receiverId) => {
-        console.log("ADD FRIEND")
         let senderId = localStorage.getItem('userId');
         let payload = {senderId: senderId, receiverId: receiverId}
 
         let socket = io.connect('http://localhost:8080');
         socket.emit('add-friend', senderId, receiverId)
 
-        axios.post('add-friend', payload)
+        axios.post('/add-friend', payload)
             .then(response => {
 
                 axios.get('/check-friend-status', {params: {searcherId: localStorage.getItem('userId'), recipentId: receiverId}})

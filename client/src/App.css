@@ -295,6 +295,34 @@ input:focus {
     height: 80px;
 }
 
+.add-stream-card {
+    position: relative;
+    width: 250px;
+    height: 300px;
+    border: 3px dashed rgba(242, 231, 254, 0.2);
+    text-align: center;
+    padding: 35px;
+    cursor: pointer;
+}
+
+.add-stream-card-contents {
+    color: rgba(242, 231, 254, 0.7) !important;
+}
+
+.add-stream-card-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: rgba(242, 231, 254, 0.3) !important;
+}
+
+.add-stream-card:hover {
+    border-style: solid;
+    -webkit-box-shadow: 11px 12px 0px 2px  #3700B3 !important; 
+    box-shadow: 11px 12px 0px 2px  #3700B3 !important;
+}
+
 .friends-initial-message {
     padding: 16px;
 }
