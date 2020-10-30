@@ -38,7 +38,8 @@ const Dashboard = (props) => {
         })
 
         socket.on('accept-friend-invite', (senderId, receiverId) => {
-            if (receiverId === localStorage.getItem('userId')) {
+            //Only the receiver of the accepted friends and the accepter will update their friends list
+            if (receiverId === localStorage.getItem('userId') || senderId === localStorage.getItem('userId')) {
                 fetchUserInformation();
             }
         })

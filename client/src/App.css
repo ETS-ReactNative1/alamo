@@ -295,6 +295,10 @@ input:focus {
     height: 80px;
 }
 
+.friends-initial-message {
+    padding: 16px;
+}
+
 .sidebar-friends-control-container {
     position: fixed;
     max-width: 300px;
