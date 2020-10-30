@@ -62,6 +62,20 @@ class Room extends React.Component {
         })
     }
 
+    componentDidUpdate(prevProps) {
+        if (this.props.location !== prevProps.location) {
+            this.updateRoomChange();
+        }
+    }
+
+    updateRoomChange = () => {
+        axios.get('/room-info', {params: {roomId: window.location.pathname}})
+            .then(response => {
+                this.setState({roomTitle: response.data[0].roomTitle})
+            })
+
+    }
+
     componentDidMount() {
         setTimeout(() => {
             
@@ -94,8 +108,9 @@ class Room extends React.Component {
                 })
 
 
-        }, 50)
+        }, 300)
     }
+
     render() {
         return(
             <div>

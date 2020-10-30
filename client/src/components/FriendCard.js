@@ -13,20 +13,12 @@ const FriendCard = (props) => {
     }
 
     React.useEffect(() => {
-
-        socket.on('new-user-online', (userId) => {
-            if (userId === props.userId) {
-                const online = true;
-                setState(oldState => [...oldState, online])
-            }
-        })
         fetchUserInformation();
     }, [])
 
     const username = state && state.username && state.user_metadata.username;
     const avatar = state && state.user_metadata && state.user_metadata.avatar;
     const online = state && state.online
-    console.log(state)
 
     return(
         <div id={props.userId} className="row sidebar-friend align-items-center">

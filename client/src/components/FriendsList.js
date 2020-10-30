@@ -6,6 +6,10 @@ import FriendCard from './FriendCard';
 class FriendsList extends React.Component  {
     constructor(props) {
         super(props)
+
+        this.state = {
+            onlineFriends: []
+        }
     }
 
     render() {
@@ -22,8 +26,6 @@ class FriendsList extends React.Component  {
                 })}
 
                 <h3 className="sidebar-subheading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 thin">Offline</h3>
-                <FriendCard username={'nemix'} status={''} avatar={'bear'}/>
-                <FriendCard username={'paddyg'} status={''} avatar={'sloth'}/>
             </React.Fragment>
         )
     }

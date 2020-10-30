@@ -3,7 +3,6 @@ import axios from 'axios';
 import { useAuth0 } from '@auth0/auth0-react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import io from 'socket.io-client';
-import useForceUpdate from 'use-force-update';
 
 import ProfileSetup from './ProfileSetup';
 import Sidebar from './Sidebar';
@@ -17,15 +16,19 @@ import CreateRoom from './CreateRoom';
 const Dashboard = (props) => {
     const { user } = useAuth0();
     const [state, setState] = React.useState([])
-    const forceUpdate = useForceUpdate();
     const socket = io.connect('http://localhost:8080')
 
     const fetchUserInformation = async () => {
+        console.log('fetch!!')
         const response = await axios.get('/user', {params: {email: user.email}})
         setState(response.data[0])
     }
 
     React.useEffect(() => {
+
+        socket.on('user-connected', (userId) => {
+            console.log('user connected to room')
+        })
 
         socket.on('decline-friend-invite', (receiverId) => {
             if (receiverId === localStorage.getItem('userId')) {
@@ -48,6 +51,8 @@ const Dashboard = (props) => {
         props.changeOnlineStatus(state.account_setup);
     }
 
+    console.log(props.onClick)
+
     if (state.account_setup === false) {
         return(
             <ProfileSetup user={user}/>
@@ -61,7 +66,7 @@ const Dashboard = (props) => {
                         <main className="col px-4">
                             <NavigationBar/>
                             <Notification userId={state._id}/>
-                            <Route path="/create-room" component={CreateRoom}/>
+                            <Route path="/create-room" render={(props) => (<CreateRoom fetchUserInformation={(props) =>{ fetchUserInformation() }}/>)}/>
                             <Route path="/room/" component={Room}/>
                         </main>
                     </div>

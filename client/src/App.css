@@ -262,6 +262,10 @@ input:focus {
     opacity: 0.3;
 }
 
+.nav-item {
+    cursor: pointer;
+}
+
 .sidebar {
     position: sticky;
     top: 0;
