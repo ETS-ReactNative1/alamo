@@ -37,6 +37,12 @@ const Dashboard = (props) => {
             }
         })
 
+        socket.on('accept-friend-invite', (senderId, receiverId) => {
+            if (receiverId === localStorage.getItem('userId')) {
+                fetchUserInformation();
+            }
+        })
+
         socket.on('pending-invitation', (senderId, receiverId) => {
             if (receiverId === localStorage.getItem('userId')) {
                 fetchUserInformation();

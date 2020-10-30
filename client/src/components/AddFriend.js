@@ -86,9 +86,15 @@ class AddFriend extends React.Component {
 
 
     handleUserSearch = (event) => {
+        console.log('search user')
         event.preventDefault();
+        let username = event.target.username.value;
 
-        axios.get('/search-user', {params: {username: event.target.username.value, clientId: localStorage.getItem('userId')}})
+        if (username != username.toLowerCase()) {
+            username = username.toLowerCase();
+        }
+
+        axios.get('/search-user', {params: {username: username, clientId: localStorage.getItem('userId')}})
             .then(response => {
 
                 //Prevent searching/adding own profile id
