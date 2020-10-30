@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import { useAuth0 } from '@auth0/auth0-react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import io from 'socket.io-client';
 
 import ProfileSetup from './ProfileSetup';
@@ -9,8 +9,6 @@ import Sidebar from './Sidebar';
 import NavigationBar from './NavigationBar';
 import Notification from './Notification';
 import Room from './Room';
-import Profile from './Profile';
-import LogoutButton from './LogoutButton';
 import CreateRoom from './CreateRoom';
 
 const Dashboard = (props) => {
@@ -18,48 +16,48 @@ const Dashboard = (props) => {
     const [state, setState] = React.useState([])
     const socket = io.connect('http://localhost:8080')
 
+    //Fetch all information related to user
     const fetchUserInformation = async () => {
-        console.log('fetch!!')
         const response = await axios.get('/user', {params: {email: user.email}})
         setState(response.data[0])
     }
 
     React.useEffect(() => {
 
-        socket.on('user-connected', (userId) => {
-            console.log('user connected to room')
-        })
-
+        //If friend invite has been declined, update user
         socket.on('decline-friend-invite', (receiverId) => {
             if (receiverId === localStorage.getItem('userId')) {
                 console.log('declined invite')
                 fetchUserInformation();
             }
         })
-
+        
+        //If friend invite has been accepted, update both accepter and acceptee users
         socket.on('accept-friend-invite', (senderId, receiverId) => {
-            //Only the receiver of the accepted friends and the accepter will update their friends list
             if (receiverId === localStorage.getItem('userId') || senderId === localStorage.getItem('userId')) {
                 fetchUserInformation();
             }
         })
 
+        //If user has sent an invite to become friends, update user to reflect pending invite
         socket.on('pending-invitation', (senderId, receiverId) => {
             if (receiverId === localStorage.getItem('userId')) {
                 fetchUserInformation();
             }
         })
+
         fetchUserInformation();
     }, [])
 
+    //Store userId (user primary key) on client side for ease of access throughout application
     localStorage.setItem('userId', state._id)
 
+    //Pass up props to trigger online status, only if account setup has been completed
     if (state.account_setup === true) {
         props.changeOnlineStatus(state.account_setup);
     }
 
-    console.log(props.onClick)
-
+    //If new users has not completed a account setup, redirect to complete profile component
     if (state.account_setup === false) {
         return(
             <ProfileSetup user={user}/>
