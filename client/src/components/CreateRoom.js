@@ -14,6 +14,10 @@ const CreateRoom = (props) => {
         props.history.push(path);
     }
 
+    const handleCancelRoom = () => {
+        props.history.goBack();
+    }
+
     const handleCreateRoom = (event) => {
         event.preventDefault();
         let unique_id = uuid();
@@ -43,7 +47,8 @@ const CreateRoom = (props) => {
                 <input name="roomTitle" autoFocus required minlength="3" />
                 <label htmlFor="roomTitle">Stream</label>
                 <AddStreamCard/>
-                <button type="submit" className="primary-btn setup-btn block">Create Room</button>
+                <button type="submit" className="primary-btn setup-btn">Create Room</button>
+                <button className="secondary-btn margin-left setup-btn" onClick={handleCancelRoom}>Cancel</button>
             </form>
         </div>
 
