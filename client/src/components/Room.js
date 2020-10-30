@@ -14,21 +14,22 @@ const peer = new Peer(localStorage.getItem('userId'), {
 class Room extends React.Component {
     constructor(props) {
         super(props)
-        
+
+        //Find way to dyanamically added audio refs - https://medium.com/@jalexmayer/react-refs-with-dynamic-names-d2262ab0a0b0        
         this.state = {
             peers: [],
-            roomTitle: null
+            roomTitle: null,
+            activeCall: ''
         }
+
+        this.state.peers.forEach(thing => {
+            this[`${thing}_ref`] = React.createRef()
+        });
+
     }
 
-    playUserAudio = (audio, stream) => {
-        if (audio === 'audio2') {
-            this.audio2.srcObject = stream;
-        } else if (audio === 'audio3') {
-            this.audio3.srcObject = stream;
-        } else {
-            this.audio.srcObject = stream;
-        }
+    playUserAudio = (userId, stream) => {
+      this[`${userId}_ref`].current.srcObject = stream;
     }
 
     playClientAudio = (stream) => {
@@ -44,22 +45,16 @@ class Room extends React.Component {
     connectToNewUser = (userId, stream) => {
         const call = peer.call(userId, stream)
         call.on('stream', userAudioStream  => {
-            this.playUserAudio('audio2', stream)
+            this.playUserAudio(userId, stream)
         })
 
         call.on('close', () => {
             console.log('CALL CLOSED')
         })
+
     }
 
     componentWillMount() {
-        socket.on('user-disconnected', (userId) => {
-            //Remove user from peers array
-            const updatePeers = this.state.peers.splice(this.state.peers.indexOf(userId), 1);
-            this.setState({peers: updatePeers})
-            console.log(this.state.peers, 'after user removed')
-            console.log('user-disconnected', userId)
-        })
     }
 
     componentDidUpdate(prevProps) {
@@ -69,6 +64,10 @@ class Room extends React.Component {
     }
 
     updateRoomChange = () => {
+        //Disconnect from join before joining new room
+
+        socket.emit('join-room', window.location.pathname, localStorage.getItem('userId'))
+
         axios.get('/room-info', {params: {roomId: window.location.pathname}})
             .then(response => {
                 this.setState({roomTitle: response.data[0].roomTitle})
@@ -88,6 +87,15 @@ class Room extends React.Component {
 
 
                 socket.on('user-connected', (userId) => {
+                    //Create Ref 
+                    this[`${userId}_ref`] = React.createRef()
+
+                   //Add the peers state
+                    this.setState({
+                        peers: this.state.peers.concat(userId)
+                    })
+
+                    //Connect user
                     this.connectToNewUser(userId, stream)
                     console.log('user-connected', userId)
                 })
@@ -98,7 +106,9 @@ class Room extends React.Component {
 
                 peer.on('call', call => {
                     call.answer(stream)
-                    console.log('answered call')
+                })
+
+                peer.on('close', call => {
                 })
             })
             
@@ -117,9 +127,11 @@ class Room extends React.Component {
                 <h1 className="room-title">{this.state.roomTitle}</h1>
                 <video className="room-video" src="" controls></video>
                 <audio id={'1'} muted ref={client => {this.client = client}} controls volume="true" autoPlay />
-                <audio id={'4'} muted ref={external => {this.external = external}} controls volume="true" autoPlay />
-                <audio id={'2'} ref={audio2 => {this.audio2 = audio2}} controls volume="true" autoPlay />
-                <audio id={'3'} muted ref={audio3 => {this.audio3 = audio3}} controls volume="true" autoPlay />
+                 {this.state.peers.map((userId) => {
+                    return(
+                          <audio key={userId} ref={this[`${userId}_ref`]} controls volume="true" autoPlay/>
+                    )
+                 })}
             </div>
         )
     }

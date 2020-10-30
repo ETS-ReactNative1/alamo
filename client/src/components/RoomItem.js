@@ -33,7 +33,9 @@ const RoomItem = (props) => {
     return(
         <React.Fragment>
             <li id={state._id} onClick={(event) => handleClick(event)} className="nav-item">
+
                 {activeChannel()}
+
                 {state.roomTitle}
             </li>
         </React.Fragment>
