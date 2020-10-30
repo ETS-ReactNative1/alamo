@@ -23,7 +23,9 @@ class Sidebar extends React.Component {
                 <div className="sidebar-sticky">
                     <div className="row">
                         <div className="col">
-                            <h1 className="logo-main centered margin-bottom">alamo</h1>
+                            <a href="/">
+                                <h1 className="logo-main centered margin-bottom">alamo</h1>
+                            </a>
                         </div>
                     </div>
 

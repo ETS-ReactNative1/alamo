@@ -18,12 +18,25 @@ const RoomItem = (props) => {
         redirect(event.currentTarget.id)
     }
 
+    const activeChannel = () => {
+        if (window.location.pathname === state._id) {
+            return(
+                <i class="fas fa-headphones-alt active-room-icon"></i>
+            )
+        }
+    }
+
     React.useEffect(() => {
         fetchRoomTitle();
     }, [])
 
     return(
-        <li id={state._id} onClick={(event) => handleClick(event)} className="nav-item">{state.roomTitle}</li>
+        <React.Fragment>
+            <li id={state._id} onClick={(event) => handleClick(event)} className="nav-item">
+                {activeChannel()}
+                {state.roomTitle}
+            </li>
+        </React.Fragment>
     )
 }
 

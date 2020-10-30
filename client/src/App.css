@@ -74,6 +74,23 @@ input:focus {
     margin-left: 15px;
 }
 
+a:link {
+    text-decoration:none;
+    color: inherit;
+}
+
+a:active {
+    color: inherit;
+}
+
+a:visited {
+    color: inherit;
+}
+
+a {
+    color: inherit;
+}
+
 .online {
     width: 5px;
     height: 5px;
@@ -463,6 +480,7 @@ input:focus {
 }
 
 .nav-item {
+    position: relative;
     padding: 0 0 0 16px;
     font-size: 1em;
     color: #F2E7FE !important;
@@ -475,6 +493,13 @@ input:focus {
 
 .nav-item:nth-child(odd) {
     background: #1D1D1D;
+}
+
+.active-room-icon {
+    position: absolute;
+    top: 50%;
+    right: 15px;
+    transform: translateY(-50%);
 }
 
 .room-title {
