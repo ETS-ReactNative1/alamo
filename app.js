@@ -30,26 +30,61 @@ const server = require('http').Server(app);
 const io = require('socket.io')(server);
 
 const clients = {}
+const rooms = {}
 
 io.on('connection', (socket) => {
 
+    //Add user to list of connected clients and broadcast that user is online
     socket.on('online', (userId) => {
         if (!(userId in clients)) {
             clients[userId] = {socketId: socket.id}
             console.log(clients, 'CLIENTS CONNECTED')
             socket.broadcast.emit('new-user-online', userId);
+        } else {
+            //Update socket id but do not broadcast new user online
+            clients[userId] = {socketId: socket.id }
+            console.log(clients, 'CLIENTS CONNECTED')
         }
     })
 
     socket.on('join-room', (roomId, userId) => {
         console.log(roomId, userId)
+
+        //Join new room
         socket.join(roomId)
-        socket.to(roomId).broadcast.emit('user-connected', userId)
+
+        //If room is newly created or empty, add first peer
+        if (typeof rooms[roomId] == 'undefined') {
+            rooms[roomId] = [userId]
+        } else {
+            //If room is already populated with a peer(s), append new peer to room
+            let updateRoomPeers;
+            updateRoomPeers = rooms[roomId].concat(userId);
+            rooms[roomId] = updateRoomPeers;
+        }
+
+        //Output current users connected to room
+        console.log(rooms[roomId])
+
+        //Need to send a direct message to the client of peers list, emit does not seem to work
+        socket.emit('client-connected', userId, rooms[roomId]);
+
+        //Broadcast to other users in room, that a new user has connected
+        socket.to(roomId).broadcast.emit('user-connected', userId, rooms[roomId])
 
         socket.on('disconnect', () => {
-            socket.to(roomId).broadcast.emit('user-disconnected', userId)
+            //On disconnect remove peer from list of connected peers
+            let updateRoomPeers;
+            updateRoomPeers = rooms[roomId];
+            updateRoomPeers = updateRoomPeers.filter(item => item !== userId)
+            rooms[roomId] = updateRoomPeers;
+
+            console.log(rooms[roomId])
+            //Send updated peers list minus disconnected user
+            socket.to(roomId).broadcast.emit('user-disconnected', userId, rooms[roomId])
         })
     })
+
 
     socket.on('add-friend', (senderId, receiverId) => {
         console.log(senderId, 'would like to add', receiverId, 'as a friend')

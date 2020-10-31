@@ -21,15 +21,16 @@ class Room extends React.Component {
             roomTitle: null,
             activeCall: ''
         }
-
-        this.state.peers.forEach(thing => {
-            this[`${thing}_ref`] = React.createRef()
-        });
-
     }
 
     playUserAudio = (userId, stream) => {
-      this[`${userId}_ref`].current.srcObject = stream;
+        //If connected user is client, then we want to mute that audio ref element
+        if (userId === localStorage.getItem('userId')) {
+            this[`${userId}_ref`].current.srcObject = stream;
+            this[`${userId}_ref`].current.muted = true;
+        } else {
+            this[`${userId}_ref`].current.srcObject = stream;
+        }
     }
 
     playClientAudio = (stream) => {
@@ -54,18 +55,14 @@ class Room extends React.Component {
 
     }
 
-    componentWillMount() {
-    }
-
     componentDidUpdate(prevProps) {
         if (this.props.location !== prevProps.location) {
             this.updateRoomChange();
         }
     }
 
-    updateRoomChange = () => {
+    updateRoomChange = (userId) => {
         //Disconnect from join before joining new room
-
         socket.emit('join-room', window.location.pathname, localStorage.getItem('userId'))
 
         axios.get('/room-info', {params: {roomId: window.location.pathname}})
@@ -78,21 +75,37 @@ class Room extends React.Component {
     componentDidMount() {
         setTimeout(() => {
             
-            socket.emit('join-room', window.location.pathname, localStorage.getItem('userId'))
-
             navigator.mediaDevices.getUserMedia({
                 audio: true
             }).then(stream => {
-                this.playClientAudio(stream)
 
+                socket.emit('join-room', window.location.pathname, localStorage.getItem('userId'))
 
-                socket.on('user-connected', (userId) => {
-                    //Create Ref 
-                    this[`${userId}_ref`] = React.createRef()
+                socket.on('client-connected', (userId, updatedPeersList) => {
+                    //Create Ref of updatePeersList
+                    updatedPeersList.forEach(thing => {
+                        this[`${thing}_ref`] = React.createRef()
+                    });
 
-                   //Add the peers state
+                    //Add the peers state
                     this.setState({
-                        peers: this.state.peers.concat(userId)
+                        peers: updatedPeersList
+                    })
+
+                    //Once client is connected and state is update with peers, connect client audio
+                    this.playUserAudio(localStorage.getItem('userId'), stream)
+                    console.log('client connected')
+                })
+
+                socket.on('user-connected', (userId, updatedPeersList) => {
+                    //Create Ref of updatePeersList
+                    updatedPeersList.forEach(thing => {
+                        this[`${thing}_ref`] = React.createRef()
+                    });
+
+                    //Add the peers state
+                    this.setState({
+                        peers: updatedPeersList
                     })
 
                     //Connect user
@@ -100,12 +113,27 @@ class Room extends React.Component {
                     console.log('user-connected', userId)
                 })
 
-                socket.on('user-disconnected', (userId) => {
-                    console.log('user-disconnected', userId)
+                socket.on('user-disconnected', (userId, updatedPeersList) => {
+                    //Create Ref of updatePeersList
+                    updatedPeersList.forEach(thing => {
+                        this[`${thing}_ref`] = React.createRef()
+                    });
+
+                    //Add the peers state
+                    this.setState({
+                        peers: updatedPeersList
+                    })
+
+                    //Connect user
+                    this.connectToNewUser(userId, stream)
                 })
 
                 peer.on('call', call => {
-                    call.answer(stream)
+                    call.answer(stream);
+                    console.log(call.peer, 'THIS IS PEER')
+                    call.on('stream', userAudioStream => {
+                        this.playUserAudio(call.peer, userAudioStream)
+                    })
                 })
 
                 peer.on('close', call => {
@@ -118,7 +146,7 @@ class Room extends React.Component {
                 })
 
 
-        }, 300)
+        }, 1000)
     }
 
     render() {
@@ -126,10 +154,9 @@ class Room extends React.Component {
             <div>
                 <h1 className="room-title">{this.state.roomTitle}</h1>
                 <video className="room-video" src="" controls></video>
-                <audio id={'1'} muted ref={client => {this.client = client}} controls volume="true" autoPlay />
                  {this.state.peers.map((userId) => {
                     return(
-                          <audio key={userId} ref={this[`${userId}_ref`]} controls volume="true" autoPlay/>
+                          <audio id={userId} key={userId} ref={this[`${userId}_ref`]} controls volume="true" autoPlay/>
                     )
                  })}
             </div>
