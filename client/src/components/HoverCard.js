@@ -2,6 +2,20 @@ import React from 'react';
 
 const HoverCard = (props) => {
 
+    const friendStatus = () => {
+        if (props.userId != localStorage.getItem('userId')) {
+            return(
+                <div className="col-3 hover-card-col">
+                    {(props.friendStatus === true) ? <i className="friend-add-icon fas fa-1x fa-check-circle"></i> : null }
+                    {(props.friendStatus === false) ? <i className="friend-add-icon fas fa-1x fa-plus-square"></i> : null }
+                    {(props.friendStatus === 'pending') ? <i className="friend-add-icon fas fa-1x fa-user-clock"></i> : null }
+                </div>
+            )
+        } else return null
+    }
+
+    console.log(props.userId)
+
     return(
         <div onMouseOver={props.handleMouseOver} className="container hover-card">
             <div id={props.userId} className="row sidebar-friend align-items-center">
@@ -29,9 +43,9 @@ const HoverCard = (props) => {
                 <div className="col-3 hover-card-col">
                     <i class="fas hover-card-icons fa-id-badge" title="Make Moderator"></i>
                 </div>
-                <div className="col-3 hover-card-col">
-                    <i class="fas hover-card-icons fa-volume-mute" title="Add Friend"></i>
-                </div>
+
+                {friendStatus()}
+
                 <div className="col-3 hover-card-col">
                     <i class="fas hover-card-icons fa-user-alt-slash" title="Kick"></i>
                 </div>

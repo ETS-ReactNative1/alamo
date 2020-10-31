@@ -141,18 +141,16 @@ class Room extends React.Component {
             <div>
                 <h1 className="room-title">{this.state.roomTitle}</h1>
                 <video className="room-video" src="" controls></video>
-                <div className="container-fluid">
-                    <div className="row">
-                        <div className="col room-avatar-col">
-                            {this.state.peers.map((userId) => {
-                                return(
-                                    <React.Fragment>
-                                        <RoomUser userId={userId}/>
-                                        <audio id={userId} key={userId} ref={this[`${userId}_ref`]} controls volume="true" autoPlay/>
-                                    </React.Fragment>
-                                )
-                            })}
-                        </div>
+                <div className="container-fluid room-avatar-container">
+                    <div className="row room-avatar-row">
+                        {this.state.peers.map((userId) => {
+                            return(
+                                <React.Fragment>
+                                    <RoomUser userId={userId}/>
+                                    <audio id={userId} key={userId} ref={this[`${userId}_ref`]} controls volume="true" autoPlay/>
+                                </React.Fragment>
+                            )
+                        })}
                     </div>
                 </div>
             </div>

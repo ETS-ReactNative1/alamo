@@ -456,8 +456,23 @@ a {
     margin-right: 8px;
 }
 
+.room-avatar-container {
+    width: auto !important;
+    box-sizing: border-box;
+}
+
+.room-avatar-row {
+    width: auto;
+}
+
+.room-avatar-row:hover .room-avatar-col {
+    max-width: 70px !important;
+}
+
 .room-avatar-col {
+    max-width: 45px;
     padding: 0 !important;
+    transition: 0.2s ease-in-out;
 }
 
 .hover-card {
@@ -466,6 +481,7 @@ a {
     left: 40px;
     height: 150px;
     width: 300px;
+    z-index: 999;
     background-color: #080808;
     padding-top: 7px;
     border-style: solid;
@@ -486,8 +502,6 @@ a {
     transform: translate(-50%, -50%) scale(1.4);
     color: #BB86FC !important;
 }
-
-
 
 .username {
     font-size: 1.3em;

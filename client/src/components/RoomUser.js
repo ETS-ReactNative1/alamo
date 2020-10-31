@@ -9,6 +9,7 @@ class RoomUser extends React.Component {
 
         this.state = {
             user: {},
+            friendStatus: null,
             showCard: false
         }
     }
@@ -17,6 +18,11 @@ class RoomUser extends React.Component {
         axios.get('/userId', {params: {userId: this.props.userId}})
             .then(response => {
                 this.setState({user: response.data[0]})
+
+                axios.get('/check-friend-status', {params: {searcherId: localStorage.getItem('userId'), recipentId: this.props.userId}})
+                    .then(friendStatus => {
+                        this.setState({friendStatus: friendStatus.data.friendStatus})
+                    })
             })
             .catch(err => console.log(err))
     }
@@ -29,13 +35,10 @@ class RoomUser extends React.Component {
         const username = this.state.user.user_metadata && this.state.user.user_metadata.username;
         const avatar = this.state.user.user_metadata && this.state.user.user_metadata.avatar;
         return(
-            <React.Fragment>
-
+            <div className="col-1 room-avatar-col">
                 <img onClick={this.handleClick} className="room-avatar rounded-circle w-15" src={'/images/avatars/' + avatar + '-avatar.png'} />
-
-                { this.state.showCard ? <HoverCard username={username} avatar={avatar} online={true}/> : null}
-
-            </React.Fragment>
+                { this.state.showCard ? <HoverCard userId={this.props.userId} username={username} avatar={avatar} online={true} friendStatus={this.state.friendStatus}/> : null}
+            </div>
         )
     }
 }
