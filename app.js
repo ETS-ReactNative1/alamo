@@ -47,8 +47,22 @@ io.on('connection', (socket) => {
         }
     })
 
+    socket.on('leave-room', (roomId, userId) => {
+        //On disconnect remove peer from list of connected peers
+        let updateRoomPeers;
+        updateRoomPeers = rooms[roomId];
+        updateRoomPeers = updateRoomPeers.filter(item => item !== userId)
+        rooms[roomId] = updateRoomPeers;
+
+        //Send notitification of user left room, use to trigger audio que
+        socket.to(roomId).broadcast.emit('user-disconnected', userId, rooms[roomId])
+
+        //Leave room
+        socket.leave(roomId)
+    })
+
+
     socket.on('join-room', (roomId, userId) => {
-        console.log(roomId, userId)
 
         //Join new room
         socket.join(roomId)
@@ -64,13 +78,14 @@ io.on('connection', (socket) => {
         }
 
         //Output current users connected to room
-        console.log(rooms[roomId])
+        console.log(rooms)
 
         //Need to send a direct message to the client of peers list, emit does not seem to work
         socket.emit('client-connected', userId, rooms[roomId]);
 
         //Broadcast to other users in room, that a new user has connected
         socket.to(roomId).broadcast.emit('user-connected', userId, rooms[roomId])
+
 
         socket.on('disconnect', () => {
             //On disconnect remove peer from list of connected peers
@@ -79,7 +94,6 @@ io.on('connection', (socket) => {
             updateRoomPeers = updateRoomPeers.filter(item => item !== userId)
             rooms[roomId] = updateRoomPeers;
 
-            console.log(rooms[roomId])
             //Send updated peers list minus disconnected user
             socket.to(roomId).broadcast.emit('user-disconnected', userId, rooms[roomId])
         })

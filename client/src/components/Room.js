@@ -6,20 +6,13 @@ import axios from 'axios';
 
 let socket = io.connect('http://localhost:8080/')
 
-const peer = new Peer(localStorage.getItem('userId'), {
-    host: '/',
-    port: '8081'
-})
-
 class Room extends React.Component {
     constructor(props) {
         super(props)
 
-        //Find way to dyanamically added audio refs - https://medium.com/@jalexmayer/react-refs-with-dynamic-names-d2262ab0a0b0        
         this.state = {
             peers: [],
             roomTitle: null,
-            activeCall: ''
         }
     }
 
@@ -33,18 +26,8 @@ class Room extends React.Component {
         }
     }
 
-    playClientAudio = (stream) => {
-        this.client.srcObject = stream
-    }
-
-    playExternalAudio = (userId, stream) => {
-        return(
-            <h2>hello</h2>
-        )
-    }
-
     connectToNewUser = (userId, stream) => {
-        const call = peer.call(userId, stream)
+        const call = this.peer.call(userId, stream)
         call.on('stream', userAudioStream  => {
             this.playUserAudio(userId, stream)
         })
@@ -56,13 +39,26 @@ class Room extends React.Component {
     }
 
     componentDidUpdate(prevProps) {
-        if (this.props.location !== prevProps.location) {
+        if (this.props.location.pathname !== prevProps.location.pathname) {
+            this.peer.disconnect();
+            console.log(this.peer)
+            console.log(prevProps.location, 'this is what is sent to leave room')
+
+            //Disconnect from join before joining new room
+            socket.emit('leave-room', prevProps.location.pathname, localStorage.getItem('userId'))
+
             this.updateRoomChange();
         }
     }
 
     updateRoomChange = (userId) => {
-        //Disconnect from join before joining new room
+
+        this.peer = new Peer(localStorage.getItem('userId'), {
+            host: '/',
+            port: '8081'
+        })
+
+        //Join new room
         socket.emit('join-room', window.location.pathname, localStorage.getItem('userId'))
 
         axios.get('/room-info', {params: {roomId: window.location.pathname}})
@@ -73,14 +69,14 @@ class Room extends React.Component {
     }
 
     componentDidMount() {
+
         setTimeout(() => {
             
             navigator.mediaDevices.getUserMedia({
                 audio: true
             }).then(stream => {
 
-                socket.emit('join-room', window.location.pathname, localStorage.getItem('userId'))
-
+                this.updateRoomChange();
                 socket.on('client-connected', (userId, updatedPeersList) => {
                     //Create Ref of updatePeersList
                     updatedPeersList.forEach(thing => {
@@ -94,7 +90,14 @@ class Room extends React.Component {
 
                     //Once client is connected and state is update with peers, connect client audio
                     this.playUserAudio(localStorage.getItem('userId'), stream)
-                    console.log('client connected')
+
+                    this.peer.on('call', call => {
+                        call.answer(stream);
+                        call.on('stream', userAudioStream => {
+                            this.playUserAudio(call.peer, userAudioStream)
+                        })
+                    })
+
                 })
 
                 socket.on('user-connected', (userId, updatedPeersList) => {
@@ -124,28 +127,10 @@ class Room extends React.Component {
                         peers: updatedPeersList
                     })
 
-                    //Connect user
-                    this.connectToNewUser(userId, stream)
-                })
-
-                peer.on('call', call => {
-                    call.answer(stream);
-                    console.log(call.peer, 'THIS IS PEER')
-                    call.on('stream', userAudioStream => {
-                        this.playUserAudio(call.peer, userAudioStream)
-                    })
-                })
-
-                peer.on('close', call => {
+                    console.log('user-disconnected', userId)
                 })
             })
             
-            axios.get('/room-info', {params: {roomId: window.location.pathname}})
-                .then(response => {
-                    this.setState({roomTitle: response.data[0].roomTitle})
-                })
-
-
         }, 1000)
     }
 
