@@ -4,6 +4,8 @@ import io from 'socket.io-client';
 import Peer from 'peerjs';
 import axios from 'axios';
 
+import RoomUser from './RoomUser';
+
 let socket = io.connect('http://localhost:8080/')
 
 class Room extends React.Component {
@@ -139,11 +141,20 @@ class Room extends React.Component {
             <div>
                 <h1 className="room-title">{this.state.roomTitle}</h1>
                 <video className="room-video" src="" controls></video>
-                 {this.state.peers.map((userId) => {
-                    return(
-                          <audio id={userId} key={userId} ref={this[`${userId}_ref`]} controls volume="true" autoPlay/>
-                    )
-                 })}
+                <div className="container-fluid">
+                    <div className="row">
+                        <div className="col room-avatar-col">
+                            {this.state.peers.map((userId) => {
+                                return(
+                                    <React.Fragment>
+                                        <RoomUser userId={userId}/>
+                                        <audio id={userId} key={userId} ref={this[`${userId}_ref`]} controls volume="true" autoPlay/>
+                                    </React.Fragment>
+                                )
+                            })}
+                        </div>
+                    </div>
+                </div>
             </div>
         )
     }
