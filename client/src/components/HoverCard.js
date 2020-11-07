@@ -6,18 +6,19 @@ const HoverCard = (props) => {
         if (props.userId != localStorage.getItem('userId')) {
             return(
                 <div className="col-3 hover-card-col">
-                    {(props.friendStatus === true) ? <i className="friend-add-icon fas fa-1x fa-check-circle"></i> : null }
-                    {(props.friendStatus === false) ? <i className="friend-add-icon fas fa-1x fa-plus-square"></i> : null }
-                    {(props.friendStatus === 'pending') ? <i className="friend-add-icon fas fa-1x fa-user-clock"></i> : null }
+                    {(props.friendStatus === true) ? <i title="Friends" className="friend-add-icon fas fa-1x fa-check-circle"></i> : null }
+                    {(props.friendStatus === false) ? <i title="Add Friend" className="friend-add-icon fas fa-1x fa-plus-square"></i> : null }
+                    {(props.friendStatus === 'pending') ? <i title="Pending Friend Invite" className="friend-add-icon fas fa-1x fa-user-clock"></i> : null }
                 </div>
             )
         } else return null
     }
 
     console.log(props.userId)
+    console.log(props.position, 'this is position')
 
     return(
-        <div onMouseOver={props.handleMouseOver} className="container hover-card">
+        <div onMouseOver={props.handleMouseOver} className={(props.position === 'top') ? "container hover-card hover-card-top" : "container hover-card hover-card-bottom"}>
             <div id={props.userId} className="row sidebar-friend align-items-center">
                 <div className="col-3">
                     {props.online ? <i class="fas fa-circle online"></i> : null }

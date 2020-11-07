@@ -317,6 +317,10 @@ a {
     height: 80px;
 }
 
+.sidebar-icon {
+    display: none;
+}
+
 .add-stream-card {
     position: relative;
     width: 250px;
@@ -477,7 +481,6 @@ a {
 
 .hover-card {
     position: absolute;
-    top: 40px;
     left: 40px;
     height: 150px;
     width: 300px;
@@ -488,6 +491,14 @@ a {
     -webkit-box-shadow: 11px 12px 0px 2px  #3700B3 !important; 
     box-shadow: 11px 12px 0px 2px  #3700B3 !important;
     border: 1px solid rgba(242, 231, 254, 0.2);
+}
+
+.hover-card-top {
+    top: 40px;
+}
+
+.hover-card-bottom {
+    bottom: 40px;
 }
 
 .hover-card-col {
@@ -582,6 +593,12 @@ a {
     .register-btn {
         top: 55%;
         left: 70px;
+    }
+}
+
+@media only screen and (max-width: 767px) {
+    .sidebar-icon {
+        display: block;
     }
 }
 

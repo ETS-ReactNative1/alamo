@@ -10,7 +10,8 @@ class RoomUser extends React.Component {
         this.state = {
             user: {},
             friendStatus: null,
-            showCard: false
+            showCard: false,
+            position: ''
         }
     }
 
@@ -27,8 +28,13 @@ class RoomUser extends React.Component {
             .catch(err => console.log(err))
     }
 
-    handleClick = () => {
-        this.setState({showCard: !this.state.showCard})
+    handleClick = (event) => {
+        //Change position of hover card if window height is reduced
+        if ((window.innerHeight - event.clientY) < 300) {
+            this.setState({showCard: !this.state.showCard, position: 'bottom'})
+        } else {
+            this.setState({showCard: !this.state.showCard, position: 'top'})
+        }
     }
 
     render() {
@@ -37,11 +43,10 @@ class RoomUser extends React.Component {
         return(
             <div className="col-1 room-avatar-col">
                 <img onClick={this.handleClick} className="room-avatar rounded-circle w-15" src={'/images/avatars/' + avatar + '-avatar.png'} />
-                { this.state.showCard ? <HoverCard userId={this.props.userId} username={username} avatar={avatar} online={true} friendStatus={this.state.friendStatus}/> : null}
+                { this.state.showCard ? <HoverCard position={this.state.position} userId={this.props.userId} username={username} avatar={avatar} online={true} friendStatus={this.state.friendStatus}/> : null}
             </div>
         )
     }
 }
 
 export default RoomUser;
-
