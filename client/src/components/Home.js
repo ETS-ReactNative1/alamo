@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import LoginButton from './LoginButton';
+import SignUpButton from './SignUpButton';
 
 class Home extends Component {
     render() {
@@ -19,7 +20,7 @@ class Home extends Component {
                 </div>
                 <div className="row register-btn">
                     <div className="col">
-                        <button className="secondary-btn">Register</button>
+                        <SignUpButton/>
                     </div>
                 </div>
             </div>
