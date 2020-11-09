@@ -55,7 +55,6 @@ class Room extends React.Component {
     updateRoomChange = (userId) => {
 
         this.peer = new Peer(localStorage.getItem('userId'), {
-            secure: true,
             host: 'https://alamo-peerjs.herokuapp.com',
             port: '9000'
         })
