@@ -5,7 +5,7 @@ import io from 'socket.io-client';
 import SearchUserCard from './SearchUserCard';
 import PendingFriend from './PendingFriend';
 
-const socket = io.connect('http://localhost:8080')
+const socket = io.connect('https://alamo-d19124355.herokuapp.com/')
 
 class AddFriend extends React.Component {
     constructor(props) {
