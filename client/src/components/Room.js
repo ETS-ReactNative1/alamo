@@ -37,8 +37,38 @@ class Room extends React.Component {
 
     componentDidUpdate(prevProps) {
         if (this.props.location.pathname !== prevProps.location.pathname) {
+<<<<<<< HEAD
             this.fetchRoomInformation();
         } 
+=======
+            this.peer.disconnect();
+            console.log(this.peer)
+            console.log(prevProps.location, 'this is what is sent to leave room')
+
+            //Disconnect from join before joining new room
+            socket.emit('leave-room', prevProps.location.pathname, localStorage.getItem('userId'))
+
+            this.updateRoomChange();
+        }
+    }
+
+    updateRoomChange = (userId) => {
+
+        this.peer = new Peer(localStorage.getItem('userId'), {
+            secure: true,
+            host: 'https://alamo-peerjs.herokuapp.com/',
+            port: '9000'
+        })
+
+        //Join new room
+        socket.emit('join-room', window.location.pathname, localStorage.getItem('userId'))
+
+        axios.get('/room-info', {params: {roomId: window.location.pathname}})
+            .then(response => {
+                this.setState({roomTitle: response.data[0].roomTitle})
+            })
+
+>>>>>>> redirect client peer to dedicated peerjs heroku server
     }
 
     componentDidMount() {
