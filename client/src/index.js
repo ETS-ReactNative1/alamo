@@ -7,7 +7,7 @@ const domain = process.env.REACT_APP_AUTH0_DOMAIN;
 const clientId = process.env.REACT_APP_AUTH0_CLIENT_ID;
 
 ReactDOM.render(
-    <Auth0Provider domain={domain} clientId={clientId} redirectUri={'http://localhost:3000/'}>
+    <Auth0Provider domain={domain} clientId={clientId} redirectUri={'https://alamo-d19124355.herokuapp.com/'}>
         <App />
     </Auth0Provider>,
     document.getElementById('root')
