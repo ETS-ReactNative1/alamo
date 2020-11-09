@@ -4,9 +4,15 @@ import io from 'socket.io-client';
 
 const socket = io.connect('http://localhost:8080')
 
+<<<<<<< HEAD
 class FriendCard extends React.Component {
     constructor(props) {
         super(props)
+=======
+const FriendCard = (props) => {
+    const [state, setState] = React.useState([])
+    const socket = io.connect('https://alamo-d19124355.herokuapp.com/')
+>>>>>>> more updated socket.io connects with heroku url
 
         this.state = {
             user: {
