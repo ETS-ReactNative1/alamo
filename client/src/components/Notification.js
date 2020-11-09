@@ -22,7 +22,7 @@ class Notification extends React.Component {
 
     componentWillMount() {
 
-        const socket = io.connect('http://localhost:8080')
+        const socket = io.connect('https://alamo-d19124355.herokuapp.com/')
 
         socket.on('new-user-online', (userId) => {
             setTimeout(() => {

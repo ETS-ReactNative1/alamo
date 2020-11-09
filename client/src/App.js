@@ -13,9 +13,13 @@ import Room from './components/Room';
 import Loading from './components/Loading';
 
 function App(props) {
+<<<<<<< HEAD
     const socket = io.connect('http://localhost:8080')
     const [isAuth, checkAuthentication] = React.useState([])
     const [isLoading, fetchAuthentication] = React.useState([])
+=======
+    const socket = io.connect('https://alamo-d19124355.herokuapp.com/')
+>>>>>>> update socket.io connect to heroku urls
 
     const checkAuth = async () => {
         fetchAuthentication(true)

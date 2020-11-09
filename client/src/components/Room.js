@@ -12,6 +12,10 @@ import TwitchChat from './TwitchChat';
 import TwitchLogin from './TwitchLogin';
 import MoreStreams from './MoreStreams';
 
+<<<<<<< HEAD
+=======
+let socket = io.connect('https://alamo-d19124355.herokuapp.com/')
+>>>>>>> update socket.io connect to heroku urls
 
 class Room extends React.Component {
     constructor(props) {
