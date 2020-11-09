@@ -1,10 +1,15 @@
 import React from 'react';
+import { withRouter } from 'react-router-dom';
 
 import LogoutItem from './LogoutItem';
 
 class ContextMenu extends React.Component {
     constructor(props) {
         super(props);
+    }
+
+    redirect = (path) => {
+        this.props.history.push(path);
     }
 
     handleContextMenu = (id, x, y) => {
@@ -19,8 +24,8 @@ class ContextMenu extends React.Component {
 
                         <ul className="nav flex-column font-color">
                             <li className="context-item">Update Status</li>
-                            <li className="context-item">Change Avatar</li>
-                            <li className="context-item">Account Settings</li>
+                            <li className="context-item" onClick={() => this.redirect('/update-avatar')}>Change Avatar</li>
+                            <li className="context-item" onClick={() => this.redirect('/account-settings')}>Account Settings</li>
                             <LogoutItem/>
                         </ul>
 
@@ -46,4 +51,4 @@ class ContextMenu extends React.Component {
     }
 }
 
-export default ContextMenu;
+export default withRouter(ContextMenu);

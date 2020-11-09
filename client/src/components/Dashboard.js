@@ -11,6 +11,7 @@ import NavigationBar from './NavigationBar';
 import Notification from './Notification';
 import Room from './Room';
 import CreateRoom from './CreateRoom';
+import AccountSettings from './AccountSettings';
 
 const Dashboard = (props) => {
     const { user } = useAuth0();
@@ -54,12 +55,17 @@ const Dashboard = (props) => {
     //Store userId (user primary key) on client side for ease of access throughout application
     localStorage.setItem('userId', state._id)
 
+    //Handle Context Menu Click
     const handleContextMenu = (id, x, y) => {
-        console.log('context menu clicked dashboard at', id, x, y)
-        const contextMenu = {contextMenu: {x: x, y: y}}
-        setState({...state, contextMenu})
+        if (id === localStorage.getItem('userId')) {
+            const contextMenu = {contextMenu: {type: 'profile', x: x, y: y}}
+            setState({...state, contextMenu})
+        }
+    }
 
-        console.log(state)
+    const clearContextMenu = () => {
+        const contextMenu = {contextMenu: {show: 'none', x: '-400px', y: '-400px'}}
+        setState({...state, contextMenu})
     }
 
     //Pass up props to trigger online status, only if account setup has been completed
@@ -75,7 +81,7 @@ const Dashboard = (props) => {
     } else {
         return (
             <Switch>
-                <div className="container-fluid">
+                <div className="container-fluid" onClick={clearContextMenu}>
                     <div className="row">
                         <ContextMenu status={state.contextMenu} />
                         <Sidebar user={state} handleContextMenu={handleContextMenu}/>
@@ -84,6 +90,7 @@ const Dashboard = (props) => {
                             <Notification userId={state._id}/>
                             <Route path="/create-room" render={(props) => (<CreateRoom fetchUserInformation={(props) =>{ fetchUserInformation() }}/>)}/>
                             <Route path="/room/" component={Room}/>
+                            <Route path="/account-settings" render={(props) => (<AccountSettings userInformation={state}/>)}/>
                         </main>
                     </div>
                 </div>
