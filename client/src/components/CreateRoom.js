@@ -6,7 +6,7 @@ import axios from 'axios';
 
 import AddStreamCard from './AddStreamCard';
 
-let socket = io.connect('http://localhost:8080')
+let socket = io.connect('https://alamo-d19124355.herokuapp.com/')
 
 const CreateRoom = (props) => {
 
