@@ -56,7 +56,6 @@ class Room extends React.Component {
 
         this.peer = new Peer(localStorage.getItem('userId'), {
             host: 'https://alamo-peerjs.herokuapp.com',
-            port: '9000'
         })
 
         //Join new room
