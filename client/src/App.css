@@ -24,6 +24,20 @@ label {
     margin: 50px 0 25px 0;
 }
 
+.error-image {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 80%;
+}
+
+.error-message {
+    position: absolute;
+    top: 50%;
+    left: 45px;
+    transform: translateY(-50%);
+}
+
 input {
     height: 50px;
     width: 100%;

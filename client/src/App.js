@@ -6,6 +6,7 @@ import io from 'socket.io-client'
 
 import Home from './components/Home';
 import Dashboard from './components/Dashboard';
+import ErrorBoundary from './components/ErrorBoundary';
 import Room from './components/Room';
 import Loading from './components/Loading';
 
@@ -33,7 +34,9 @@ function App(props) {
         return (
         <div className="App">
             <Router>
-                <Dashboard changeOnlineStatus={(account_setup) => { changeOnlineStatus(account_setup) }}></Dashboard>
+                <ErrorBoundary>
+                    <Dashboard changeOnlineStatus={(account_setup) => { changeOnlineStatus(account_setup) }}></Dashboard>
+                </ErrorBoundary>
             </Router>
         </div>
       );
