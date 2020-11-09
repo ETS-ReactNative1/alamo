@@ -5,6 +5,7 @@ import { Route, Switch } from 'react-router-dom';
 import io from 'socket.io-client';
 
 import ProfileSetup from './ProfileSetup';
+import ContextMenu from './ContextMenu';
 import Sidebar from './Sidebar';
 import NavigationBar from './NavigationBar';
 import Notification from './Notification';
@@ -47,10 +48,19 @@ const Dashboard = (props) => {
         })
 
         fetchUserInformation();
+
     }, [])
 
     //Store userId (user primary key) on client side for ease of access throughout application
     localStorage.setItem('userId', state._id)
+
+    const handleContextMenu = (id, x, y) => {
+        console.log('context menu clicked dashboard at', id, x, y)
+        const contextMenu = {contextMenu: {x: x, y: y}}
+        setState({...state, contextMenu})
+
+        console.log(state)
+    }
 
     //Pass up props to trigger online status, only if account setup has been completed
     if (state.account_setup === true) {
@@ -67,7 +77,8 @@ const Dashboard = (props) => {
             <Switch>
                 <div className="container-fluid">
                     <div className="row">
-                        <Sidebar user={state}/>
+                        <ContextMenu status={state.contextMenu} />
+                        <Sidebar user={state} handleContextMenu={handleContextMenu}/>
                         <main className="col px-4">
                             <NavigationBar/>
                             <Notification userId={state._id}/>

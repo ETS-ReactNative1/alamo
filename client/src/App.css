@@ -79,6 +79,10 @@ input:focus {
     margin-left: 15px;
 }
 
+.no-padding {
+    padding: 0 !important;
+}
+
 a:link {
     text-decoration:none;
     color: inherit;
@@ -94,6 +98,38 @@ a:visited {
 
 a {
     color: inherit;
+}
+
+.context-menu {
+    position: absolute;
+    width: auto;
+    height: auto;
+    display: none;
+    font-size: 0.9em;
+    border: 1px solid #1D1D1D;
+    background-color: #080808;
+    color: #F2E7FE !important;
+    border-radius: 10px;
+    z-index: 999;
+    overflow: hidden;
+}
+
+.context-item {
+    position: relative;
+    padding: 0 15px 0 15px;
+    font-size: 1em;
+    color: #F2E7FE !important;
+    height: 40px;
+    list-style: none;
+    border-bottom: 1px solid #1D1D1D;
+    -ms-flex-align: center!important;
+    align-items: center!important;
+    display: flex;
+    cursor: pointer;
+}
+
+.context-item:hover {
+    background-color: #3700B3;
 }
 
 .online {
@@ -130,13 +166,6 @@ a {
     margin-bottom: 50px;
     border-radius: 15px;
     background: white;
-}
-
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-    border-radius: 15px;
-    margin-bottom: 50px;
-    background: #080808;
 }
 
 .logo-main {
@@ -627,7 +656,7 @@ a {
 
     .register-btn {
         left: 0;
-        top: 260px;
+        top: 225px;
         width: 100%;
         padding: 0;
         margin: 0;

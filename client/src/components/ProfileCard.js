@@ -2,8 +2,15 @@ import React from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
 
 const ProfileCard = (props) => {
+    const handleContextClick = (event) => {
+        event.preventDefault();
+        const x_pos = event.pageX.toString() + 'px';
+        const y_pos = event.pageY.toString() + 'px';
+        props.handleContextMenu(props.userId, x_pos, y_pos)
+    }
+
     return(
-        <div id={props.userId} className="row sidebar-profile align-items-center">
+        <div id={props.userId} className="row sidebar-profile align-items-center" onContextMenu={handleContextClick}>
             <div className="col-3">
                 <img className="user-avatar rounded-circle w-15" src={'/images/avatars/' + props.avatar + '-avatar.png'} />
             </div>

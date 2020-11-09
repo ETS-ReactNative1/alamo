@@ -9,6 +9,10 @@ class Sidebar extends React.Component {
         super(props)
     }
 
+    handleContextMenu = () => {
+        console.log('context menu clicked')
+    }
+
     render() {
         const userId =  this.props.user._id;
         const username = this.props.user.user_metadata && this.props.user.user_metadata.username;
@@ -29,7 +33,7 @@ class Sidebar extends React.Component {
                         </div>
                     </div>
 
-                    <ProfileCard userId={userId} username={username} status={'Watching Valorant...'} avatar={avatar}/>
+                    <ProfileCard userId={userId} username={username} status={'Watching Valorant...'} avatar={avatar} handleContextMenu={this.props.handleContextMenu}/>
 
                     { rooms ? <RoomList rooms={rooms}/> : null}
 

@@ -3,22 +3,24 @@ import { useAuth0 } from '@auth0/auth0-react';
 import axios from 'axios';
 import io from 'socket.io-client';
 
+
 const FriendCard = (props) => {
     const [state, setState] = React.useState([])
     const socket = io.connect('http://localhost:8080')
 
     const fetchUserInformation = async () => {
         const response = await axios.get('/userId', {params: {userId: props.userId}})
-        setState(response.data[0])
+        setState([response.data[0]])
     }
 
     React.useEffect(() => {
         fetchUserInformation();
     }, [])
 
-    const username = state && state.username && state.user_metadata.username;
-    const avatar = state && state.user_metadata && state.user_metadata.avatar;
-    const online = state && state.online
+
+    const username = state[0] && state[0].username && state[0].user_metadata.username;
+    const avatar = state[0] && state[0].user_metadata && state[0].user_metadata.avatar;
+    const online = state[0] && state[0].online
 
     return(
         <div id={props.userId} className="row sidebar-friend align-items-center">
