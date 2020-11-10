@@ -534,6 +534,24 @@ a {
     margin-left: 16px;
 }
 
+.room-video {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    padding-top: 56.25%;
+}
+
+iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
 .room-avatar {
     width: 65px;
     display: inline;
@@ -546,7 +564,7 @@ a {
 }
 
 .room-avatar-row {
-    padding: 15px;
+    padding: 15px 0 0 0;
     width: auto;
 }
 
@@ -655,6 +673,7 @@ a {
 .room-container {
     height: calc(100% - 100px);
     padding-bottom: 50px;
+    margin: 0 auto 0 auto;
 }
 
 .room-title {
@@ -664,6 +683,8 @@ a {
 
 .twitch-chat-row {
     height: 100%;
+    max-width: 450px;
+    margin-right: 24px;
 }
 
 .twitch-login-toast {
@@ -702,10 +723,6 @@ a {
     padding-right: 5px;
 }
 
-iframe {
-    border: none;
-}
-
 .tw-c-background-base {
     background-color: blue !important;
     color: red !important;
@@ -713,6 +730,7 @@ iframe {
 
 .more-streams-container {
     margin: 50px 0 0 0;
+    padding: 0;
 }
 
 .more-stream-heading {
