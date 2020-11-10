@@ -31,7 +31,7 @@ class Room extends React.Component {
     connectToNewUser = (userId, stream) => {
         const call = this.peer.call(userId, stream)
         call.on('stream', userAudioStream  => {
-            this.playUserAudio(userId, stream)
+            this.playUserAudio(userId, userAudioStream)
         })
 
         call.on('close', () => {
@@ -57,7 +57,7 @@ class Room extends React.Component {
 
         this.peer = new Peer(localStorage.getItem('userId'), {
             host: '/',
-            port: '8081'
+            port: 8081
         })
 
         //Join new room
@@ -80,26 +80,27 @@ class Room extends React.Component {
 
                 this.updateRoomChange();
                 socket.on('client-connected', (userId, updatedPeersList) => {
-                    //Create Ref of updatePeersList
-                    updatedPeersList.forEach(thing => {
-                        this[`${thing}_ref`] = React.createRef()
-                    });
+                    if (userId === localStorage.getItem('userId')) {
+                        //Create Ref of updatePeersList
+                        updatedPeersList.forEach(thing => {
+                            this[`${thing}_ref`] = React.createRef()
+                        });
 
-                    //Add the peers state
-                    this.setState({
-                        peers: updatedPeersList
-                    })
-
-                    //Once client is connected and state is update with peers, connect client audio
-                    this.playUserAudio(localStorage.getItem('userId'), stream)
-
-                    this.peer.on('call', call => {
-                        call.answer(stream);
-                        call.on('stream', userAudioStream => {
-                            this.playUserAudio(call.peer, userAudioStream)
+                        //Add the peers state
+                        this.setState({
+                            peers: updatedPeersList
                         })
-                    })
 
+                        //Once client is connected and state is update with peers, connect client audio
+                        this.playUserAudio(localStorage.getItem('userId'), stream)
+                    }
+                })
+
+                this.peer.on('call', call => {
+                    call.answer(stream);
+                    call.on('stream', userAudioStream => {
+                        this.playUserAudio(call.peer, userAudioStream)
+                    })
                 })
 
                 socket.on('user-connected', (userId, updatedPeersList) => {
