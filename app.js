@@ -9,6 +9,7 @@ const bodyParser = require('body-parser');
 const MongoClient = require('mongodb').MongoClient
 const ObjectId = require('mongodb').ObjectID;
 const mongoose = require('mongoose');
+const axios = require('axios');
 
 //Require Routes
 const user = require('./routes/user');
@@ -23,6 +24,9 @@ const declineFriend = require('./routes/declineFriend');
 const pendingFriends = require('./routes/pendingFriends');
 const checkFriendStatus = require('./routes/checkFriendStatus');
 const acceptFriend = require('./routes/acceptFriend');
+
+
+const twitchApi = require('./routes/twitchApi');
 
 
 const app = express();
@@ -152,6 +156,21 @@ app.use('/decline-friend-invite', declineFriend);
 app.use('/pending-friends', pendingFriends)
 app.use('/check-friend-status', checkFriendStatus);
 app.use('/accept-friend', acceptFriend);
+
+//Twitch api access token
+app.use('/twitchapi', twitchApi);
+
+let client_id = process.env.TWITCH_CLIENT_ID;
+let client_secret = process.env.TWITCH_CLIENT_SECRET;
+let twitchUrl = `https://id.twitch.tv/oauth2/token?client_id=${client_id}&client_secret=${client_secret}&grant_type=client_credentials`
+
+axios.post(twitchUrl)
+    .then((response) => {
+        let access_token = response.data.access_token;
+        app.locals.client_id = client_id;
+        app.locals.access_token = access_token;
+    })
+    .catch((err) => console.log(err))
 
 //MongoDB Connection
 const url = process.env.MONGO_DB_URL
