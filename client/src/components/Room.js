@@ -7,6 +7,7 @@ import axios from 'axios';
 import RoomUser from './RoomUser';
 import { TwitchEmbed, TwitchChat, TwitchClip, TwitchPlayer } from 'react-twitch-embed';
 import TwitchLogin from './TwitchLogin';
+import MoreStreams from './MoreStreams';
 
 let socket = io.connect('http://localhost:8080/')
 
@@ -165,10 +166,11 @@ class Room extends React.Component {
                             )
                         })}
                     </div>
+                    <MoreStreams/>
                 </div>
                 <div className="container">
                     <div className="row twitch-chat-row">
-                        <div className="col-12">
+                        <div className="col-12" style={{height: 'calc(100vh - 150px)'}}>
                             <iframe ref={twitchChat => {this.twitchChat = twitchChat}} id="frame" frameborder="100%" scrolling="yes" src="https://www.twitch.tv/embed/ESL_CSGO/chat?darkpopout&migration=true&parent=localhost" height="100%" width="100%"></iframe>
                         </div>
                     </div>

@@ -711,6 +711,48 @@ iframe {
     color: red !important;
 }
 
+.more-streams-container {
+    margin: 50px 0 0 0;
+}
+
+.more-stream-heading {
+    margin-bottom: 25px;
+}
+
+.stream-card {
+    overflow-x: hidden !important;
+    margin-bottom: 20px;
+}
+
+.stream-card:hover {
+    transform: scale(1.03);
+    border: 3px 4px 0px 2px  #3700B3 !important;
+    box-shadow: 3px 4px 0px 2px  #3700B3 !important;
+}
+
+
+.stream-card-image {
+    padding: 0 20px 8px 0; 
+}
+
+.stream-card-title {
+    overflow-x: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    padding: 0 0 0 12px;
+}
+
+.stream-card-user {
+    font-weight: 200;
+    margin-left: 50px;
+    padding-left: 12px;
+}
+
+.stream-avatar {
+    float: left;
+    width: 50px;
+}
+
 @media only screen and (max-width: 1480px) {
     .home {
         background-size: 40%;
