@@ -81,7 +81,7 @@ const Dashboard = (props) => {
     } else {
         return (
             <Switch>
-                <div className="container-fluid" onClick={clearContextMenu}>
+                <div className="container-fluid">
                     <div className="row">
                         <ContextMenu status={state.contextMenu} />
                         <Sidebar user={state} handleContextMenu={handleContextMenu}/>

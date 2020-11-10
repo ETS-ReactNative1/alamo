@@ -1,5 +1,5 @@
 body {
-    background-color: #121212;
+    background-color: #101012;
 }
 
 html {
@@ -249,7 +249,7 @@ a {
 
 
 .primary-btn {
-    width: 130px;
+    min-width: 130px;
     height: 45px;
     background-color: #3700B3;
     color: #F2E7FE;
@@ -371,12 +371,13 @@ a {
     position: sticky;
     top: 0;
     min-width: 300px !important;
+    max-width: 300px;
     height: calc(100vh);
     padding: 0;
     margin-bottom: 0 !important;
     overflow-x: hidden;
     overflow-y: auto !important;
-    background-color: #121212 !important;
+    background-color: #101012 !important;
     border-right: 1px solid rgba(242, 231, 254, 0.2);
     scrollbar-color: white #080808;
     scrollbar-width: thin
@@ -545,6 +546,7 @@ a {
 }
 
 .room-avatar-row {
+    padding: 15px;
     width: auto;
 }
 
@@ -620,7 +622,7 @@ a {
 .sidebar-heading {
     margin-bottom: 0 !important;
     height: 50px;
-    background-color: #080808;
+    background-color: #050505;
 }
 
 .sidebar-subheading {
@@ -640,7 +642,7 @@ a {
 }
 
 .nav-item:nth-child(odd) {
-    background: #1D1D1D;
+    background: #18181B;
 }
 
 .active-room-icon {
@@ -650,13 +652,63 @@ a {
     transform: translateY(-50%);
 }
 
+.room-container {
+    height: calc(100% - 100px);
+    padding-bottom: 50px;
+}
+
 .room-title {
     margin: 0 0 25px 0;
     font-weight: 200;
 }
 
-.room-video {
-    width: 70%;
+.twitch-chat-row {
+    height: 100%;
+}
+
+.twitch-login-toast {
+    position: absolute;
+    height: 135px;
+    width: calc(100% - 30px);
+    background-color: rgba(16, 16, 18, 0.9);
+    left: 15px;
+    bottom: 0;
+    z-index: 9999;
+}
+
+.twitch-login-caption {
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    width: 100%;
+    text-align: center;
+    font-size: 0.95em;
+    transform: translate(-50%, -50%);
+}
+
+.twitch-login-btn {
+    position: absolute;
+    top: 70%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #FFFFFF !important; 
+    border-color: #2F1F4E !important; 
+    min-width: 160px;
+    font-size: 0.9em;
+}
+
+.twitch-icon {
+    color: #FFFFFF !important; 
+    padding-right: 5px;
+}
+
+iframe {
+    border: none;
+}
+
+.tw-c-background-base {
+    background-color: blue !important;
+    color: red !important;
 }
 
 @media only screen and (max-width: 1480px) {

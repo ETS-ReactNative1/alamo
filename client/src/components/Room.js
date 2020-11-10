@@ -5,6 +5,8 @@ import Peer from 'peerjs';
 import axios from 'axios';
 
 import RoomUser from './RoomUser';
+import { TwitchEmbed, TwitchChat, TwitchClip, TwitchPlayer } from 'react-twitch-embed';
+import TwitchLogin from './TwitchLogin';
 
 let socket = io.connect('http://localhost:8080/')
 
@@ -73,7 +75,6 @@ class Room extends React.Component {
     componentDidMount() {
 
         setTimeout(() => {
-            
             navigator.mediaDevices.getUserMedia({
                 audio: true
             }).then(stream => {
@@ -139,10 +140,21 @@ class Room extends React.Component {
 
     render() {
         return(
-            <div>
-                <h1 className="room-title">{this.state.roomTitle}</h1>
-                <video className="room-video" src="" controls></video>
-                <div className="container-fluid room-avatar-container">
+            <div className="room-container d-flex">
+                <div className="container">
+                    <h1 className="room-title">{this.state.roomTitle}</h1>
+                    <div className="row">
+                        <div className="col-7 room-video">
+                            <TwitchEmbed
+                                channel="ESL_CSGO"
+                                id="ESL_CSGO"
+                                theme="dark"
+                                withChat={false}
+                                muted
+                                onVideoPause={() => console.log(':(')}
+                            />
+                        </div>
+                    </div>
                     <div className="row room-avatar-row">
                         {this.state.peers.map((userId) => {
                             return(
@@ -152,6 +164,13 @@ class Room extends React.Component {
                                 </React.Fragment>
                             )
                         })}
+                    </div>
+                </div>
+                <div className="container">
+                    <div className="row twitch-chat-row">
+                        <div className="col-12">
+                            <iframe ref={twitchChat => {this.twitchChat = twitchChat}} id="frame" frameborder="100%" scrolling="yes" src="https://www.twitch.tv/embed/ESL_CSGO/chat?darkpopout&migration=true&parent=localhost" height="100%" width="100%"></iframe>
+                        </div>
                     </div>
                 </div>
             </div>
