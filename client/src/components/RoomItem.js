@@ -7,7 +7,8 @@ const RoomItem = (props) => {
 
     const fetchRoomTitle = async () => {
         const response = await axios.get('/room-info', {params: {roomId: props.roomId}})
-        setState(response.data[0])
+        setState(response.data)
+        console.log(state)
     }
 
     const redirect = (path) => {
@@ -19,9 +20,9 @@ const RoomItem = (props) => {
     }
 
     const activeChannel = () => {
-        if (window.location.pathname === state._id) {
+        if (window.location.pathname === state.roomId) {
             return(
-                <i class="fas fa-headphones-alt active-room-icon"></i>
+                <i class="fas fa-microphone active-room-icon"></i>
             )
         }
     }
@@ -30,13 +31,14 @@ const RoomItem = (props) => {
         fetchRoomTitle();
     }, [])
 
+        console.log(props.roomId)
     return(
         <React.Fragment>
-            <li id={state._id} onClick={(event) => handleClick(event)} className="nav-item">
+            <li id={state.roomId} onClick={(event) => handleClick(event)} className="nav-item">
 
                 {activeChannel()}
 
-                {state.roomTitle}
+                {state.room_title}
             </li>
         </React.Fragment>
     )

@@ -13,7 +13,6 @@ const axios = require('axios');
 
 //Require Routes
 const user = require('./routes/user');
-const userId = require('./routes/userId');
 const completeProfile = require('./routes/completeProfile');
 const searchUser = require('./routes/searchUser');
 const createRoom = require('./routes/createRoom');
@@ -58,6 +57,7 @@ io.on('connection', (socket) => {
         updateRoomPeers = updateRoomPeers.filter(item => item !== userId)
         rooms[roomId] = updateRoomPeers;
 
+        console.log(roomId, userId, 'has left this room')
         //Send notitification of user left room, use to trigger audio que
         socket.to(roomId).broadcast.emit('user-disconnected', userId, rooms[roomId])
 
@@ -70,6 +70,8 @@ io.on('connection', (socket) => {
 
         //Join new room
         socket.join(roomId)
+
+        console.log(userId, 'has joined ', roomId)
 
         //If room is newly created or empty, add first peer
         if (typeof rooms[roomId] == 'undefined') {
@@ -145,7 +147,6 @@ app.use(bodyParser.json())
 
 //Routes
 app.use('/user', user);
-app.use('/userId', userId);
 app.use('/complete-profile', completeProfile);
 app.use('/search-user', searchUser);
 app.use('/create-room', createRoom);
@@ -175,11 +176,19 @@ axios.post(twitchUrl)
 //MongoDB Connection
 const url = process.env.MONGO_DB_URL
 
-MongoClient.connect(url, { useUnifiedTopology: true })
-.then(client =>{
-  const db = client.db('alamo-db');
-  app.locals.db = db;
+mongoose.connect(url, {useNewUrlParser: true});
+console.log(mongoose.connection.readyState);
+const db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function() {
+    console.log('connected')
+  // we're connected!
 });
+//MongoClient.connect(url, { useUnifiedTopology: true })
+//    .then(client => {
+//        const db = client.db('alamo-db');
+//        app.locals.db = db;
+//});
 
 const whitelist = ['http://localhost:3000', 'http://localhost:8080', 'https://alamo-d19124355.herokuapp.com/']
 const corsOptions = {

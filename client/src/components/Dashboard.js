@@ -22,6 +22,7 @@ const Dashboard = (props) => {
     const fetchUserInformation = async () => {
         const response = await axios.get('/user', {params: {email: user.email}})
         setState(response.data[0])
+        console.log(state)
     }
 
     React.useEffect(() => {
@@ -79,6 +80,7 @@ const Dashboard = (props) => {
             <ProfileSetup user={user}/>
         )
     } else {
+        console.log(state)
         return (
             <Switch>
                 <div className="container-fluid">

@@ -9,7 +9,7 @@ const FriendCard = (props) => {
     const socket = io.connect('http://localhost:8080')
 
     const fetchUserInformation = async () => {
-        const response = await axios.get('/userId', {params: {userId: props.userId}})
+        const response = await axios.get('/user', {params: {userId: props.userId}})
         setState([response.data[0]])
     }
 

@@ -16,7 +16,7 @@ class RoomUser extends React.Component {
     }
 
     componentDidMount() {
-        axios.get('/userId', {params: {userId: this.props.userId}})
+        axios.get('/user', {params: {userId: this.props.userId}})
             .then(response => {
                 this.setState({user: response.data[0]})
 

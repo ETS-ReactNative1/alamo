@@ -27,12 +27,13 @@ const CreateRoom = (props) => {
         let payload = {roomId: roomId, roomTitle: roomTitle, userId: userId}
 
         axios.post('/create-room', payload)
-            .then(reponse => {
+            .then(response => {
+                console.log(response)
                 socket.emit('join-room', roomId, userId);
                 redirect(roomId);
             })
 
-        axios.post('/add-user-to-room', {userId: userId, roomId: roomId})
+        axios.post('/user/add-room', {userId: userId, roomId: roomId})
             .then(response => {
                 console.log(response)
                 props.fetchUserInformation()

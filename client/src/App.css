@@ -684,6 +684,7 @@ iframe {
 }
 
 .room-title {
+    padding: 0;
     margin: 0 0 25px 0;
     font-weight: 200;
 }
@@ -746,11 +747,11 @@ iframe {
 
 .stream-card {
     overflow-x: hidden !important;
-    margin-right: auto;
+    margin-right: 20px auto;
     margin-bottom: 20px;
     width: 100%;
     max-width: 347px;
-    min-width: 280px;
+    min-width: 317px;
 }
 
 .stream-card:hover {

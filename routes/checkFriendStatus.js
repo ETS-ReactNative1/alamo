@@ -1,29 +1,29 @@
 const express = require('express');
 const router = express.Router();
-const ObjectId = require('mongodb').ObjectID;
+const User = require('../models/userSchema');
+const mongoose = require('mongoose');
+const ObjectId = require('mongoose').Types.ObjectId;
 
 router.get('/', (req, res) => {
-    const db = req.app.locals.db;
-
     const searcherId = req.query.searcherId;
     const recipentId = req.query.recipentId;
 
     console.log('check', searcherId, 'friend status with', recipentId)
 
     //Check if they are friends or not
-    db.collection('users').findOne({"_id": ObjectId(searcherId), friends: {$in: [recipentId]}})
+    User.findOne({"_id": ObjectId(searcherId), friends: {$in: [recipentId]}})
         .then(response => {
             //If they are not friends
             if (response == null ) {
 
                 //Check if the searcher has already sent a pending friends request 
-                db.collection('users').findOne({"_id": ObjectId(searcherId), sent_invitations: {$in: [recipentId]}})
+                User.findOne({"_id": ObjectId(searcherId), sent_invitations: {$in: [recipentId]}})
                     .then(response => {
                         //If the search has not sent a friends request already
                         if (response == null) {
 
                             //Check whether the receipent has sent a friends requests to the searcher
-                            db.collection('users').findOne({"_id": ObjectId(recipentId), sent_invitations: {$in: [searcherId]}})
+                            User.findOne({"_id": ObjectId(recipentId), sent_invitations: {$in: [searcherId]}})
                             .then(response => {
                                 //If the receiptent has not sent a friends request to the search
                                 if (response == null) {

@@ -93,15 +93,16 @@ class AddFriend extends React.Component {
             username = username.toLowerCase();
         }
 
-        axios.get('/search-user', {params: {username: username, clientId: localStorage.getItem('userId')}})
+        axios.get('/user', {params: {username: username}})
             .then(response => {
 
+                console.log(response.data[0]._id)
                 //Prevent searching/adding own profile id
-                if (response.data._id != localStorage.getItem('userId')) {
-                    axios.get('/check-friend-status', {params: {searcherId: localStorage.getItem('userId'), recipentId: response.data._id}})
+                if (response.data[0]._id != localStorage.getItem('userId')) {
+                    axios.get('/check-friend-status', {params: {searcherId: localStorage.getItem('userId'), recipentId: response.data[0]._id}})
                         .then(friendStatus => {
                             console.log(friendStatus.data.friendStatus)
-                            this.setState({friendStatus: friendStatus.data.friendStatus, searchResults: [response.data], userNotFound: ''})
+                            this.setState({friendStatus: friendStatus.data.friendStatus, searchResults: [response.data[0]], userNotFound: ''})
                         })
                 } else {
                     this.setState({searchResults: [], userNotFound: 'Searching yourself aye?'})
