@@ -578,6 +578,14 @@ iframe {
     transition: 0.2s ease-in-out;
 }
 
+.room-settings-icon {
+    cursor: pointer;
+}
+
+.room-settings-icon:hover {
+    color: #3700B3 !important;
+}
+
 .hover-card {
     position: absolute;
     left: 40px;
@@ -673,7 +681,6 @@ iframe {
 .room-container {
     height: calc(100% - 100px);
     padding-bottom: 50px;
-    margin: 0 auto 0 auto;
 }
 
 .room-title {
@@ -683,7 +690,7 @@ iframe {
 
 .twitch-chat-row {
     height: 100%;
-    max-width: 450px;
+    max-width: 350px;
     margin-right: 24px;
 }
 
@@ -739,7 +746,11 @@ iframe {
 
 .stream-card {
     overflow-x: hidden !important;
+    margin-right: auto;
     margin-bottom: 20px;
+    width: 100%;
+    max-width: 347px;
+    min-width: 280px;
 }
 
 .stream-card:hover {
@@ -750,7 +761,7 @@ iframe {
 
 
 .stream-card-image {
-    padding: 0 20px 8px 0; 
+    padding: 0 0 8px 0; 
 }
 
 .stream-card-title {

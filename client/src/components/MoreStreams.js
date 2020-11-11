@@ -1,6 +1,8 @@
 import React from 'react';
 import axios from 'axios';
 
+import StreamCard from './StreamCard';
+
 class MoreStreams extends React.Component {
     constructor(props) {
         super(props);
@@ -28,14 +30,8 @@ class MoreStreams extends React.Component {
                 <div className="row">
                         {this.state.streams.map((stream) => {
                             let image = stream.thumbnail_url.replace('{width}', '347').replace('{height}', '195')
-                            console.log(image)
                             return(
-                                <div className="col-4 stream-card">
-                                    <img className="stream-card-image" src={image} alt={stream.title}/>
-                                    <img className="stream-avatar rounded-circle" src="/images/avatars/avacado-avatar.png"/>
-                                    <h6 className="stream-card-title">{stream.title}</h6>
-                                    <h6 className="stream-card-user">{stream.user_name}</h6>
-                                </div>
+                                <StreamCard stream={stream} image={image}/>
                             )
                         })}
                 </div>
