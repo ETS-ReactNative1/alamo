@@ -1,11 +1,19 @@
 import React from 'react';
-import { useAuth0 } from '@auth0/auth0-react';
+import axios from 'axios';
 
 const LogoutItem = () => {
-    const { logout } = useAuth0();
+
+    const logout = () => {
+        console.log('logout')
+        axios.get('/auth/logout')
+            .then((response) => {
+                if (response.status === 200)
+                    window.location.reload();
+            })
+    }
 
     return (
-        <li onClick={() => logout({ returnTo: window.location.origin })} className="context-item">Logout</li>
+        <li onClick={() => logout()} className="context-item">Logout</li>
     );
 }
 

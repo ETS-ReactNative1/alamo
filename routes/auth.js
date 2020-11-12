@@ -26,7 +26,7 @@ router.post("/register_login", (req, res, next) => {
 
 router.get('/logout', (req, res, next) => {
     req.logout();
-    res.send('hello')
+    res.status(200).send('user logged out')
 })
 
 router.get('/check', function(req, res){
