@@ -9,11 +9,15 @@ const bodyParser = require('body-parser');
 const MongoClient = require('mongodb').MongoClient
 const ObjectId = require('mongodb').ObjectID;
 const mongoose = require('mongoose');
+const session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
 const axios = require('axios');
+
+const passport = require('./passport/setup');
+const auth = require('./routes/auth');
 
 //Require Routes
 const user = require('./routes/user');
-const searchUser = require('./routes/searchUser');
 const createRoom = require('./routes/createRoom');
 const roomInfo = require('./routes/roomInfo');
 const checkFriendStatus = require('./routes/checkFriendStatus');
@@ -138,9 +142,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
+
+
 //Routes
 app.use('/user', user);
-app.use('/search-user', searchUser);
 app.use('/create-room', createRoom);
 app.use('/room-info', roomInfo);
 app.use('/check-friend-status', checkFriendStatus);
@@ -171,6 +176,24 @@ db.once('open', function() {
     console.log('connected')
   // we're connected!
 });
+
+app.use(session({
+    secret: 'thisisasecret',
+    cookie: {
+        maxAge: 300000
+    },
+    saveUninitialized: true,
+    resave: true,
+    store: new MongoStore({ mongooseConnection: mongoose.connection })
+}));
+
+//Passport
+app.use(passport.initialize());
+app.use(passport.session());
+app.use('/auth', auth);
+
+
+
 //MongoClient.connect(url, { useUnifiedTopology: true })
 //    .then(client => {
 //        const db = client.db('alamo-db');

@@ -82,21 +82,19 @@ const Dashboard = (props) => {
     } else {
         console.log(state)
         return (
-            <Switch>
-                <div className="container-fluid">
-                    <div className="row">
-                        <ContextMenu status={state.contextMenu} />
-                        <Sidebar user={state} handleContextMenu={handleContextMenu}/>
-                        <main className="col px-4">
-                            <NavigationBar/>
-                            <Notification userId={state._id}/>
-                            <Route path="/create-room" render={(props) => (<CreateRoom fetchUserInformation={(props) =>{ fetchUserInformation() }}/>)}/>
-                            <Route path="/room/" component={Room}/>
-                            <Route path="/account-settings" render={(props) => (<AccountSettings userInformation={state}/>)}/>
-                        </main>
-                    </div>
+            <div className="container-fluid">
+                <div className="row">
+                    <ContextMenu status={state.contextMenu} />
+                    <Sidebar user={state} handleContextMenu={handleContextMenu}/>
+                    <main className="col px-4">
+                        <NavigationBar/>
+                        <Notification userId={state._id}/>
+                        <Route path="/create-room" render={(props) => (<CreateRoom fetchUserInformation={(props) =>{ fetchUserInformation() }}/>)}/>
+                        <Route path="/room/" component={Room}/>
+                        <Route path="/account-settings" render={(props) => (<AccountSettings userInformation={state}/>)}/>
+                    </main>
                 </div>
-            </Switch>
+            </div>
         );
     }
 }

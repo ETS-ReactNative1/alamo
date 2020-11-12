@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const User = require('../models/userSchema');
 const mongoose = require('mongoose');
 const ObjectId = require('mongoose').Types.ObjectId;
+
+const User = require('../models/userSchema') || mongoose.model('users');
 
 router.get('/', (req, res) => {
     if (req.query.email)

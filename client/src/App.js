@@ -5,6 +5,7 @@ import './App.css';
 import io from 'socket.io-client'
 
 import Home from './components/Home';
+import Login from './components/Login';
 import Dashboard from './components/Dashboard';
 import ErrorBoundary from './components/ErrorBoundary';
 import Room from './components/Room';
@@ -35,7 +36,10 @@ function App(props) {
         <div className="App">
             <Router>
                 <ErrorBoundary>
-                    <Dashboard changeOnlineStatus={(account_setup) => { changeOnlineStatus(account_setup) }}></Dashboard>
+                    <Switch>
+                        <Route path="/login" component={Login}/>
+                        <Dashboard changeOnlineStatus={(account_setup) => { changeOnlineStatus(account_setup) }}></Dashboard>
+                    </Switch>
                 </ErrorBoundary>
             </Router>
         </div>
