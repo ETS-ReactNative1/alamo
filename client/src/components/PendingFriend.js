@@ -14,7 +14,7 @@ class PendingFriend extends React.Component {
     }
 
     componentDidMount() {
-        axios.get('/userId', {params: {userId: this.props.userPendingInvitation}})
+        axios.get('/user', {params: {userId: this.props.userPendingInvitation}})
             .then(response => {
                 console.log(response)
                 this.setState({username: response.data[0].user_metadata.username, avatar: response.data[0].user_metadata.avatar})

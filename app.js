@@ -13,17 +13,10 @@ const axios = require('axios');
 
 //Require Routes
 const user = require('./routes/user');
-const completeProfile = require('./routes/completeProfile');
 const searchUser = require('./routes/searchUser');
 const createRoom = require('./routes/createRoom');
 const roomInfo = require('./routes/roomInfo');
-const addRoomToUser = require('./routes/addRoomToUser');
-const addFriend = require('./routes/addFriend');
-const declineFriend = require('./routes/declineFriend');
-const pendingFriends = require('./routes/pendingFriends');
 const checkFriendStatus = require('./routes/checkFriendStatus');
-const acceptFriend = require('./routes/acceptFriend');
-
 
 const twitchApi = require('./routes/twitchApi');
 
@@ -147,16 +140,10 @@ app.use(bodyParser.json())
 
 //Routes
 app.use('/user', user);
-app.use('/complete-profile', completeProfile);
 app.use('/search-user', searchUser);
 app.use('/create-room', createRoom);
 app.use('/room-info', roomInfo);
-app.use('/add-user-to-room', addRoomToUser);
-app.use('/add-friend', addFriend);
-app.use('/decline-friend-invite', declineFriend);
-app.use('/pending-friends', pendingFriends)
 app.use('/check-friend-status', checkFriendStatus);
-app.use('/accept-friend', acceptFriend);
 
 //Twitch api access token
 app.use('/twitchapi', twitchApi);

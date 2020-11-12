@@ -30,7 +30,7 @@ class AddFriend extends React.Component {
 
     handleDecline = (senderId) => {
         let payload = {senderId: senderId, receiverId: localStorage.getItem('userId')}
-        axios.post('/decline-friend-invite', payload)
+        axios.post('/user/decline-friend', payload)
             .then(response => {
                 this.setState({pendingInvitations: []})
                 socket.emit('friend-event', 'decline', senderId, localStorage.getItem('userId'))
@@ -45,7 +45,7 @@ class AddFriend extends React.Component {
         let socket = io.connect('http://localhost:8080');
         socket.emit('add-friend', senderId, receiverId)
 
-        axios.post('/add-friend', payload)
+        axios.post('/user/add-friend', payload)
             .then(response => {
 
                 axios.get('/check-friend-status', {params: {searcherId: localStorage.getItem('userId'), recipentId: receiverId}})
@@ -67,7 +67,7 @@ class AddFriend extends React.Component {
 
     handleAcceptFriend = (recipentId) => {
         let payload = {senderId: localStorage.getItem('userId'), receiverId: recipentId}
-        axios.post('/accept-friend', payload)
+        axios.post('/user/accept-friend', payload)
         .then(response => {
 
                 axios.get('/check-friend-status', {params: {searcherId: localStorage.getItem('userId'), recipentId: recipentId}})

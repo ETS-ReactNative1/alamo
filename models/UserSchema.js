@@ -9,7 +9,7 @@ const userSchema = new Schema({
         username: String,
         avatar: String
     },
-    pending_invitation: Array,
+    pending_invitations: Array,
     sent_invitations: Array,
     friends: Array,
     rooms: {type: [String]},

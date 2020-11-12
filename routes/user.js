@@ -19,6 +19,35 @@ router.get('/', (req, res) => {
     .catch(error => console.error(error));
 });
 
+router.get('/search-friend', (req, res) => {
+
+    //Find user to search array of friends
+    User.findOne({username: req.query.username})
+    .then(response => {
+        User.findOne({_id: response._id, friends: {$in: [`${req.query.userId}`]}})
+            .then(response => {
+                res.status(200).json(response)
+            })
+    })
+    .catch(error => console.error(error));
+});
+
+
+router.post('/complete-profile', (req, res) => {
+    User.findOne({username: req.body.username.toLowerCase()})
+        .then(response => {
+            if (response == null) {
+                console.log(response, 'IF NULL')
+                User.updateOne({email: req.body.email}, {$set: {username: req.body.username.toLowerCase(), account_setup: true, user_metadata: {username: req.body.username, avatar: req.body.avatar}}})
+                .then(response => res.status(200).json({status: 'sucess'}))
+                .catch(error => console.error(error));
+            } else {
+                res.status(301).send('Username not available')
+            }
+        })
+});
+
+
 router.post('/add-room', (req, res) => {
     const roomId = req.body.roomId
     const userId = req.body.userId
@@ -28,5 +57,45 @@ router.post('/add-room', (req, res) => {
         console.log(err)
     })
 })
+
+router.post('/add-friend', (req, res) => {
+    console.log(req.body.senderId, 'would like to add ', req.body.receiverId, 'as a friend')
+
+    //Find recipent and add sender Id into pending invites array
+    User.updateOne({_id: ObjectId(req.body.receiverId)}, {$push: {pending_invitations: req.body.senderId}})
+    .then(response => {
+
+        //Find sender and add reipent to sent invitations
+        User.updateOne({_id: ObjectId(req.body.senderId)}, {$push: {sent_invitations: req.body.receiverId}})
+        .then(response => res.status(200).json({status: 'success'}))
+
+    })
+    .catch(error => console.error(error));
+})
+
+router.post('/decline-friend', (req, res) => {
+    User.updateOne({_id: ObjectId(req.body.receiverId)}, {$pull: {pending_invitations: {$in: [req.body.senderId]}}})
+    .then(response => {
+        User.updateOne({_id: ObjectId(req.body.senderId)}, {$pull: {sent_invitations: {$in: [req.body.receiverId]}}})
+    }).then(response => res.status(200).json({status: 'success'}))
+    .catch(error => console.error(error));
+})
+
+
+router.post('/accept-friend', (req, res) => {
+    console.log(req.body.senderId, 'would like to add ', req.body.receiverId, 'as a friend')
+
+    //1. Remove recipent from senders sent_invitations and add to senders friends array
+    //2. Remove sendersID from recipents pending_invitations and add to recipents friends array
+
+    User.updateOne({_id: ObjectId(req.body.senderId)}, {$pull: {pending_invitations: req.body.receiverId}, $push: {friends: req.body.receiverId}})
+    .then(response => {
+        User.updateOne({_id: ObjectId(req.body.receiverId)}, {$pull: {sent_invitations: req.body.senderId}, $push: {friends: req.body.senderId}})
+        .then(response => res.status(200).json({status: 'success'}))
+    })
+    .catch(error => console.error(error));
+})
+
+
 
 module.exports = router;
