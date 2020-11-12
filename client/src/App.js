@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';
+import axios from 'axios';
 import './App.css';
 import io from 'socket.io-client'
 
@@ -13,8 +14,26 @@ import Loading from './components/Loading';
 
 function App(props) {
     const socket = io.connect('http://localhost:8080')
+    const [isAuth, checkAuthentication] = React.useState([])
+    const [isLoading, fetchAuthentication] = React.useState([])
 
-    const { isAuthenticated, isLoading } = useAuth0();
+    const checkAuth = async () => {
+        fetchAuthentication(true)
+        axios.get('/auth/check')
+            .then(response => {
+                checkAuthentication(response.data)
+
+                setTimeout(() => {
+                    fetchAuthentication(false)
+                }, 500)
+
+            }) 
+            .catch(err => console.log(err))
+    }
+
+    React.useEffect(() => {
+        checkAuth()
+    }, [])
 
     const changeOnlineStatus = (account_setup) => {
         if (account_setup === true) {
@@ -30,8 +49,7 @@ function App(props) {
         )
     }
 
-
-    if (isAuthenticated) {
+    if (isAuth) {
         return (
         <div className="App">
             <Router>
@@ -47,7 +65,12 @@ function App(props) {
     } else {
         return(
             <div className="App">
-                <Home/>
+                <Router>
+                    <Switch>
+                        <Route path="/login" component={Login} exact/>
+                        <Home/>
+                    </Switch>
+                </Router>
             </div>
         )
     } 

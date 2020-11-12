@@ -1,4 +1,5 @@
 import React from 'react';
+import { withRouter } from 'react-router-dom';
 import axios from 'axios';
 
 class Login extends React.Component {
@@ -6,43 +7,63 @@ class Login extends React.Component {
         super(props)
 
         this.state = {
-            login: ''
+            showLogin: false
         }
+    }
+
+    componentDidMount() {
+        //If user is already logged in, redirect to home
+        axios.get('/auth/check')
+            .then((response) => {
+                if (response.data)
+                    this.redirect('/')
+                else
+                    return this.setState({showLogin: true})
+            })
+    }
+
+    redirect = (path) => {
+        this.props.history.push(path)
     }
 
     handleSubmit = (event) => {
         event.preventDefault();
         let email = event.target.email.value;
         let password = event.target.password.value;
-
         let userData = {email, password}
 
         axios.post('/auth/register_login', userData)
             .then((response) => {
-                console.log(response)
+                if (response.status === 200) {
+                    window.location.assign('/')
+                }
             })
             .catch((err) => console.log(err))
     }
 
-    checkLogin = () => {
-        axios.get('/auth/check')
-            .then((response) => {
-                console.log(response)
-            })
+    loginForm = () => {
+        if (this.state.showLogin)
+            return(
+                <div className="login-box">
+                    <h1 className="login-logo centered margin-bottom">alamo</h1>
+                    <p className="login-details-para">Please login to your <span style={{fontWeight: '700'}}>alamo</span> account to continue</p>
+                    <form className="login-form" action="POST" onSubmit={this.handleSubmit}>
+                        <input className="login-input" type="text" name="email" placeholder="Email Address"/>
+                        <input className="login-input" type="password" name="password" placeholder="Password"/>
+                        <button className="primary-btn login-button" type="submit">login</button>
+                    </form>
+                    <p className="sign-up-para">No account? <a className="sign-up-button" href="/sign-up">Sign Up</a></p>
+                </div>
+            )
     }
 
     render() {
         return(
-            <div>
-                <form action="POST" onSubmit={this.handleSubmit}>
-                    <input type="text" name="email" placeholder="email"/>
-                    <input type="password" name="password" placeholder="password"/>
-                    <button type="submit">login</button>
-                </form>
-                <button onClick={this.checkLogin}>chech login status</button>
-            </div>
+            <React.Fragment>
+                {this.loginForm()}
+            </React.Fragment>
         )
     }
 }
 
-export default Login;
+export default withRouter(Login);

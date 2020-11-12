@@ -1,12 +1,15 @@
 import React from 'react';
-import { useAuth0 } from '@auth0/auth0-react';
+import { withRouter } from 'react-router-dom'
 
-const LoginButton = () => {
-    const { loginWithRedirect } = useAuth0();
+const LoginButton = (props) => {
+
+    const redirect = (path) => {
+        props.history.push(path);
+    }
 
     return (
-        <button onClick={() => loginWithRedirect()} class="btn primary-btn my-2 my-sm-0">Login</button>                
+        <button onClick={() => redirect('/login')} class="btn primary-btn my-2 my-sm-0">Login</button>                
     );
 }
 
-export default LoginButton;
+export default withRouter(LoginButton);

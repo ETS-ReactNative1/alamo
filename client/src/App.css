@@ -38,6 +38,68 @@ label {
     transform: translateY(-50%);
 }
 
+.login-box {
+    width: 450px;
+    height: 700px;
+    padding: 24px;
+    background-color: white;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.login-logo {
+    font-family: 'Paytone One', sans-serif;
+    font-size: 40pt;
+    color: #2F2F2F !important;
+    margin-top: 25px !important;
+    transform: translateY(-5px);
+}
+
+
+.login-form {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 70%;
+    transform: translate(-50%, -50%);
+}
+
+.login-input {
+    font-weight: 200;
+    margin-top: 25px;
+    color: #2F2F2F !important;
+}
+
+.login-button {
+    width: 100% !important;
+    margin-top: 50px;
+}
+
+.login-details-para {
+    position: absolute;
+    top: 150px;
+    left: 50%;
+    width: 50%;
+    text-align: center;
+    transform: translateX(-50%);
+    color: #2F2F2F !important;
+}
+
+.sign-up-para {
+    position: absolute;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #2F2F2F !important;
+}
+
+.sign-up-button {
+    font-weight: 700;
+}
+
+
 input {
     height: 50px;
     width: 100%;
