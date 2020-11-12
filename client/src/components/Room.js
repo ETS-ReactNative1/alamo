@@ -18,21 +18,21 @@ class Room extends React.Component {
 
         this.state = {
             roomTitle: null,
+            admins: null
         }
     }
 
     fetchRoomInformation = () => {
-        axios.get('/room-info', {params: {roomId: window.location.pathname}})
+        axios.get('/room', {params: {roomId: window.location.pathname}})
             .then(response => {
-                this.setState({roomTitle: response.data.room_title})
+                this.setState({roomTitle: response.data.room_title, admins: response.data.admins})
             })
     }
 
     componentDidUpdate(prevProps) {
         if (this.props.location.pathname !== prevProps.location.pathname) {
             this.fetchRoomInformation();
-        }
-    }
+        } }
 
     componentDidMount() {
         this.fetchRoomInformation();
@@ -44,7 +44,7 @@ class Room extends React.Component {
                 <div className="container-fluid">
                     <h1 className="room-title">{this.state.roomTitle}</h1>
                     <TwitchPlayer/>
-                    <RoomRTC/>
+                    <RoomRTC admins={this.state.admins}/>
                     <MoreStreams/>
                 </div>
                 <TwitchChat/>

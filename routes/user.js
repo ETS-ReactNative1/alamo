@@ -53,10 +53,11 @@ router.post('/add-room', (req, res) => {
     const roomId = req.body.roomId
     const userId = req.body.userId
 
-    User.updateOne({_id: userId}, {$push: {rooms: roomId}}, (err, object) => {
-        console.log(object, 'updated')
-        console.log(err)
-    })
+    User.updateOne({_id: userId}, {$push: {rooms: roomId}})
+        .then((response) => {
+            res.status(200).json({status: 'User added to room'})
+        })
+        .catch((err) => console.log(err))
 })
 
 router.post('/add-friend', (req, res) => {

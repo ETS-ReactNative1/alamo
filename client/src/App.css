@@ -616,6 +616,14 @@ a {
     margin-left: 16px;
 }
 
+.admin-icon {
+    position: absolute;
+    left: 50%;
+    bottom: -5px;
+    transform: translateX(-50%);
+    color: #FFD700;
+}
+
 .room-video {
     position: relative;
     overflow: hidden;
@@ -650,12 +658,8 @@ iframe {
     width: auto;
 }
 
-.room-avatar-row:hover .room-avatar-col {
-    max-width: 70px !important;
-}
-
 .room-avatar-col {
-    max-width: 45px;
+    max-width: 65px;
     padding: 0 !important;
     transition: 0.2s ease-in-out;
 }

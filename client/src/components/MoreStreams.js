@@ -7,13 +7,13 @@ class MoreStreams extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = {streams: []}
+        this.state = {streams: [], showStreams: false}
     }
 
     componentDidMount() {
         axios.get('/twitchapi/streams', {params: {search: 'csgo'}})
             .then((response) => {
-                this.setState({streams: response.data})
+                this.setState({streams: response.data, showStreams: true})
             })
             .catch((error) => console.log(error))
     }
@@ -26,15 +26,18 @@ class MoreStreams extends React.Component {
                         <h3 className="more-stream-heading thin d-block">More Streams</h3>
                     </div>
                 </div>
-                
-                <div className="row">
-                        {this.state.streams.map((stream) => {
-                            let image = stream.thumbnail_url.replace('{width}', '347').replace('{height}', '195')
-                            return(
-                                <StreamCard stream={stream} image={image}/>
-                            )
-                        })}
-                </div>
+
+                {(this.state.showStreams) ? 
+                    <div className="row">
+                            {this.state.streams.map((stream) => {
+                                let image = stream.thumbnail_url.replace('{width}', '347').replace('{height}', '195')
+                                return(
+                                    <StreamCard stream={stream} image={image}/>
+                                )
+                            })}
+                    </div>
+                    : null
+                }
             </div>
         )
     }

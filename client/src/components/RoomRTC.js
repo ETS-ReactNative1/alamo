@@ -136,7 +136,7 @@ class RoomRTC extends React.Component {
                 {this.state.peers.map((userId) => {
                     return(
                         <React.Fragment>
-                            <RoomUser userId={userId}/>
+                            <RoomUser userId={userId} admins={this.props.admins}/>
                             <audio id={userId} key={userId} ref={this[`${userId}_ref`]} controls volume="true" autoPlay/>
                         </React.Fragment>
                     )

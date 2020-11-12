@@ -26,7 +26,7 @@ const CreateRoom = (props) => {
         let roomTitle = event.target[0].value
         let payload = {roomId: roomId, roomTitle: roomTitle, userId: userId}
 
-        axios.post('/create-room', payload)
+        axios.post('/room/create-room', payload)
             .then(response => {
                 console.log(response)
                 socket.emit('join-room', roomId, userId);

@@ -22,6 +22,7 @@ const Dashboard = (props) => {
     const fetchUserInformation = async () => {
         const response = await axios.get('/auth/user')
         setState(response.data)
+        console.log('fetch infomration form user')
     }
 
     React.useEffect(() => {

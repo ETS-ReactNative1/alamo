@@ -18,8 +18,7 @@ const auth = require('./routes/auth');
 
 //Require Routes
 const user = require('./routes/user');
-const createRoom = require('./routes/createRoom');
-const roomInfo = require('./routes/roomInfo');
+const room = require('./routes/room');
 const checkFriendStatus = require('./routes/checkFriendStatus');
 
 const twitchApi = require('./routes/twitchApi');
@@ -76,10 +75,11 @@ io.on('connection', (socket) => {
         } else {
             //If room is already populated with a peer(s), append new peer to room
             //Prevent user being added to same room twice
-            if (!(rooms[roomId].includes(userId, 0))) {}
+            if (!(rooms[roomId].includes(userId, 0))) {
                 let updateRoomPeers;
                 updateRoomPeers = rooms[roomId].concat(userId);
                 rooms[roomId] = updateRoomPeers;
+            }
         }
 
         //Output current users connected to room
@@ -148,8 +148,7 @@ app.use(bodyParser.json())
 
 //Routes
 app.use('/user', user);
-app.use('/create-room', createRoom);
-app.use('/room-info', roomInfo);
+app.use('/room', room);
 app.use('/check-friend-status', checkFriendStatus);
 
 //Twitch api access token
@@ -182,7 +181,7 @@ db.once('open', function() {
 app.use(session({
     secret: 'thisisasecret',
     cookie: {
-        maxAge: 300000
+        maxAge: 9000000
     },
     saveUninitialized: true,
     resave: true,
