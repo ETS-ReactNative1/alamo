@@ -81,6 +81,7 @@ const Dashboard = (props) => {
         )
     } else {
         console.log(state)
+        const rooms = state && state.rooms;
         return (
             <div className="container-fluid">
                 <div className="row">
@@ -90,7 +91,7 @@ const Dashboard = (props) => {
                         <NavigationBar/>
                         <Notification userId={state._id}/>
                         <Route path="/create-room" render={(props) => (<CreateRoom fetchUserInformation={(props) =>{ fetchUserInformation() }}/>)}/>
-                        <Route path="/room/" component={Room}/>
+                        {rooms ? <Route path="/room/" render={(props) => <Room rooms={rooms} fetchUserInformation={(props) =>{ fetchUserInformation() }}/>}/> : null}
                         <Route path="/account-settings" render={(props) => (<AccountSettings userInformation={state}/>)}/>
                     </main>
                 </div>

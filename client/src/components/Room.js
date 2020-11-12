@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import io from 'socket.io-client';
 import Peer from 'peerjs';
 import axios from 'axios';
+import { withRouter } from 'react-router-dom';
 
 import RoomUser from './RoomUser';
 import RoomRTC from './RoomRTC';
@@ -32,10 +33,18 @@ class Room extends React.Component {
     componentDidUpdate(prevProps) {
         if (this.props.location.pathname !== prevProps.location.pathname) {
             this.fetchRoomInformation();
-        } }
+        } 
+    }
 
     componentDidMount() {
         this.fetchRoomInformation();
+
+        if (!this.props.rooms.includes(this.props.location.pathname, 0)) {
+            axios.post('/user/add-room', {userId: localStorage.getItem('userId'), roomId: window.location.pathname})
+                .then(response => {
+                    this.props.fetchUserInformation()
+                })
+        }
     }
 
     render() {
@@ -53,4 +62,4 @@ class Room extends React.Component {
     }
 }
 
-export default Room;
+export default withRouter(Room);
