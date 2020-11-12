@@ -49,6 +49,26 @@ label {
     transform: translate(-50%, -50%);
 }
 
+.login-error-box {
+    background-color: darkred;
+    position: absolute;
+    left: 50%;
+    bottom: 150px;
+    transform: translateX(-50%);
+    height: 40px;
+    width: 70%;
+}
+
+.login-error-message {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    text-align: center;
+    color: white !important;
+    transform: translate(-50%, -50%);
+}
+
 .login-logo {
     font-family: 'Paytone One', sans-serif;
     font-size: 40pt;

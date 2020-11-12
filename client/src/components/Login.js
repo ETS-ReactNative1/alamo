@@ -7,7 +7,8 @@ class Login extends React.Component {
         super(props)
 
         this.state = {
-            showLogin: false
+            showLogin: false,
+            errorMessage: ''
         }
     }
 
@@ -36,9 +37,9 @@ class Login extends React.Component {
             .then((response) => {
                 if (response.status === 200) {
                     window.location.assign('/')
-                }
+                } 
             })
-            .catch((err) => console.log(err))
+            .catch((err) => this.setState({errorMessage: 'Incorrect email or password.'}))
     }
 
     loginForm = () => {
@@ -52,6 +53,12 @@ class Login extends React.Component {
                         <input className="login-input" type="password" name="password" placeholder="Password"/>
                         <button className="primary-btn login-button" type="submit">login</button>
                     </form>
+                    {this.state.errorMessage.length > 0 ? 
+                        <div className="login-error-box">
+                            <h6 className="login-error-message">{this.state.errorMessage}</h6>
+                        </div> :
+                        null
+                    }
                     <p className="sign-up-para">No account? <a className="sign-up-button" href="/sign-up">Sign Up</a></p>
                 </div>
             )
