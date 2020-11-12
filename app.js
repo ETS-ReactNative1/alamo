@@ -75,9 +75,11 @@ io.on('connection', (socket) => {
             rooms[roomId] = [userId]
         } else {
             //If room is already populated with a peer(s), append new peer to room
-            let updateRoomPeers;
-            updateRoomPeers = rooms[roomId].concat(userId);
-            rooms[roomId] = updateRoomPeers;
+            //Prevent user being added to same room twice
+            if (!(rooms[roomId].includes(userId, 0))) {}
+                let updateRoomPeers;
+                updateRoomPeers = rooms[roomId].concat(userId);
+                rooms[roomId] = updateRoomPeers;
         }
 
         //Output current users connected to room
