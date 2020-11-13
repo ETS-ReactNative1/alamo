@@ -18,6 +18,16 @@ class FriendCard extends React.Component {
         }
     }
 
+    handleContextClick = (event) => {
+        event.preventDefault();
+        const x_pos = event.pageX.toString() + 'px';
+        const y_pos = event.pageY.toString() + 'px';
+        const online = event.currentTarget.getAttribute('data-online');
+        console.log(online)
+        this.props.handleContextMenu(event.currentTarget.id, 'friend', x_pos, y_pos, online)
+    }
+
+
     fetchUserInformation = async () => {
         axios.get('/user', {params: {userId: this.props.userId}})
             .then((response) => {
@@ -43,7 +53,7 @@ class FriendCard extends React.Component {
 
     render() {
         return(
-            <div id={this.props.userId} className="row sidebar-friend align-items-center">
+            <div id={this.props.userId} data-online={this.state.online} className="row sidebar-friend align-items-center" onContextMenu={this.handleContextClick}>
                 <div className="col-3">
                     {this.state.online ? <i class="fas fa-circle online"></i> : null }
                     <img className="user-avatar rounded-circle w-15" src={'/images/avatars/' + this.state.user.avatar + '-avatar.png'} />

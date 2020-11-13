@@ -36,7 +36,6 @@ io.on('connection', (socket) => {
 
     //Add user to list of connected clients and broadcast that user is online
     socket.on('online', (userId, callback) => {
-        console.log('List of connected Clients', client)
         if (!(userId in clients)) {
             clients[userId] = {socketId: socket.id}
             io.sockets.emit('new-user-online', userId, clients);
@@ -55,6 +54,8 @@ io.on('connection', (socket) => {
             io.sockets.emit('new-user-online', userId, clients);
         }
 
+        console.log('List of connected Clients', clients)
+
         //Send back list of active clients when user logs on
         callback(clients)
     })
@@ -71,7 +72,9 @@ io.on('connection', (socket) => {
     }
 
     socket.on('user-offline', (userId) => {
+        console.log('user offline', userId)
         disconnectedClients[userId] = {}
+        console.log('Purge clients', disconnectedClients)
         setTimeout(() => {
             purgeDisconnectedClients();
         }, 1000 * 30)

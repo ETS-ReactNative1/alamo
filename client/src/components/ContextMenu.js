@@ -3,6 +3,7 @@ import { withRouter } from 'react-router-dom';
 
 import ProfileContext from './ProfileContext';
 import RoomContext from './RoomContext';
+import FriendContext from './FriendContext';
 
 class ContextMenu extends React.Component {
     constructor(props) {
@@ -26,14 +27,23 @@ class ContextMenu extends React.Component {
         )
     }
 
+    friendMenu = (show, id,  x, y, online) => {
+        return (
+            <FriendContext show={show} id={id} x={x} y={y} online={online} fetchUserInformation={this.props.fetchUserInformation} />
+        )
+    }
+
+
     contextMenu = () => {
         const id = this.props.status && this.props.status.id;
         const x = this.props.status && this.props.status.x;
         const y = this.props.status && this.props.status.y;
-        const type = this.props.status && this.props.status.type
+        const type = this.props.status && this.props.status.type;
+        const online = this.props.status && this.props.status.online;
 
         if (type === 'profile') return this.profileMenu('block', x, y)
         if (type === 'room') return this.roomMenu('block', id, x, y)
+        if (type === 'friend') return this.friendMenu('block', id, x, y, online)
     }
 
     render() {

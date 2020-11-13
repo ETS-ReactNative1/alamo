@@ -45,7 +45,7 @@ class Notification extends React.Component {
         socket.on('pending-invitation', (senderId, receiverId) => {
             if (receiverId === localStorage.getItem('userId')) {
 
-                axios.get('userId', {params: {userId: senderId}})
+                axios.get('/user', {params: {userId: senderId}})
                 .then(response => {
                     let message = response.data[0].user_metadata.username + ' would like to add you as a friend'
                     this.setState({notification: message, show: true, pendingInvitation: senderId})
@@ -55,11 +55,11 @@ class Notification extends React.Component {
             }
         })
 
-        socket.on('accept-friend-invite', (senderId, receiverId) => {
+        socket.on('/accept-friend-invite', (senderId, receiverId) => {
             console.log('accepted friends request socket io', receiverId)
             if (receiverId === localStorage.getItem('userId')) {
 
-                axios.get('userId', {params: {userId: senderId}})
+                axios.get('/user', {params: {userId: senderId}})
                 .then(response => {
                     let message = response.data[0].user_metadata.username + ' added you as a friend'
                     this.setState({notification: message, show: true, pendingInvitation: senderId})

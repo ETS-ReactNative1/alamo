@@ -25,7 +25,8 @@ class Dashboard extends React.Component {
                 type: '',
                 id: '',
                 x: '',
-                y: ''
+                y: '',
+                online: ''
             },
             onlineUsers: {}
         }
@@ -50,17 +51,21 @@ class Dashboard extends React.Component {
             socket.emit('user-offline', localStorage.getItem('userId'))
         });
 
-        socket.emit('online', localStorage.getItem('userId'), (response) => {
-            this.setState({onlineUsers: response})
-        });
+        console.log(this.props.isAuth)
 
-        socket.on('new-user-online', (userId, clients) => {
-            this.setState({onlineUsers: clients})
-        })
+        if (this.props.auth) {
+            socket.emit('online', localStorage.getItem('userId'), (response) => {
+                this.setState({onlineUsers: response})
+            });
 
-        socket.on('user-offline-update', (clients) => {
-            this.setState({onlineUsers: clients})
-        })
+            socket.on('new-user-online', (userId, clients) => {
+                this.setState({onlineUsers: clients})
+            })
+
+            socket.on('user-offline-update', (clients) => {
+                this.setState({onlineUsers: clients})
+            })
+        }
 
         //If friend invite has been declined, update user
         socket.on('decline-friend-invite', (receiverId) => {
@@ -91,8 +96,9 @@ class Dashboard extends React.Component {
 
 
     //Handle Context Menu Click
-    handleContextMenu = (id, type, x, y) => {
-        this.setState({contextMenu: {type: type, id: id, x: x, y: y}})
+    handleContextMenu = (id, type, x, y, onlineStatus) => {
+        console.log(onlineStatus, 'ONLINE???')
+        this.setState({contextMenu: {type: type, id: id, x: x, y: y, online: onlineStatus}})
     }
 
     clearContextMenu = () => {

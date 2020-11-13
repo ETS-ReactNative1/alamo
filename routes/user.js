@@ -111,6 +111,19 @@ router.post('/accept-friend', (req, res) => {
     .catch(error => console.error(error));
 })
 
+router.post('/unfriend', (req, res) => {
+    const userId = req.body.userId;
+    const friendId = req.body.friendId;
+    
+    User.updateOne({_id: userId}, {$pull : {friends : friendId}})
+        .then((response) => {
+            User.updateOne({_id: friendId}, {$pull : {friends : userId}})
+                .then((response) => {
+                    res.status(200).json({status: `${friendId} has been removed from friends`})
+                })
+        })
+        .catch((err) => console.log(err))
+});
 
 
 module.exports = router;

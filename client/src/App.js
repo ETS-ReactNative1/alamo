@@ -56,7 +56,7 @@ function App(props) {
                 <ErrorBoundary>
                     <Switch>
                         <Route path="/login" component={Login}/>
-                        <Dashboard changeOnlineStatus={(props) => { changeOnlineStatus() }}></Dashboard>
+                        <Dashboard auth={isAuth} changeOnlineStatus={(props) => { changeOnlineStatus() }}></Dashboard>
                     </Switch>
                 </ErrorBoundary>
             </Router>

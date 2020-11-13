@@ -57,7 +57,7 @@ class FriendsList extends React.Component  {
                 {friends.map((friend) => {
                     if ((friend in this.props.onlineUsers)) {
                         return(
-                            <FriendCard onlineUsers={this.props.onlineUsers} userId={friend}/>
+                            <FriendCard onlineUsers={this.props.onlineUsers} handleContextMenu={this.props.handleContextMenu} userId={friend}/>
                         )
                     }
                 })}
@@ -67,7 +67,7 @@ class FriendsList extends React.Component  {
                 {friends.map((friend) => {
                     if (!(friend in this.props.onlineUsers))
                         return(
-                            <FriendCard onlineUsers={this.props.onlineUsers} userId={friend}/>
+                            <FriendCard onlineUsers={this.props.onlineUsers} handleContextMenu={this.props.handleContextMenu} userId={friend}/>
                         )
                 })}
 

@@ -51,6 +51,7 @@ class AddFriend extends React.Component {
                 axios.get('/check-friend-status', {params: {searcherId: localStorage.getItem('userId'), recipentId: receiverId}})
                     .then(friendStatus => {
                         this.setState({friendStatus: friendStatus.data.friendStatus})
+                        socket.emit('friend-event', 'accept', senderId, localStorage.getItem('userId'))
                     })
             })
             .catch(err => console.log(err))
