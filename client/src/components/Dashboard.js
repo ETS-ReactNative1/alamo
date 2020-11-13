@@ -50,6 +50,10 @@ class Dashboard extends React.Component {
             this.setState({onlineUsers: response})
         });
 
+        socket.on('new-user-online', (userId, clients) => {
+            this.setState({onlineUsers: clients})
+        })
+
         //If friend invite has been declined, update user
         socket.on('decline-friend-invite', (receiverId) => {
             if (receiverId === localStorage.getItem('userId')) {

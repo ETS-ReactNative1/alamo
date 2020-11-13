@@ -33,21 +33,15 @@ class FriendCard extends React.Component {
             }
 
         socket.on('new-user-online', (userId, clients) => {
-            console.log(clients)
             if (this.state.user.id === userId) {
                 return this.setState({online: true})
             }
 
         })
-
-        socket.on('user-offline', (userId, clients) => {
-            
-        })
     }
 
 
     render() {
-        console.log(this.props.onlineUsers)
         return(
             <div id={this.props.userId} className="row sidebar-friend align-items-center">
                 <div className="col-3">

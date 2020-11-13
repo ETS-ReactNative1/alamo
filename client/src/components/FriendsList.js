@@ -8,7 +8,8 @@ class FriendsList extends React.Component  {
         super(props)
 
         this.state = {
-            onlineFriends: []
+            onlineFriends: [],
+            no: 0
         }
     }
 
@@ -20,24 +21,48 @@ class FriendsList extends React.Component  {
         }
     }
 
+    componentDidUpdate(prevProps) {
+        if (this.props.onlineUsers != prevProps.onlineUsers)
+            this.numberOfFriends()
+    }
+
+    numberOfFriends = () => {
+        let count = 0;
+        this.props.friends.map((friend) => {
+            if (friend in this.props.onlineUsers) {
+                count += 1
+            }
+        })
+        this.setState({no: count})
+    }
+
     render() {
         const friends = this.props.friends;
+        let count = 0;
         return(
             <React.Fragment>
                 <h3 className="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 thin">Friends</h3>
 
-                {friends.length > 0 ? <h3 className="sidebar-subheading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 thin">Online - 4 Friends</h3> : null }
+                {friends.length > 0 ? <h3 className="sidebar-subheading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 thin">Online - {this.state.no} Friends</h3> : null }
 
                 {this.initFriendsList()}
 
                 {friends.map((friend) => {
-                    console.log(friend, 'this is the friend id')
-                    return(
-                        <FriendCard onlineUsers={this.props.onlineUsers} userId={friend}/>
-                    )
+                    if ((friend in this.props.onlineUsers)) {
+                        return(
+                            <FriendCard onlineUsers={this.props.onlineUsers} userId={friend}/>
+                        )
+                    }
                 })}
 
                 {friends.length > 0 ? <h3 className="sidebar-subheading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 thin">Offline</h3> : null }
+
+                {friends.map((friend) => {
+                    if (!(friend in this.props.onlineUsers))
+                        return(
+                            <FriendCard onlineUsers={this.props.onlineUsers} userId={friend}/>
+                        )
+                })}
 
             </React.Fragment>
         )
