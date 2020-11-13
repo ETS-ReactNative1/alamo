@@ -38,13 +38,15 @@ class Room extends React.Component {
 
     componentDidMount() {
         this.fetchRoomInformation();
-
-        if (!this.props.rooms.includes(this.props.location.pathname, 0)) {
-            axios.post('/user/add-room', {userId: localStorage.getItem('userId'), roomId: window.location.pathname})
-                .then(response => {
-                    this.props.fetchUserInformation()
-                })
-        }
+        setTimeout(() => {
+            if (!this.props.rooms.includes(this.props.location.pathname, 0)) {
+                console.log('DOES NOT HAVE THIS IN LIST')
+                axios.post('/user/add-room', {userId: localStorage.getItem('userId'), roomId: window.location.pathname})
+                    .then(response => {
+                        this.props.fetchUserInformation()
+                    })
+            }
+        }, 500)
     }
 
     render() {

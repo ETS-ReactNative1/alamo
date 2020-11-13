@@ -13,89 +13,94 @@ import Room from './Room';
 import CreateRoom from './CreateRoom';
 import AccountSettings from './AccountSettings';
 
-const Dashboard = (props) => {
-    const { user } = useAuth0();
-    const [state, setState] = React.useState([])
-    const socket = io.connect('http://localhost:8080')
+const socket = io.connect('http://localhost:8080')
 
-    //Fetch all information related to user
-    const fetchUserInformation = async () => {
-        const response = await axios.get('/auth/user')
-        setState(response.data)
-        console.log('fetch infomration form user')
+class Dashboard extends React.Component {
+    constructor(props) {
+        super(props)
+
+        this.state = {
+            user: [],
+            contextMenu: {
+                type: '',
+                x: '',
+                y: ''
+            }
+        }
     }
 
-    React.useEffect(() => {
+    //Fetch all information related to user
+    fetchUserInformation = async () => {
+        axios.get('/auth/user')
+            .then((response) => {
+                this.setState({user: response.data})
+            })
+            .then(() => {
+                //Store userId (user primary key) on client side for ease of access throughout application
+                localStorage.setItem('userId', this.state.user._id)
+                localStorage.setItem('account_setup', this.state.user.account_setup)
+            })
+    }
 
+    componentDidMount() {
         //If friend invite has been declined, update user
         socket.on('decline-friend-invite', (receiverId) => {
             if (receiverId === localStorage.getItem('userId')) {
                 console.log('declined invite')
-                fetchUserInformation();
+                this.fetchUserInformation();
             }
         })
         
         //If friend invite has been accepted, update both accepter and acceptee users
         socket.on('accept-friend-invite', (senderId, receiverId) => {
             if (receiverId === localStorage.getItem('userId') || senderId === localStorage.getItem('userId')) {
-                fetchUserInformation();
+                this.fetchUserInformation();
             }
         })
 
         //If user has sent an invite to become friends, update user to reflect pending invite
         socket.on('pending-invitation', (senderId, receiverId) => {
             if (receiverId === localStorage.getItem('userId')) {
-                fetchUserInformation();
+                this.fetchUserInformation();
             }
         })
 
-        fetchUserInformation();
+        this.fetchUserInformation();
 
-    }, [])
 
-    //Store userId (user primary key) on client side for ease of access throughout application
-    localStorage.setItem('userId', state._id)
+    }
+
 
     //Handle Context Menu Click
-    const handleContextMenu = (id, x, y) => {
-        if (id === localStorage.getItem('userId')) {
-            const contextMenu = {contextMenu: {type: 'profile', x: x, y: y}}
-            setState({...state, contextMenu})
-        }
+    handleContextMenu = (id, type, x, y) => {
+        this.setState({contextMenu: {type: type, x: x, y: y}})
     }
 
-    const clearContextMenu = () => {
-        const contextMenu = {contextMenu: {show: 'none', x: '-400px', y: '-400px'}}
-        setState({...state, contextMenu})
+    clearContextMenu = () => {
+        this.setState({contextMenu: {status: false, x: '-400px', y: '-400px'}})
     }
 
-    //Pass up props to trigger online status, only if account setup has been completed
-    if (state.account_setup === true) {
-        props.changeOnlineStatus(state.account_setup);
-    }
-
-    //If new users has not completed a account setup, redirect to complete profile component
-    if (state.account_setup === false) {
-        return(
-            <ProfileSetup user={user}/>
-        )
-    } else {
-        console.log(state)
-        const rooms = state && state.rooms;
+    render() {
+        const rooms = this.state.user && this.state.user.rooms;
+        const account_setup = localStorage.getItem('account_setup');
         return (
-            <div className="container-fluid">
-                <div className="row">
-                    <ContextMenu status={state.contextMenu} />
-                    <Sidebar user={state} handleContextMenu={handleContextMenu}/>
-                    <main className="col px-4">
-                        <NavigationBar/>
-                        <Notification userId={state._id}/>
-                        <Route path="/create-room" render={(props) => (<CreateRoom fetchUserInformation={(props) =>{ fetchUserInformation() }}/>)}/>
-                        {rooms ? <Route path="/room/" render={(props) => <Room rooms={rooms} fetchUserInformation={(props) =>{ fetchUserInformation() }}/>}/> : null}
-                        <Route path="/account-settings" render={(props) => (<AccountSettings userInformation={state}/>)}/>
-                    </main>
+        <React.Fragment>
+            {account_setup ?
+                <div className="container-fluid" onClick={this.clearContextMenu}>
+                    <div className="row">
+                        <ContextMenu status={this.state.contextMenu} />
+                        <Sidebar user={this.state.user} handleContextMenu={this.handleContextMenu}/>
+                        <main className="col px-4">
+                            <NavigationBar/>
+                            <Notification userId={this.state.user._id}/>
+                            <Route path="/create-room" render={(props) => (<CreateRoom fetchUserInformation={this.fetchUserInformation}/>)}/>
+                            {rooms ? <Route path="/room/" render={(props) => <Room rooms={rooms} fetchUserInformation={this.fetchUserInformation}/>}/> : null}
+                            <Route path="/account-settings" render={(props) => (<AccountSettings userInformation={this.state.user}/>)}/>
+                        </main>
+                    </div>
                 </div>
-            </div>
+                : <ProfileSetup /> }
+        </React.Fragment>
         );
     }
 }

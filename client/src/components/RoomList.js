@@ -22,7 +22,7 @@ const RoomList = (props) => {
 
             {props.rooms.map((roomId) => {
                 return(
-                    <RoomItem roomId={roomId}/>
+                    <RoomItem roomId={roomId} handleContextMenu={props.handleContextMenu}/>
                 )
             })}
         </ul>

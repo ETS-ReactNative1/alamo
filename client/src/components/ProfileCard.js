@@ -6,7 +6,7 @@ const ProfileCard = (props) => {
         event.preventDefault();
         const x_pos = event.pageX.toString() + 'px';
         const y_pos = event.pageY.toString() + 'px';
-        props.handleContextMenu(props.userId, x_pos, y_pos)
+        props.handleContextMenu(props.userId, 'profile', x_pos, y_pos)
     }
 
     return(

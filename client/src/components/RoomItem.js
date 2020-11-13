@@ -21,6 +21,12 @@ const RoomItem = (props) => {
         getRoomInformation();
     }, [])
 
+    const handleContextClick = (event) => {
+        event.preventDefault();
+        const x_pos = event.pageX.toString() + 'px';
+        const y_pos = event.pageY.toString() + 'px';
+        props.handleContextMenu(event.currentTarget.id, 'room', x_pos, y_pos)
+    }
 
     const handleClick = (event) => {
         redirect(event.currentTarget.id)
@@ -38,7 +44,7 @@ const RoomItem = (props) => {
 
     return(
         <React.Fragment>
-            <li id={props.roomId} onClick={(event) => handleClick(event)} className="nav-item">
+            <li onContextMenu={handleContextClick} id={props.roomId} onClick={(event) => handleClick(event)} className="nav-item">
 
                 {activeChannel()}
 
