@@ -13,7 +13,8 @@ import Room from './Room';
 import CreateRoom from './CreateRoom';
 import AccountSettings from './AccountSettings';
 
-const socket = io.connect('https://alamo-d19124355.herokuapp.com/')
+<<<<<<< HEAD
+const socket = io.connect('http://localhost:8080')
 
 class Dashboard extends React.Component {
     constructor(props) {
@@ -31,6 +32,12 @@ class Dashboard extends React.Component {
             onlineUsers: {}
         }
     }
+=======
+const Dashboard = (props) => {
+    const { user } = useAuth0();
+    const [state, setState] = React.useState([])
+    const socket = io.connect('https://alamo-d19124355.herokuapp.com/')
+>>>>>>> update socket.io connect to heroku urls
 
     //Fetch all information related to user
     fetchUserInformation = async () => {
