@@ -26,7 +26,8 @@ class Dashboard extends React.Component {
                 id: '',
                 x: '',
                 y: ''
-            }
+            },
+            onlineUsers: {}
         }
     }
 
@@ -40,10 +41,15 @@ class Dashboard extends React.Component {
                 //Store userId (user primary key) on client side for ease of access throughout application
                 localStorage.setItem('userId', this.state.user._id)
                 localStorage.setItem('account_setup', this.state.user.account_setup)
+                this.props.changeOnlineStatus()
             })
     }
 
     componentDidMount() {
+        socket.emit('online', localStorage.getItem('userId'), (response) => {
+            this.setState({onlineUsers: response})
+        });
+
         //If friend invite has been declined, update user
         socket.on('decline-friend-invite', (receiverId) => {
             if (receiverId === localStorage.getItem('userId')) {
@@ -91,7 +97,7 @@ class Dashboard extends React.Component {
                 <div className="container-fluid" onClick={this.clearContextMenu}>
                     <div className="row">
                         <ContextMenu status={this.state.contextMenu} fetchUserInformation={this.fetchUserInformation} />
-                        <Sidebar user={this.state.user} handleContextMenu={this.handleContextMenu}/>
+                        <Sidebar user={this.state.user} handleContextMenu={this.handleContextMenu} onlineUsers={this.state.onlineUsers}/>
                         <main className="col px-4">
                             <NavigationBar/>
                             <Notification userId={this.state.user._id}/>

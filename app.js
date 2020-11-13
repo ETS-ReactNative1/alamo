@@ -29,21 +29,32 @@ const server = require('http').Server(app);
 const io = require('socket.io')(server);
 
 const clients = {}
+const disconnect = {}
 const rooms = {}
 
 io.on('connection', (socket) => {
 
     //Add user to list of connected clients and broadcast that user is online
-    socket.on('online', (userId) => {
+    socket.on('online', (userId, callback) => {
         if (!(userId in clients)) {
             clients[userId] = {socketId: socket.id}
             console.log(clients, 'CLIENTS CONNECTED')
-            socket.broadcast.emit('new-user-online', userId);
+            io.sockets.emit('new-user-online', userId, clients);
         } else {
             //Update socket id but do not broadcast new user online
             clients[userId] = {socketId: socket.id }
+            io.sockets.emit('new-user-online', userId, clients);
             console.log(clients, 'CLIENTS CONNECTED')
         }
+        callback(clients)
+    })
+
+    socket.on('disconnect', () => {
+        Object.keys(clients).map(key => {
+            console.log(clients[key].socketId, 'this is socket key id')
+            if (clients[key].socketId === socket.id)
+                disconnect[key] = key
+            });
     })
 
     socket.on('leave-room', (roomId, userId) => {

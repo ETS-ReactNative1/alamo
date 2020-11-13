@@ -19,14 +19,15 @@ class Room extends React.Component {
 
         this.state = {
             roomTitle: null,
-            admins: null
+            admins: null,
+            channel: null
         }
     }
 
     fetchRoomInformation = () => {
         axios.get('/room', {params: {roomId: window.location.pathname}})
             .then(response => {
-                this.setState({roomTitle: response.data.room_title, admins: response.data.admins})
+                this.setState({roomTitle: response.data.room_title, admins: response.data.admins, channel: response.data.stream_channel})
             })
     }
 
@@ -54,11 +55,11 @@ class Room extends React.Component {
             <div className="room-container d-flex">
                 <div className="container-fluid">
                     <h1 className="room-title">{this.state.roomTitle}</h1>
-                    <TwitchPlayer twitchChannel={'ESL_CSGO'}/>
+                    <TwitchPlayer twitchChannel={this.state.channel}/>
                     <RoomRTC admins={this.state.admins}/>
                     <MoreStreams/>
                 </div>
-                <TwitchChat twitchChannel={'ESL_CSGO'}/>
+                <TwitchChat twitchChannel={this.state.channel}/>
             </div>
         )
     }

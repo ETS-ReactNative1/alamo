@@ -27,7 +27,7 @@ class Notification extends React.Component {
         socket.on('new-user-online', (userId) => {
             setTimeout(() => {
                 if (userId != this.props.userId) {
-                    axios.get('userId', {params: {userId: userId}})
+                    axios.get('/user', {params: {userId: userId}})
                         .then(response => {
                             let message = response.data[0].user_metadata.username + ' is now online'
                             this.setState({notification: message, show: true})

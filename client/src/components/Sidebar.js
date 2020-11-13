@@ -33,7 +33,7 @@ class Sidebar extends React.Component {
 
                     { rooms ? <RoomList rooms={rooms} handleContextMenu={this.props.handleContextMenu} /> : null}
 
-                    { friends ? <FriendsList friends={friends}/> : null }
+                    { friends ? <FriendsList friends={friends} onlineUsers={this.props.onlineUsers}/> : null }
 
                     { pendingInvitation ? <SidebarFriendsControls pendingInvitations={pendingInvitation}/> : null }
 

@@ -33,7 +33,7 @@ class FriendsList extends React.Component  {
                 {friends.map((friend) => {
                     console.log(friend, 'this is the friend id')
                     return(
-                        <FriendCard userId={friend}/>
+                        <FriendCard onlineUsers={this.props.onlineUsers} userId={friend}/>
                     )
                 })}
 

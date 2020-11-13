@@ -32,13 +32,13 @@ function App(props) {
     }
 
     React.useEffect(() => {
+        socket.emit('online', localStorage.getItem('userId'), (response) => {
+            console.log(response)
+        });
         checkAuth()
     }, [])
 
-    const changeOnlineStatus = (account_setup) => {
-        if (account_setup === true) {
-            socket.emit('online', localStorage.getItem('userId'));
-        }
+    const changeOnlineStatus = () => {
     }
 
     if (isLoading) {
@@ -56,7 +56,7 @@ function App(props) {
                 <ErrorBoundary>
                     <Switch>
                         <Route path="/login" component={Login}/>
-                        <Dashboard changeOnlineStatus={(account_setup) => { changeOnlineStatus(account_setup) }}></Dashboard>
+                        <Dashboard changeOnlineStatus={(props) => { changeOnlineStatus() }}></Dashboard>
                     </Switch>
                 </ErrorBoundary>
             </Router>

@@ -10,7 +10,6 @@ router.get('/', (req, res) => {
     console.log(roomId)
     Room.findOne({roomId: roomId})
     .then(response => {
-        console.log(response)
         res.status(200).json(response)
     })
     .catch(error => console.error(error));
