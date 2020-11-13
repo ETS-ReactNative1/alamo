@@ -54,11 +54,11 @@ class Room extends React.Component {
             <div className="room-container d-flex">
                 <div className="container-fluid">
                     <h1 className="room-title">{this.state.roomTitle}</h1>
-                    <TwitchPlayer/>
+                    <TwitchPlayer twitchChannel={'ESL_CSGO'}/>
                     <RoomRTC admins={this.state.admins}/>
                     <MoreStreams/>
                 </div>
-                <TwitchChat/>
+                <TwitchChat twitchChannel={'ESL_CSGO'}/>
             </div>
         )
     }
