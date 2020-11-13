@@ -21,6 +21,7 @@ const RoomList = (props) => {
             {initRooms()}
 
             {props.rooms.map((roomId) => {
+                console.log(roomId)
                 return(
                     <RoomItem roomId={roomId} handleContextMenu={props.handleContextMenu}/>
                 )

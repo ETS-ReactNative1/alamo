@@ -19,7 +19,7 @@ const RoomItem = (props) => {
 
     React.useEffect(() => {
         getRoomInformation();
-    }, [])
+    }, [props.roomId])
 
     const handleContextClick = (event) => {
         event.preventDefault();

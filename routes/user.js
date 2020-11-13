@@ -60,6 +60,19 @@ router.post('/add-room', (req, res) => {
         .catch((err) => console.log(err))
 })
 
+router.post('/remove-room', (req, res) => {
+    const roomId = req.body.roomId
+    const userId = req.body.userId
+
+    User.updateOne({_id: userId}, {$pull: {rooms: roomId}})
+        .then((response) => {
+            res.status(200).json({status: 'User removed from room'})
+        })
+        .catch((err) => console.log(err))
+})
+
+
+
 router.post('/add-friend', (req, res) => {
     console.log(req.body.senderId, 'would like to add ', req.body.receiverId, 'as a friend')
 
