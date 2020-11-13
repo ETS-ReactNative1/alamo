@@ -26,14 +26,21 @@ class FriendsList extends React.Component  {
             this.numberOfFriends()
     }
 
+    componentDidMount() {
+        this.numberOfFriends();
+    }
+
     numberOfFriends = () => {
         let count = 0;
-        this.props.friends.map((friend) => {
-            if (friend in this.props.onlineUsers) {
+        Object.keys(this.props.onlineUsers).map((user) => {
+
+            if (this.props.friends.includes(user, 0)) {
                 count += 1
             }
+
+            this.setState({no: count})
+
         })
-        this.setState({no: count})
     }
 
     render() {

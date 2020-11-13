@@ -49,12 +49,10 @@ io.on('connection', (socket) => {
         callback(clients)
     })
 
-    socket.on('disconnect', () => {
-        Object.keys(clients).map(key => {
-            console.log(clients[key].socketId, 'this is socket key id')
-            if (clients[key].socketId === socket.id)
-                disconnect[key] = key
-            });
+    socket.on('user-offline', (userId) => {
+        delete clients[userId]
+        console.log(clients)
+        io.sockets.emit('user-offline-update', userId, clients);
     })
 
     socket.on('leave-room', (roomId, userId) => {

@@ -46,11 +46,19 @@ class Dashboard extends React.Component {
     }
 
     componentDidMount() {
+        window.addEventListener("beforeunload", function(event) { 
+            socket.emit('user-offline', localStorage.getItem('userId'))
+        });
+
         socket.emit('online', localStorage.getItem('userId'), (response) => {
             this.setState({onlineUsers: response})
         });
 
         socket.on('new-user-online', (userId, clients) => {
+            this.setState({onlineUsers: clients})
+        })
+
+        socket.on('user-offline-update', (userId, clients) => {
             this.setState({onlineUsers: clients})
         })
 
