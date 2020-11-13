@@ -58,7 +58,7 @@ class Dashboard extends React.Component {
             this.setState({onlineUsers: clients})
         })
 
-        socket.on('user-offline-update', (userId, clients) => {
+        socket.on('user-offline-update', (clients) => {
             this.setState({onlineUsers: clients})
         })
 

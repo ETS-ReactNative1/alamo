@@ -29,30 +29,52 @@ const server = require('http').Server(app);
 const io = require('socket.io')(server);
 
 const clients = {}
-const disconnect = {}
+const disconnectedClients = {}
 const rooms = {}
 
 io.on('connection', (socket) => {
 
     //Add user to list of connected clients and broadcast that user is online
     socket.on('online', (userId, callback) => {
+        console.log('List of connected Clients', client)
         if (!(userId in clients)) {
             clients[userId] = {socketId: socket.id}
-            console.log(clients, 'CLIENTS CONNECTED')
             io.sockets.emit('new-user-online', userId, clients);
+
+            //If a user is has recently disconnected and is waiting to be purged, remove them
+            if (userId in disconnectedClients)
+                delete disconnectedClients[userId]
+
         } else {
             //Update socket id but do not broadcast new user online
             clients[userId] = {socketId: socket.id }
+
+            if (userId in disconnectedClients)
+                delete disconnectedClients[userId]
+
             io.sockets.emit('new-user-online', userId, clients);
-            console.log(clients, 'CLIENTS CONNECTED')
         }
+
+        //Send back list of active clients when user logs on
         callback(clients)
     })
 
+    //To avoid users being spammed with refresh appearing them offline, when a user leaves, they will be added to a object, and after 30 seconsds anyone in this object is purged/remove from list of active clients
+    const purgeDisconnectedClients = () => {
+        Object.keys(disconnectedClients).map((disconnectedUser) => {
+            if (disconnectedUser in clients)
+                delete clients[disconnectedUser]
+        })
+        console.log('Purge Complete') 
+        io.sockets.emit('user-offline-update', clients);
+
+    }
+
     socket.on('user-offline', (userId) => {
-        delete clients[userId]
-        console.log(clients)
-        io.sockets.emit('user-offline-update', userId, clients);
+        disconnectedClients[userId] = {}
+        setTimeout(() => {
+            purgeDisconnectedClients();
+        }, 1000 * 30)
     })
 
     socket.on('leave-room', (roomId, userId) => {
@@ -131,6 +153,7 @@ io.on('connection', (socket) => {
     })
 
 })
+
 
 io.on('disconnect', (socket) => {
     console.log('user disconnect', socket.id)
