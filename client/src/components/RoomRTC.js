@@ -6,7 +6,8 @@ import Peer from 'peerjs';
 import axios from 'axios';
 import RoomUser from './RoomUser';
 
-let socket = io.connect('http://localhost:8080/')
+const socket = io.connect('https://alamo-d19124355.herokuapp.com/')
+
 
 class RoomRTC extends React.Component {
     constructor(props) {
@@ -56,8 +57,10 @@ class RoomRTC extends React.Component {
     updateRoomChange = (userId) => {
 
         this.peer = new Peer(localStorage.getItem('userId'), {
-            host: '/',
-            port: '8081'
+            host: 'https://alamo-peerjs.herokuapp.com',
+            secure: true,
+            host: 'alamo-peerjs.herokuapp.com',
+            port: 443
         })
 
         //Join new room

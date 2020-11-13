@@ -4,7 +4,7 @@ import io from 'socket.io-client';
 
 
 const LogoutItem = () => {
-    const socket = io.connect('http://localhost:8080')
+    const socket = io.connect('https://alamo-d19124355.herokuapp.com/')
 
     const logout = () => {
         console.log('logout')
