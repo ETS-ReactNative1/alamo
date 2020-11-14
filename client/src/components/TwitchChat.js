@@ -1,7 +1,7 @@
 import React from 'react';
 
 const TwitchChat = (props) => {
-    const url = `https://www.twitch.tv/embed/${props.twitchChannel}/chat?darkpopout&migration=true&parent=localhost`;
+    const url = `https://www.twitch.tv/embed/${props.twitchChannel}/chat?darkpopout&migration=true&parent=https://alamo-d19124355.herokuapp.com/`;
     console.log(url)
     return(
         <div className="container twitch-chat-row">
