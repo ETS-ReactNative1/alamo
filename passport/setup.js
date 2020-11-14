@@ -3,7 +3,7 @@ const bcrypt = require("bcryptjs");
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 
-const User = require('../models/userSchema') || mongoose.model('users');
+const User = require('../models/UserSchema') || mongoose.model('users');
 
 passport.serializeUser((user, done) => {
     done(null, user.id);
