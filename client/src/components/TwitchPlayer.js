@@ -1,7 +1,7 @@
 import React from 'react';
 
 const TwitchPlayer = (props) => {
-    const url = `https://player.twitch.tv/?channel=${props.twitchChannel}&migration=true&parent=alamo-d19124355.herokuapp.com/`
+    const url = `https://player.twitch.tv/?channel=${props.twitchChannel}&migration=true&parent=alamo-d19124355.herokuapp.com`
 
     return (
         <div className="row">
