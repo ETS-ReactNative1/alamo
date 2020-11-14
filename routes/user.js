@@ -3,7 +3,7 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const ObjectId = require('mongoose').Types.ObjectId;
 
-const User = require('../models/userSchema') || mongoose.model('users');
+const User = require('../models/UserSchema') || mongoose.model('users');
 
 router.get('/', (req, res) => {
     if (req.query.email)
