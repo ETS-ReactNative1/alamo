@@ -27,7 +27,7 @@ class ProfileSetup extends React.Component {
         } else {
             let payload = {username: event.target[0].value, avatar: this.state.avatarSelected, email: this.props.user.email}
 
-            axios.post('/complete-profile', payload)
+            axios.post('/user/complete-profile', payload)
                 .then(response => {
                   window.location.reload();
               }).catch(error => {

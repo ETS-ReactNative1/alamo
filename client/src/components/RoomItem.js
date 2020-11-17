@@ -13,7 +13,6 @@ const RoomItem = (props) => {
         axios.get('/room', {params: {roomId: props.roomId}})
             .then((response) => {
                 setRooms(response.data)
-                console.log(response.data)
             })
     }
 

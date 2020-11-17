@@ -37,12 +37,6 @@ class Dashboard extends React.Component {
             .then((response) => {
                 this.setState({user: response.data})
             })
-            .then(() => {
-                //Store userId (user primary key) on client side for ease of access throughout application
-                localStorage.setItem('userId', this.state.user._id)
-                localStorage.setItem('account_setup', this.state.user.account_setup)
-                this.props.changeOnlineStatus()
-            })
     }
 
     componentDidMount() {
@@ -50,7 +44,7 @@ class Dashboard extends React.Component {
             socket.emit('user-offline', localStorage.getItem('userId'))
         });
 
-        console.log(this.props.isAuth)
+        this.fetchUserInformation();
 
         if (this.props.auth) {
             socket.emit('online', localStorage.getItem('userId'), (response) => {
@@ -87,10 +81,6 @@ class Dashboard extends React.Component {
                 this.fetchUserInformation();
             }
         })
-
-        this.fetchUserInformation();
-
-
     }
 
 
@@ -110,13 +100,13 @@ class Dashboard extends React.Component {
             <div className="container-fluid" onClick={this.clearContextMenu}>
                 <div className="row">
                     <ContextMenu status={this.state.contextMenu} fetchUserInformation={this.fetchUserInformation} />
-                    <Sidebar user={this.props.user} handleContextMenu={this.handleContextMenu} onlineUsers={this.state.onlineUsers}/>
+                    <Sidebar user={this.state.user} handleContextMenu={this.handleContextMenu} onlineUsers={this.state.onlineUsers}/>
                     <main className="col px-4">
                         <NavigationBar/>
-                        <Notification userId={this.props.user._id}/>
-                        <Route path="/create-room" render={(props) => (<CreateRoom fetchUserInformation={this.props.fetchUserInformation}/>)}/>
-                        <Route path="/room/" render={(props) => <Room rooms={this.props.user.rooms} fetchUserInformation={this.props.fetchUserInformation}/>}/>
-                        <Route path="/account-settings" render={(props) => (<AccountSettings userInformation={this.props.user}/>)}/>
+                        <Notification userId={this.state.user._id}/>
+                        <Route path="/create-room" render={(props) => (<CreateRoom fetchUserInformation={this.fetchUserInformation}/>)}/>
+                        <Route path="/room/" render={(props) => <Room rooms={this.props.user.rooms} fetchUserInformation={this.fetchUserInformation}/>}/>
+                        <Route path="/account-settings" render={(props) => (<AccountSettings userInformation={this.state.user}/>)}/>
                     </main>
                 </div>
             </div>

@@ -53,9 +53,9 @@ class FriendCard extends React.Component {
 
     render() {
         return(
-            <div id={this.props.userId} data-online={this.state.online} className="row sidebar-friend align-items-center" onContextMenu={this.handleContextClick}>
+            <div id={this.props.userId} key={this.props.userId} data-online={this.state.online} className="row sidebar-friend align-items-center" onContextMenu={this.handleContextClick}>
                 <div className="col-3">
-                    {this.state.online ? <i class="fas fa-circle online"></i> : null }
+                    {this.state.online ? <i className="fas fa-circle online"></i> : null }
                     <img className="user-avatar rounded-circle w-15" src={'/images/avatars/' + this.state.user.avatar + '-avatar.png'} />
                 </div>
                 <div className="col-9">

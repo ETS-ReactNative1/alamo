@@ -48,7 +48,7 @@ class SearchFriend extends React.Component {
                 })}
                 <h6 id="friend-error-message">{this.state.userNotFound}</h6>
                 <form action="post" onSubmit={this.handleFriendSearch}>
-                    <input id="friend-control-input" placeholder="Username" name="username" autoFocus required minlength="3" />
+                    <input id="friend-control-input" placeholder="Username" name="username" autoFocus required minLength="3" />
                 </form>
             </div>
         )

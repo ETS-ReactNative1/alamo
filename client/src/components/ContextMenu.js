@@ -47,7 +47,6 @@ class ContextMenu extends React.Component {
     }
 
     render() {
-        console.log(this.props.status)
         return(
             <React.Fragment>
                 {this.contextMenu()}

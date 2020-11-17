@@ -16,7 +16,6 @@ class Sidebar extends React.Component {
         const pendingInvitation = this.props.user.pending_invitations;
         const friends = this.props.user.friends;
         const rooms = this.props.user.rooms;
-        console.log(rooms)
 
         return(
             <nav className="col-md-2 d-none d-md-block sidebar">

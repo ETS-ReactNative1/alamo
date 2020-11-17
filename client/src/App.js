@@ -8,6 +8,7 @@ import io from 'socket.io-client'
 import Home from './components/Home';
 import ProfileSetup from './components/ProfileSetup';
 import Login from './components/Login';
+import Signup from './components/Signup';
 import Dashboard from './components/Dashboard';
 import ErrorBoundary from './components/ErrorBoundary';
 import Room from './components/Room';
@@ -32,15 +33,18 @@ function App(props) {
         fetchAuthentication(true)
         axios.get('/auth/check')
             .then(response => {
-                checkAuthentication(response.data.auth)
-                checkAccountSetup(response.data.user.account_setup)
-                fetchUser(response.data.user)
-
-                //Store userId (user primary key) on client side for ease of access throughout application
-                localStorage.setItem('userId', response.data.user._id)
+                const auth = response.data.auth;
+                const user = response.data && response.data.user;
+                const accountSetup = response.data && response.data.user && response.data.user.account_setup;
+                checkAuthentication(auth)
+                checkAccountSetup(accountSetup)
+                fetchUser(user)
             }) 
             .then(() => {
-                changeOnlineStatus()
+                if (accountSetup)
+                    changeOnlineStatus();
+                    //Store userId (user primary key) on client side for ease of access throughout application
+                    localStorage.setItem('userId', user._id)                
             })
             .catch(err => console.log(err))
     }
@@ -57,15 +61,19 @@ function App(props) {
 
     if (accountSetup === false) {
         return(
-            <ProfileSetup/>
+            <ProfileSetup user={user}/>
         )
     }
 
+    if (isLoading) {
+        return(
+            <Loading/>
+        )
+    }
 
-    if (isAuth) {
+    if (isAuth && accountSetup) {
         return (
             <div className="App">
-                {isLoading ? <Loading/> : null}
                 <Router>
                     <ErrorBoundary>
                         <Switch>
@@ -82,6 +90,7 @@ function App(props) {
                 <Router>
                     <Switch>
                         <Route path="/login" component={Login} exact/>
+                        <Route path="/sign-up" component={Signup} exact/>
                         <Home/>
                     </Switch>
                 </Router>

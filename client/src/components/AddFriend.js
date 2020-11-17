@@ -117,7 +117,6 @@ class AddFriend extends React.Component {
     }
 
     render() {
-        console.log(this.props.pendingInvitations)
         return (
             <div className={(this.props.addFriendActive) ? "col-12 friends-input-controls add-friends-active" : "col-12 friends-input-controls"} >
 
@@ -125,14 +124,14 @@ class AddFriend extends React.Component {
 
                 {this.state.pendingInvitations.map((user) => {
                     return(
-                        <PendingFriend handleAcceptFriend={this.handleAcceptFriend} userPendingInvitation={user} handleDecline={this.handleDecline} userId={this.props.userId}/>
+                        <PendingFriend key={user} handleAcceptFriend={this.handleAcceptFriend} userPendingInvitation={user} handleDecline={this.handleDecline} userId={this.props.userId}/>
                     )
                 })}
 
                 <label id="friend-control-heading" htmlFor="username">Add Friend</label>
                 {this.state.searchResults.map((user) => {
                     return(
-                        <SearchUserCard userId={user._id} handleAddFriend={this.handleAddFriend} friendStatus={this.state.friendStatus} username={user.user_metadata.username} status={'Watching Valorant...'} avatar={user.user_metadata.avatar}/>
+                        <SearchUserCard userId={user._id} key={user} handleAddFriend={this.handleAddFriend} friendStatus={this.state.friendStatus} username={user.user_metadata.username} status={'Watching Valorant...'} avatar={user.user_metadata.avatar}/>
                     )
                 })}
                 <h6 id="friend-error-message">{this.state.userNotFound}</h6>

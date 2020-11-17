@@ -13,7 +13,7 @@ class CreateRoomBtn extends React.Component {
     render() {
         return(
             <button className="primary-btn navbar-right" onClick={this.redirect}>
-                <i class="fas fa-plus plus-create-btn"></i>
+                <i className="fas fa-plus plus-create-btn"></i>
                 Create
             </button>
         )

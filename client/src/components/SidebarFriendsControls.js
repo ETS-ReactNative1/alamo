@@ -36,7 +36,6 @@ class SidebarFriendsControls extends React.Component {
 
 
     render() {
-        console.log(this.props.pendingInvitations)
         return(
             <div className="sidebar-friends-control-container">
                 <div className="row">
