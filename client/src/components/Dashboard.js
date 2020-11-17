@@ -4,7 +4,6 @@ import { useAuth0 } from '@auth0/auth0-react';
 import { Route, Switch } from 'react-router-dom';
 import io from 'socket.io-client';
 
-import ProfileSetup from './ProfileSetup';
 import ContextMenu from './ContextMenu';
 import Sidebar from './Sidebar';
 import NavigationBar from './NavigationBar';
@@ -97,7 +96,6 @@ class Dashboard extends React.Component {
 
     //Handle Context Menu Click
     handleContextMenu = (id, type, x, y, onlineStatus) => {
-        console.log(onlineStatus, 'ONLINE???')
         this.setState({contextMenu: {type: type, id: id, x: x, y: y, online: onlineStatus}})
     }
 
@@ -106,26 +104,22 @@ class Dashboard extends React.Component {
     }
 
     render() {
-        const rooms = this.state.user && this.state.user.rooms;
-        const account_setup = localStorage.getItem('account_setup');
-        console.log(rooms)
+        const rooms = this.props.user && this.props.user.rooms;
         return (
         <React.Fragment>
-            {account_setup ?
-                <div className="container-fluid" onClick={this.clearContextMenu}>
-                    <div className="row">
-                        <ContextMenu status={this.state.contextMenu} fetchUserInformation={this.fetchUserInformation} />
-                        <Sidebar user={this.state.user} handleContextMenu={this.handleContextMenu} onlineUsers={this.state.onlineUsers}/>
-                        <main className="col px-4">
-                            <NavigationBar/>
-                            <Notification userId={this.state.user._id}/>
-                            <Route path="/create-room" render={(props) => (<CreateRoom fetchUserInformation={this.fetchUserInformation}/>)}/>
-                            <Route path="/room/" render={(props) => <Room rooms={this.state.user.rooms} fetchUserInformation={this.fetchUserInformation}/>}/>
-                            <Route path="/account-settings" render={(props) => (<AccountSettings userInformation={this.state.user}/>)}/>
-                        </main>
-                    </div>
+            <div className="container-fluid" onClick={this.clearContextMenu}>
+                <div className="row">
+                    <ContextMenu status={this.state.contextMenu} fetchUserInformation={this.fetchUserInformation} />
+                    <Sidebar user={this.props.user} handleContextMenu={this.handleContextMenu} onlineUsers={this.state.onlineUsers}/>
+                    <main className="col px-4">
+                        <NavigationBar/>
+                        <Notification userId={this.props.user._id}/>
+                        <Route path="/create-room" render={(props) => (<CreateRoom fetchUserInformation={this.props.fetchUserInformation}/>)}/>
+                        <Route path="/room/" render={(props) => <Room rooms={this.props.user.rooms} fetchUserInformation={this.props.fetchUserInformation}/>}/>
+                        <Route path="/account-settings" render={(props) => (<AccountSettings userInformation={this.props.user}/>)}/>
+                    </main>
                 </div>
-                : <ProfileSetup /> }
+            </div>
         </React.Fragment>
         );
     }

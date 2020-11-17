@@ -6,6 +6,7 @@ import './App.css';
 import io from 'socket.io-client'
 
 import Home from './components/Home';
+import ProfileSetup from './components/ProfileSetup';
 import Login from './components/Login';
 import Dashboard from './components/Dashboard';
 import ErrorBoundary from './components/ErrorBoundary';
@@ -16,51 +17,64 @@ function App(props) {
     const socket = io.connect('http://localhost:8080')
     const [isAuth, checkAuthentication] = React.useState([])
     const [isLoading, fetchAuthentication] = React.useState([])
+    const [accountSetup, checkAccountSetup] = React.useState([])
+    const [user, fetchUser] = React.useState([])
+
+    //Fetch all information related to user
+    const fetchUserInformation = () => {
+        axios.get('/auth/user')
+            .then((response) => {
+                fetchUser(response.data.user)
+            })
+    }
 
     const checkAuth = async () => {
         fetchAuthentication(true)
         axios.get('/auth/check')
             .then(response => {
-                checkAuthentication(response.data)
+                checkAuthentication(response.data.auth)
+                checkAccountSetup(response.data.user.account_setup)
+                fetchUser(response.data.user)
 
-                setTimeout(() => {
-                    fetchAuthentication(false)
-                }, 500)
-
+                //Store userId (user primary key) on client side for ease of access throughout application
+                localStorage.setItem('userId', response.data.user._id)
             }) 
+            .then(() => {
+                changeOnlineStatus()
+            })
             .catch(err => console.log(err))
     }
 
-    React.useEffect(() => {
+    const changeOnlineStatus = () => {
         socket.emit('online', localStorage.getItem('userId'), (response) => {
-            console.log(response)
-        });
+            fetchAuthentication(false)
+        })        
+    }
+
+    React.useEffect(() => {
         checkAuth()
     }, [])
 
-    const changeOnlineStatus = () => {
-    }
-
-    if (isLoading) {
+    if (accountSetup === false) {
         return(
-            <div className="App">
-                <Loading/>
-            </div>
+            <ProfileSetup/>
         )
     }
 
+
     if (isAuth) {
         return (
-        <div className="App">
-            <Router>
-                <ErrorBoundary>
-                    <Switch>
-                        <Route path="/login" component={Login}/>
-                        <Dashboard auth={isAuth} changeOnlineStatus={(props) => { changeOnlineStatus() }}></Dashboard>
-                    </Switch>
-                </ErrorBoundary>
-            </Router>
-        </div>
+            <div className="App">
+                {isLoading ? <Loading/> : null}
+                <Router>
+                    <ErrorBoundary>
+                        <Switch>
+                            <Route path="/login" component={Login}/>
+                            <Dashboard auth={isAuth} user={user} fetchUserInformation={() => fetchUserInformation()} changeOnlineStatus={(props) => { changeOnlineStatus() }}></Dashboard>
+                        </Switch>
+                    </ErrorBoundary>
+                </Router>
+            </div>
       );
     } else {
         return(

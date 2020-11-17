@@ -29,7 +29,7 @@ router.get('/logout', (req, res, next) => {
 })
 
 router.get('/check', function(req, res){
-    res.send(req.isAuthenticated())
+    res.json({auth: req.isAuthenticated(), user: req.user})
 });
 
 module.exports = router;
