@@ -10,6 +10,7 @@ class Signup extends React.Component {
 
         this.state = {
             showSignup: false,
+            email: '',
             password: '',
             confirmationPassword: '',
             errorMessage: '',
@@ -37,29 +38,37 @@ class Signup extends React.Component {
     }
 
     handleConfirmationPasswordChange = (event) => {
-        this.setState({confirmationPassword: event.currentTarget.value })
+        this.setState({confirmationPassword: event.currentTarget.value})
+    }
 
-        if (this.state.password === this.state.confirmationPassword) return this.setState({passMatch: ''})
-        else return this.setState({passMatch: 'Passwords do not match'})
+    handleEmailChange = (event) => {
+        this.setState({email: event.currentTarget.value})
     }
 
     handleSubmit = (event) => {
 
-        event.preventDefault();
+       event.preventDefault();
+       if (this.state.password === this.state.confirmationPassword) {
+            this.setState({passMatch: ''})
+       } else {
+            return this.setState({passMatch: 'Passwords do not match'})
+       } 
 
-        if (!this.state.isValid) {
+        if (this.state.isValid) {
             console.log('post form')
-            let email = event.target.email.value;
-            let password = event.target.password.value;
+            let email = this.state.email
+            let password = this.state.password;
             let userData = {email, password}
 
-            axios.post('/auth/register_login', userData)
+            console.log(userData)
+
+            axios.post('/auth/signup', userData)
                 .then((response) => {
                     if (response.status === 200) {
                         window.location.assign('/')
                     } 
                 })
-                .catch((err) => this.setState({errorMessage: 'Incorrect email or password.'}))
+                .catch((err) => this.setState({errorMessage: 'User already exists'}))
         } else return this.setState({errorMessage: 'Invalid Password'}) 
     }
 
@@ -70,7 +79,7 @@ class Signup extends React.Component {
                     <h1 className="login-logo centered margin-bottom">alamo</h1>
                     <p className="login-details-para">Share the moment by creating your <span style={{fontWeight: '700'}}>alamo</span> account</p>
                     <form className="signup-form" action="POST" onSubmit={this.handleSubmit}>
-                        <input className="login-input" type="text" name="email" placeholder="Email Address" required/>
+                        <input className="login-input" type="text" name="email" placeholder="Email Address" required onChange={this.handleEmailChange}/>
                         <NiceInputPassword
                             name="passwordField"
                             value={this.state.password}

@@ -17,29 +17,12 @@ passport.deserializeUser((id, done) => {
 
 // Local Strategy
 passport.use(
-    new LocalStrategy({ usernameField: "email" }, (email, password, done) => {
+    'login-local', new LocalStrategy({ usernameField: "email" }, (email, password, done) => {
         // Match User
         User.findOne({ email: email })
             .then(user => {
-                // Create new User
                 if (!user) {
-                    const newUser = new User({ email, password });
-                    // Hash password before saving in database
-                    bcrypt.genSalt(10, (err, salt) => {
-                        bcrypt.hash(newUser.password, salt, (err, hash) => {
-                            if (err) throw err;
-                            newUser.password = hash;
-                            newUser
-                                .save()
-                                .then(user => {
-                                    return done(null, user);
-                                })
-                                .catch(err => {
-                                    return done(null, false, { message: err });
-                                });
-                        });
-                    });
-                    // Return other user
+                    return done(null, false, { message: 'Invalid Email/Password' });
                 } else {
                     // Match password
                     bcrypt.compare(password, user.password, (err, isMatch) => {
@@ -51,6 +34,40 @@ passport.use(
                             return done(null, false, { message: "Wrong password" });
                         }
                     });
+                }
+            })
+            .catch(err => {
+                return done(null, false, { message: err });
+            });
+    })
+);
+
+passport.use(
+    'signup-local', new LocalStrategy({ usernameField: "email" }, (email, password, done) => {
+        // Match User
+        User.findOne({ email: email })
+            .then(user => {
+                // Create new User
+                if (!user) {
+                    const newUser = new User({ email, password });
+                    console.log(newUser)
+                    // Hash password before saving in database
+                    bcrypt.genSalt(10, (err, salt) => {
+                        bcrypt.hash(newUser.password, salt, (err, hash) => {
+                            if (err) throw err;
+                            newUser.password = hash;
+                            newUser.save()
+                                .then(user => {
+                                    console.log(user, 'AFTER SAVE')
+                                    return done(null, user);
+                                })
+                                .catch(err => {
+                                    return done(null, false, { message: err });
+                                });
+                        });
+                    });
+                } else {
+                    return done(null, false, { message: "User already exists!" });
                 }
             })
             .catch(err => {

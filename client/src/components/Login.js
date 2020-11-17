@@ -33,7 +33,7 @@ class Login extends React.Component {
         let password = event.target.password.value;
         let userData = {email, password}
 
-        axios.post('/auth/register_login', userData)
+        axios.post('/auth/login', userData)
             .then((response) => {
                 if (response.status === 200) {
                     window.location.assign('/')

@@ -2,7 +2,6 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
-    _id: Schema.ObjectId,
     email: String,
     password: String,
     user_metadata: {
@@ -13,7 +12,8 @@ const userSchema = new Schema({
     sent_invitations: Array,
     friends: Array,
     rooms: {type: [String]},
-    email_verified: Boolean,
+    email_verified: {type: Boolean, default: false},
+    account_setup: {type: Boolean, default: false},
 }, {collection: 'users'})
 
 const User = mongoose.model('User', userSchema);

@@ -23,7 +23,8 @@ label {
     display: block;
 }
 
-.input-password, label {
+
+.input-password label {
     margin: 0;
 }
 
@@ -936,6 +937,23 @@ iframe {
     .sidebar-icon {
         display: block;
     }
+
+    .login-box, .signup-box {
+        width: 100%;
+        min-height: 100%;
+        height: auto;
+        padding: 14px;
+    }
+
+    .login-details-para {
+        width: 80%;
+        text-align: center;
+    }
+    
+    .signup-form {
+        top: calc(50% + 120px);
+    }
+
 }
 
 @media only screen and (max-width: 840px) {

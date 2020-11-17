@@ -45,10 +45,10 @@ class ProfileSetup extends React.Component {
                       <h1 className="setup-heading thin">Profile Setup</h1>
 
                       <form action="post" onSubmit={this.handleSubmit}>
-                          <label htmlFor="username">Username</label>
+                          <label className="profile-setup-label" htmlFor="username">Username</label>
                           <input name="username" autoFocus required minlength="3" />
                           <h6 id="username-available">{this.state.usernameAvailable}</h6>
-                          <label htmlFor="avatar">Avatar</label>
+                          <label hclassName="profile-setup-label" tmlFor="avatar">Avatar</label>
                           <h6 id="avatar-selected-error">{this.state.selectAvatar}</h6>
                           {this.state.avatars.map((avatar) => {
                             let srcPath = `/images/avatars/${avatar}-avatar.png`
