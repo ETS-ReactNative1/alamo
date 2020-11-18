@@ -125,5 +125,23 @@ router.post('/unfriend', (req, res) => {
         .catch((err) => console.log(err))
 });
 
+router.post('/change-email', (req, res) => {
+    const userId = req.body.userId;
+    const newEmail = req.body.newEmail;
+
+    User.findOne({email: newEmail})
+        .then((response) => {
+            if (response === null) {
+                User.updateOne({_id: userId}, {email : newEmail})
+                    .then((response) => {
+                        res.status(200).json({status: 'Email has been successfully updated'})
+                    })
+                    .catch((err) => console.log(err))
+            } else {
+                 res.status(400).json({status: 'A user already exists with this email'})
+            }   
+        })
+});
+
 
 module.exports = router;

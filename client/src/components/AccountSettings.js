@@ -21,11 +21,7 @@ class AccountSettings extends React.Component {
         }
     }
 
-    handleCancelRoom = () => {
-        this.props.history.goBack();
-    }
-
-    componentDidMount() {
+    getUserInformation = () => {
         axios.get('/auth/user')
             .then((response) => {
                 this.setState({username: response.data.user_metadata.username, email: response.data.email})
@@ -33,15 +29,38 @@ class AccountSettings extends React.Component {
             .catch((err) => console.log(err))
     }
 
+    handleCancelRoom = () => {
+        this.props.history.goBack();
+    }
+
+    componentDidMount() {
+        this.getUserInformation();
+    }
+
     handleChangeEmail = () => {
         if (this.state.changeEmail === true) {
             return(
                 <form action="post" onSubmit={this.handleChangeEmailSubmit}> 
                     <input name="newEmail"  placeholder="New Email" required/>
+                    <h6 id="username-available">{this.state.emailErrorMessage}</h6>
                     <button className="alternative-btn block" type="submit">Save</button>
                 </form>
             )
         }
+    }
+
+    handleChangeEmailSubmit = (event) => {
+        event.preventDefault();
+        const newEmail = event.target.newEmail.value;
+
+        let userData = {userId: localStorage.getItem('userId'), newEmail: newEmail}
+
+        axios.post('/user/change-email', userData)
+            .then((response) => {
+                this.setState({changeEmailSuccess: 'Email has been successfully changed', emailErrorMessage: '', changeEmail: false})
+                this.getUserInformation();
+            })
+            .catch((err) => this.setState({emailErrorMessage: 'A user already exists with this email', changeEmailSuccess: ''}))
     }
 
     handlePasswordChange = (data) => {
@@ -127,7 +146,7 @@ class AccountSettings extends React.Component {
     render() {
         return (
           <div className="container">
-              <div className="row">
+              <div className="row margin-bottom-50">
                   <div className="col">
                       <h1 className="setup-heading thin">Account Settings</h1>
 
@@ -138,7 +157,7 @@ class AccountSettings extends React.Component {
                       <label htmlFor="username">Email</label>
                       <input name="username" autoFocus required minlength="3" placeholder={this.state.email} disabled/>
                       {this.handleChangeEmail()}
-                      <h6 id="success-message">{this.state.changePasswordSuccess}</h6>
+                      <h6 id="success-message">{this.state.changeEmailSuccess}</h6>
                       {this.state.changeEmail ? null : <button className="alternative-btn" onClick={() => this.setState({changeEmail: true})}>Edit</button> }
 
                       <label htmlFor="username">Password</label>

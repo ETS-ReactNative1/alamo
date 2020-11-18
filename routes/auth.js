@@ -57,23 +57,6 @@ router.post("/change-password", (req, res, next) => {
     }) (req, res, next);
 });
 
-router.post("/change-email", (req, res, next) => {
-    passport.authenticate("change-email-local", function(err, user, info) {
-        if (err) {
-            return res.status(400).json({ errors: err });
-        }
-        if (!user) {
-            return res.status(400).json({ errors: "No user found" });
-        }
-        req.logIn(user, function(err) {
-            if (err) {
-                return res.status(400).json({ errors: err });
-            }
-            return res.status(200).json({ success: `logged in ${user.id}` });
-        });
-    }) (req, res, next);
-});
-
 router.get('/logout', (req, res, next) => {
     req.logout();
     res.status(200).send('user logged out')
