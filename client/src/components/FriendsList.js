@@ -24,7 +24,6 @@ class FriendsList extends React.Component  {
     componentDidUpdate(prevProps) {
         if (this.props.onlineUsers != prevProps.onlineUsers)
             this.numberOfFriends()
-            console.log(this.props.onlineUsers, 'UPDATE FIRENDS')
     }
 
     componentDidMount() {

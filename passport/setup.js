@@ -21,11 +21,13 @@ passport.use(
         // Match User
         User.findOne({ email: email })
             .then(user => {
+                console.log(user)
                 if (!user) {
                     return done(null, false, { message: 'Invalid Email/Password' });
                 } else {
                     // Match password
                     bcrypt.compare(password, user.password, (err, isMatch) => {
+                        console.log(password, user.password, isMatch)
                         if (err) throw err;
 
                         if (isMatch) {
@@ -68,6 +70,39 @@ passport.use(
                     });
                 } else {
                     return done(null, false, { message: "User already exists!" });
+                }
+            })
+            .catch(err => {
+                return done(null, false, { message: err });
+            });
+    })
+);
+
+passport.use(
+    'change-password-local', new LocalStrategy({ usernameField: "email" }, (email, password, done) => {
+        // Match User
+        User.findOne({ email: email })
+            .then(user => {
+                // Create new User
+                if (!user) {
+                    return done(null, false, { message: "No user found." });
+                } else {
+                    // Hash password before saving in database
+                    bcrypt.genSalt(10, (err, salt) => {
+                        bcrypt.hash(password, salt, (err, hash) => {
+                            console.log(user, user.password)
+                            if (err) throw err;
+                            user.password = hash;
+                            user.save()
+                                .then(user => {
+                                    console.log(user, 'AFTER SAVE')
+                                    return done(null, user);
+                                })
+                                .catch(err => {
+                                    return done(null, false, { message: err });
+                               });
+                        });
+                    });
                 }
             })
             .catch(err => {

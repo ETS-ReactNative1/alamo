@@ -77,7 +77,7 @@ io.on('connection', (socket) => {
         console.log('Purge clients', disconnectedClients)
         setTimeout(() => {
             purgeDisconnectedClients();
-        }, 1000 * 30)
+        }, 1000 * 5)
     })
 
     socket.on('leave-room', (roomId, userId) => {

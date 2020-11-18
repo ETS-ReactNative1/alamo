@@ -47,10 +47,6 @@ class Dashboard extends React.Component {
         this.fetchUserInformation();
 
         if (this.props.auth) {
-            socket.emit('online', localStorage.getItem('userId'), (response) => {
-                this.setState({onlineUsers: response})
-            });
-
             socket.on('new-user-online', (userId, clients) => {
                 this.setState({onlineUsers: clients})
             })

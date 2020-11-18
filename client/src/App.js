@@ -34,17 +34,21 @@ function App(props) {
         axios.get('/auth/check')
             .then(response => {
                 const auth = response.data.auth;
-                const user = response.data && response.data.user;
-                const accountSetup = response.data && response.data.user && response.data.user.account_setup;
                 checkAuthentication(auth)
-                checkAccountSetup(accountSetup)
-                fetchUser(user)
+                return response.data.user
             }) 
-            .then(() => {
-                if (accountSetup)
-                    changeOnlineStatus();
+            .then((user) => {
+                fetchAuthentication(false)
+                if (isAuth) {
+                    checkAccountSetup(user.account_setup)
+                    fetchUser(user)
                     //Store userId (user primary key) on client side for ease of access throughout application
                     localStorage.setItem('userId', user._id)                
+
+                    if (user.account_setup) {
+                        changeOnlineStatus();
+                    }
+                } 
             })
             .catch(err => console.log(err))
     }
@@ -56,6 +60,7 @@ function App(props) {
     }
 
     React.useEffect(() => {
+        console.log(React.Children)
         checkAuth()
     }, [])
 
