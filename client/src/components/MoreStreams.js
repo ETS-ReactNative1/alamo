@@ -32,7 +32,7 @@ class MoreStreams extends React.Component {
                             {this.state.streams.map((stream) => {
                                 let image = stream.thumbnail_url.replace('{width}', '347').replace('{height}', '195')
                                 return(
-                                    <StreamCard stream={stream} image={image}/>
+                                    <StreamCard stream={stream} image={image} changeStream={this.props.changeStream}/>
                                 )
                             })}
                     </div>

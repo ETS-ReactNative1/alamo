@@ -20,7 +20,7 @@ class StreamCard extends React.Component {
 
     render() {
         return(
-            <div className="col stream-card">
+            <div id={this.props.stream.user_name} className="col stream-card" onClick={this.props.changeStream}>
                 <img className="stream-card-image" src={this.props.image} alt={this.props.stream.title}/>
                 <img className="stream-avatar rounded-circle" src={this.state.channelImage}/>
                 <h6 className="stream-card-title">{this.props.stream.title}</h6>

@@ -119,12 +119,12 @@ io.on('connection', (socket) => {
         //Output current users connected to room
         console.log(rooms)
 
+
         //Need to send a direct message to the client of peers list, emit does not seem to work
         socket.emit('client-connected', userId, rooms[roomId]);
 
         //Broadcast to other users in room, that a new user has connected
         socket.to(roomId).broadcast.emit('user-connected', userId, rooms[roomId])
-
 
         socket.on('disconnect', () => {
             //On disconnect remove peer from list of connected peers
@@ -138,6 +138,10 @@ io.on('connection', (socket) => {
         })
     })
 
+    socket.on('change-stream', (roomId, stream) => {
+        console.log('change stream to', stream)
+        socket.broadcast.emit('update-stream', roomId, stream)
+    })
 
     socket.on('add-friend', (senderId, receiverId) => {
         console.log(senderId, 'would like to add', receiverId, 'as a friend')

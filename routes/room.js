@@ -32,4 +32,17 @@ router.post('/create-room', (req, res) => {
     .catch(error => console.error(error));
 });
 
+//Get room information
+router.post('/change-stream', (req, res) => {
+    const roomId = req.body.roomId;
+    const channel = req.body.channel;
+    console.log(roomId, channel)
+    Room.updateOne({roomId: roomId}, {stream_channel: channel})
+    .then(response => {
+        res.status(200).json(response)
+    })
+    .catch(error => console.error(error));
+})
+
+
 module.exports = router;
