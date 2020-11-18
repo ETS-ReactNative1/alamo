@@ -896,13 +896,39 @@ iframe {
     min-width: 317px;
 }
 
+.stream-card-vote {
+    overflow-x: hidden !important;
+    margin-right: 20px auto;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    width: 100%;
+    max-width: 347px;
+    min-width: 317px;
+}
+
 .stream-card:hover {
     transform: scale(1.03);
     border: 3px 4px 0px 2px  #3700B3 !important;
     box-shadow: 3px 4px 0px 2px  #3700B3 !important;
 }
 
+.stream-card-options {
+    position: absolute; 
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 0 50px 0 50px;
+    height: 100%;
+    width: 100%;
+}
 
+.stream-card-options-icons {
+    position: absolute;
+    top: calc(50% - 30px);
+    left: calc(50% + 20px);
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+}  
 .stream-card-image {
     padding: 0 0 8px 0; 
 }
@@ -923,6 +949,25 @@ iframe {
 .stream-avatar {
     float: left;
     width: 50px;
+}
+
+.vote-container {
+    padding: 25px;
+    position: fixed;
+    right: 24px;
+    top: calc(100vh - 525px);
+    width: 400px;
+    height: 500px;
+    background-color: #050505;
+    z-index: 999999;
+}
+
+.vote-icons {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
 }
 
 @media only screen and (max-width: 1480px) {

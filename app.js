@@ -23,7 +23,6 @@ const checkFriendStatus = require('./routes/checkFriendStatus');
 
 const twitchApi = require('./routes/twitchApi');
 
-
 const app = express();
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
@@ -138,9 +137,30 @@ io.on('connection', (socket) => {
         })
     })
 
+    socket.on('vote-yes', (voterId) => {
+        console.log('VOTE YES')
+        socket.broadcast.emit('inc-vote-yes', voterId) 
+    })
+
+    socket.on('vote-no', (voterId) => {
+        console.log('VOTE NO')
+        socket.broadcast.emit('inc-vote-no', voterId) 
+    })
+
+    socket.on('close-vote', (roomId) => {
+        socket.broadcast.emit('end-vote', roomId)
+        socket.emit('end-vote', roomId)
+    })
+
     socket.on('change-stream', (roomId, stream) => {
         console.log('change stream to', stream)
         socket.broadcast.emit('update-stream', roomId, stream)
+    })
+
+    socket.on('start-vote', (roomId, userId, stream) => {
+        console.log('START VOTE', userId, stream)
+        socket.broadcast.emit('vote', roomId, userId, stream)
+        socket.emit('vote', roomId, userId, stream)
     })
 
     socket.on('add-friend', (senderId, receiverId) => {
