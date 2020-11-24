@@ -17,7 +17,6 @@ router.get('/', (req, res) => {
 
     User.find(searchQuery)
     .then(response => {
-        console.log(response)
         res.status(200).json(response)})
     .catch(error => console.error(error));
 });
@@ -40,7 +39,6 @@ router.post('/complete-profile', (req, res) => {
     User.findOne({username: req.body.username.toLowerCase()})
         .then(response => {
             if (response == null) {
-                console.log(response, 'IF NULL')
                 User.updateOne({email: req.body.email}, {$set: {username: req.body.username.toLowerCase(), account_setup: true, user_metadata: {username: req.body.username, avatar: req.body.avatar}}})
                 .then(response => res.status(200).json({status: 'sucess'}))
                 .catch(error => console.error(error));

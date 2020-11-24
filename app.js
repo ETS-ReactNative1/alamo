@@ -140,21 +140,19 @@ io.on('connection', (socket) => {
         socket.to(roomId).broadcast.emit('user-stopped-speaking', userId)
     });
 
-    socket.on('vote-yes', (roomId, voterId) => {
-        console.log(io.sockets.adapter.rooms)
-        console.log('VOTE YES')
-        console.log(roomId)
-        socket.to(roomId).broadcast.emit('inc-vote-yes', voterId)
+    socket.on('start-vote', (roomId, userId, stream) => {
+        const peers = Object.keys(io.sockets.adapter.rooms[roomId].sockets).length
+        console.log(peers, 'users in room')
+        io.in(roomId).emit('vote', userId, stream, peers);
     })
 
-    socket.on('vote-no', (roomId, voterId) => {
-        console.log('VOTE NO')
-        socket.to(roomId).broadcast.emit('inc-vote-no', voterId)
+    socket.on('vote-actions', (roomId, userId, vote) => {
+        io.in(roomId).emit('vote-poll', userId, vote)        
     })
 
-    socket.on('close-vote', (roomId) => {
-        socket.broadcast.emit('end-vote', roomId)
-        socket.emit('end-vote', roomId)
+    socket.on('finish-vote', (roomId) =>{
+        console.log(roomId, 'finish vote')
+        io.in(roomId).emit('end-vote')
     })
 
     socket.on('change-stream', (roomId, stream) => {
@@ -162,12 +160,6 @@ io.on('connection', (socket) => {
         socket.broadcast.emit('update-stream', roomId, stream)
     })
 
-    socket.on('start-vote', (roomId, userId, stream) => {
-        console.log('Start Vote')
-        console.log(io.sockets.adapter.rooms)
-        console.log(socket.id, 'USER SOCKET ID')
-        socket.to(roomId).emit("vote");
-    })
 
     socket.on('add-friend', (senderId, receiverId) => {
         console.log(senderId, 'would like to add', receiverId, 'as a friend')

@@ -961,19 +961,43 @@ iframe {
     padding: 25px;
     position: fixed;
     right: 24px;
-    top: calc(100vh - 525px);
+    top: calc(100vh - 600px);
     width: 400px;
-    height: 500px;
+    height: 575px;
     background-color: #050505;
     z-index: 999999;
 }
 
 .vote-icons {
     position: absolute;
-    top: 50%;
+    top: calc(50% - 15px);
     left: 50%;
     transform: translate(-50%, -50%);
     cursor: pointer;
+}
+
+.vote-nums {
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.poll-icons {
+    width: 100%;
+    padding: 25px 0 0 0 !important;
+    margin: 0px !important;
+}
+
+.poll-icons-col {
+    margin: 0 auto 0 auto;
+    text-align: center;
+}
+
+.poll-icons-images {
+    text-align: center;
+    margin: 0 !important;
+    width: 36px;
 }
 
 @media only screen and (max-width: 1480px) {
