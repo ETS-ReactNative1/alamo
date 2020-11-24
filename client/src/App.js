@@ -14,8 +14,9 @@ import ErrorBoundary from './components/ErrorBoundary';
 import Room from './components/Room';
 import Loading from './components/Loading';
 
+const socket = io();
+
 function App(props) {
-    const socket = io.connect('http://localhost:8080')
     const [isAuth, checkAuthentication] = React.useState([])
     const [isLoading, fetchAuthentication] = React.useState([])
     const [accountSetup, checkAccountSetup] = React.useState([])

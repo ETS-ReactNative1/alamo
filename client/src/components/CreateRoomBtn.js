@@ -1,6 +1,5 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import io from 'socket.io-client'
 import { v4 as uuid } from 'uuid';
 import axios from 'axios';
 
