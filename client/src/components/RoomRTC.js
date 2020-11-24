@@ -140,10 +140,10 @@ class RoomRTC extends React.Component {
             <div className="row room-avatar-row align-items-center">
                 {this.state.peers.map((userId) => {
                     return(
-                        <React.Fragment>
+                        <div data-userId={userId}>
                             <RoomUser speakingPeers={this.state.speakingPeers} userId={userId} admins={this.props.admins}/>
                             <audio id={userId} key={userId} ref={this[`${userId}_ref`]} controls volume="true" autoPlay/>
-                        </React.Fragment>
+                        </div>
                     )
                 })}
             </div>
