@@ -21,7 +21,10 @@ class RoomUser extends React.Component {
     componentDidMount() {
         axios.get('/user', {params: {userId: this.props.userId}})
             .then(response => {
+                console.log(this.props.userId, 'TGHIS IS WHAT IS BEING USE TO BE FETCHED')
+                console.log(response)
                 this.setState({username: response.data[0].user_metadata.username, avatar: response.data[0].user_metadata.avatar})
+                console.log(this.state)
 
                 axios.get('/check-friend-status', {params: {searcherId: localStorage.getItem('userId'), recipentId: this.props.userId}})
                     .then(friendStatus => {

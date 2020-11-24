@@ -1,11 +1,8 @@
 import React from 'react';
 import axios from 'axios';
-import io from 'socket.io-client';
 
 import SearchUserCard from './SearchUserCard';
 import PendingFriend from './PendingFriend';
-
-const socket = io.connect('http://localhost:8080')
 
 class AddFriend extends React.Component {
     constructor(props) {
@@ -33,7 +30,7 @@ class AddFriend extends React.Component {
         axios.post('/user/decline-friend', payload)
             .then(response => {
                 this.setState({pendingInvitations: []})
-                socket.emit('friend-event', 'decline', senderId, localStorage.getItem('userId'))
+                this.props.socket.emit('friend-event', 'decline', senderId, localStorage.getItem('userId'))
             })
             .catch(err => console.log(err))
     }
@@ -42,8 +39,7 @@ class AddFriend extends React.Component {
         let senderId = localStorage.getItem('userId');
         let payload = {senderId: senderId, receiverId: receiverId}
 
-        let socket = io.connect('http://localhost:8080');
-        socket.emit('add-friend', senderId, receiverId)
+        this.props.socket.emit('add-friend', senderId, receiverId)
 
         axios.post('/user/add-friend', payload)
             .then(response => {
@@ -51,7 +47,7 @@ class AddFriend extends React.Component {
                 axios.get('/check-friend-status', {params: {searcherId: localStorage.getItem('userId'), recipentId: receiverId}})
                     .then(friendStatus => {
                         this.setState({friendStatus: friendStatus.data.friendStatus})
-                        socket.emit('friend-event', 'accept', senderId, localStorage.getItem('userId'))
+                        this.props.socket.emit('friend-event', 'accept', senderId, localStorage.getItem('userId'))
                     })
             })
             .catch(err => console.log(err))
@@ -77,7 +73,7 @@ class AddFriend extends React.Component {
                         this.setState({friendStatus: friendStatus.data.friendStatus})
 
                         //Notify user that friend request was accepted
-                        socket.emit('friend-event', 'accept', localStorage.getItem('userId'), recipentId)
+                        this.props.socket.emit('friend-event', 'accept', localStorage.getItem('userId'), recipentId)
                     })
 
         })

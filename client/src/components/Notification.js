@@ -1,6 +1,5 @@
 import React from 'react';
 import axios from 'axios';
-import io from 'socket.io-client';
 
 class Notification extends React.Component {
     constructor(props) {
@@ -22,9 +21,7 @@ class Notification extends React.Component {
 
     componentWillMount() {
 
-        const socket = io.connect('http://localhost:8080')
-
-        socket.on('new-user-online', (userId) => {
+        this.props.socket.on('new-user-online', (userId) => {
             setTimeout(() => {
                 if (userId != this.props.userId) {
                     axios.get('/user', {params: {userId: userId}})
@@ -42,7 +39,7 @@ class Notification extends React.Component {
             }, 500)
         })
 
-        socket.on('pending-invitation', (senderId, receiverId) => {
+        this.props.socket.on('pending-invitation', (senderId, receiverId) => {
             if (receiverId === localStorage.getItem('userId')) {
 
                 axios.get('/user', {params: {userId: senderId}})
@@ -55,7 +52,7 @@ class Notification extends React.Component {
             }
         })
 
-        socket.on('/accept-friend-invite', (senderId, receiverId) => {
+        this.props.socket.on('/accept-friend-invite', (senderId, receiverId) => {
             console.log('accepted friends request socket io', receiverId)
             if (receiverId === localStorage.getItem('userId')) {
 

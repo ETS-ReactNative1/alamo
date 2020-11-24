@@ -703,6 +703,7 @@ iframe {
     width: 65px;
     display: inline;
     margin-right: 8px;
+    transition: all ease-in-out 0.05s;
 }
 
 .speaking {

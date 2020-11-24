@@ -1,13 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { withRouter } from 'react-router-dom';
-import io from 'socket.io-client';
 import Peer from 'peerjs';
 import axios from 'axios';
 import RoomUser from './RoomUser';
 import hark from 'hark';
-
-let socket = io.connect('http://localhost:8080/')
 
 class RoomRTC extends React.Component {
     constructor(props) {
@@ -42,7 +39,7 @@ class RoomRTC extends React.Component {
             this.peer.disconnect();
 
             //Disconnect from join before joining new room
-            socket.emit('leave-room', prevProps.location.pathname, localStorage.getItem('userId'))
+            this.props.socket.emit('leave-room', prevProps.location.pathname, localStorage.getItem('userId'))
 
             this.updateRoomChange();
         }
@@ -56,7 +53,7 @@ class RoomRTC extends React.Component {
         })
 
         //Join new room
-        socket.emit('join-room', window.location.pathname, localStorage.getItem('userId'))
+        this.props.socket.emit('join-room', window.location.pathname, localStorage.getItem('userId'))
     }
 
     updatePeersInRoom = (peers) => {
@@ -75,11 +72,11 @@ class RoomRTC extends React.Component {
         if (status) {
             const speaking = this.state.speakingPeers.concat(localStorage.getItem('userId'));
             this.setState({...this.state, speakingPeers: speaking})
-            socket.emit('voice-active', window.location.pathname, localStorage.getItem('userId'))
+            this.props.socket.emit('voice-active', window.location.pathname, localStorage.getItem('userId'))
         } else {
             const notSpeaking = this.state.speakingPeers.filter((user) => user !== localStorage.getItem('userId'));
             this.setState({...this.state, speakingPeers: notSpeaking})
-            socket.emit('voice-inactive', window.location.pathname, localStorage.getItem('userId'))
+            this.props.socket.emit('voice-inactive', window.location.pathname, localStorage.getItem('userId'))
         }
     }
 
@@ -96,7 +93,7 @@ class RoomRTC extends React.Component {
 
             this.updateRoomChange();
 
-            socket.on('client-connected', (userId, updatedPeersList) => {
+            this.props.socket.on('client-connected', (userId, updatedPeersList) => {
                 this.updatePeersInRoom(updatedPeersList);
 
                 //Once client is connected and state is update with peers, connect client audio
@@ -111,23 +108,24 @@ class RoomRTC extends React.Component {
 
             })
 
-            socket.on('user-connected', (userId, updatedPeersList) => {
+            this.props.socket.on('user-connected', (userId, updatedPeersList) => {
+                console.log('user connection', userId)
                 this.updatePeersInRoom(updatedPeersList);
 
                 //Connect user
                 this.connectToNewUser(userId, stream)
             })
 
-            socket.on('user-disconnected', (userId, updatedPeersList) => {
+            this.props.socket.on('user-disconnected', (userId, updatedPeersList) => {
                 this.updatePeersInRoom(updatedPeersList);
             })
 
-            socket.on('user-speaking', (userId) => {
+            this.props.socket.on('user-speaking', (userId) => {
                 const speaking = this.state.speakingPeers.concat(userId);
                 this.setState({...this.state, speakingPeers: speaking})
             })
 
-            socket.on('user-stopped-speaking', (userId) => {
+            this.props.socket.on('user-stopped-speaking', (userId) => {
                 const notSpeaking = this.state.speakingPeers.filter((user) => user !== userId);
                 this.setState({...this.state, speakingPeers: notSpeaking})
             })

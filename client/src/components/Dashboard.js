@@ -2,7 +2,6 @@ import React from 'react';
 import axios from 'axios';
 import { useAuth0 } from '@auth0/auth0-react';
 import { Route, Switch } from 'react-router-dom';
-import io from 'socket.io-client';
 
 import ContextMenu from './ContextMenu';
 import Sidebar from './Sidebar';
@@ -11,8 +10,6 @@ import Notification from './Notification';
 import Room from './Room';
 import CreateRoom from './CreateRoom';
 import AccountSettings from './AccountSettings';
-
-const socket = io.connect('http://localhost:8080')
 
 class Dashboard extends React.Component {
     constructor(props) {
@@ -41,23 +38,23 @@ class Dashboard extends React.Component {
 
     componentDidMount() {
         window.addEventListener("beforeunload", function(event) { 
-            socket.emit('user-offline', localStorage.getItem('userId'))
+            this.props.socket.emit('user-offline', localStorage.getItem('userId'))
         });
 
         this.fetchUserInformation();
 
         if (this.props.auth) {
-            socket.on('new-user-online', (userId, clients) => {
+            this.props.socket.on('new-user-online', (userId, clients) => {
                 this.setState({onlineUsers: clients})
             })
 
-            socket.on('user-offline-update', (clients) => {
+            this.props.socket.on('user-offline-update', (clients) => {
                 this.setState({onlineUsers: clients})
             })
         }
 
         //If friend invite has been declined, update user
-        socket.on('decline-friend-invite', (receiverId) => {
+        this.props.socket.on('decline-friend-invite', (receiverId) => {
             if (receiverId === localStorage.getItem('userId')) {
                 console.log('declined invite')
                 this.fetchUserInformation();
@@ -65,14 +62,14 @@ class Dashboard extends React.Component {
         })
         
         //If friend invite has been accepted, update both accepter and acceptee users
-        socket.on('accept-friend-invite', (senderId, receiverId) => {
+        this.props.socket.on('accept-friend-invite', (senderId, receiverId) => {
             if (receiverId === localStorage.getItem('userId') || senderId === localStorage.getItem('userId')) {
                 this.fetchUserInformation();
             }
         })
 
         //If user has sent an invite to become friends, update user to reflect pending invite
-        socket.on('pending-invitation', (senderId, receiverId) => {
+        this.props.socket.on('pending-invitation', (senderId, receiverId) => {
             if (receiverId === localStorage.getItem('userId')) {
                 this.fetchUserInformation();
             }
@@ -95,13 +92,13 @@ class Dashboard extends React.Component {
         <React.Fragment>
             <div className="container-fluid" onClick={this.clearContextMenu}>
                 <div className="row">
-                    <ContextMenu status={this.state.contextMenu} fetchUserInformation={this.fetchUserInformation} />
-                    <Sidebar user={this.state.user} handleContextMenu={this.handleContextMenu} onlineUsers={this.state.onlineUsers}/>
+                    <ContextMenu socket={this.props.socket} status={this.state.contextMenu} fetchUserInformation={this.fetchUserInformation} />
+                    <Sidebar socket={this.props.socket} user={this.state.user} handleContextMenu={this.handleContextMenu} onlineUsers={this.state.onlineUsers}/>
                     <main className="col px-4">
                         <NavigationBar/>
-                        <Notification userId={this.state.user._id}/>
-                        <Route path="/create-room" render={(props) => (<CreateRoom fetchUserInformation={this.fetchUserInformation}/>)}/>
-                        <Route path="/room/" render={(props) => <Room rooms={this.props.user.rooms} fetchUserInformation={this.fetchUserInformation}/>}/>
+                        <Notification socket={this.props.socket} userId={this.state.user._id}/>
+                        <Route path="/create-room" render={(props) => (<CreateRoom socket={this.props.socket} fetchUserInformation={this.fetchUserInformation}/>)}/>
+                        <Route path="/room/" render={(props) => <Room socket={this.props.socket} rooms={this.props.user.rooms} fetchUserInformation={this.fetchUserInformation}/>}/>
                         <Route path="/account-settings" render={(props) => (<AccountSettings userInformation={this.state.user}/>)}/>
                     </main>
                 </div>

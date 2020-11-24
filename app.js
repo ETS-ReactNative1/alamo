@@ -32,6 +32,7 @@ const disconnectedClients = {}
 const rooms = {}
 
 io.on('connection', (socket) => {
+    console.log(socket.id)
 
     //Add user to list of connected clients and broadcast that user is online
     socket.on('online', (userId, callback) => {
@@ -100,8 +101,6 @@ io.on('connection', (socket) => {
         //Join new room
         socket.join(roomId)
 
-        console.log(userId, 'has joined ', roomId)
-
         //If room is newly created or empty, add first peer
         if (typeof rooms[roomId] == 'undefined') {
             rooms[roomId] = [userId]
@@ -114,10 +113,6 @@ io.on('connection', (socket) => {
                 rooms[roomId] = updateRoomPeers;
             }
         }
-
-        //Output current users connected to room
-        console.log(rooms)
-
 
         //Need to send a direct message to the client of peers list, emit does not seem to work
         socket.emit('client-connected', userId, rooms[roomId]);
@@ -138,23 +133,23 @@ io.on('connection', (socket) => {
     })
 
     socket.on('voice-active', (roomId, userId) => {
-        console.log(userId, 'is speaking')
         socket.to(roomId).broadcast.emit('user-speaking', userId)
     });
 
     socket.on('voice-inactive', (roomId, userId) => {
-        console.log(userId, 'stopped speaking')
         socket.to(roomId).broadcast.emit('user-stopped-speaking', userId)
     });
 
-    socket.on('vote-yes', (voterId) => {
+    socket.on('vote-yes', (roomId, voterId) => {
+        console.log(io.sockets.adapter.rooms)
         console.log('VOTE YES')
-        socket.broadcast.emit('inc-vote-yes', voterId) 
+        console.log(roomId)
+        socket.to(roomId).broadcast.emit('inc-vote-yes', voterId)
     })
 
-    socket.on('vote-no', (voterId) => {
+    socket.on('vote-no', (roomId, voterId) => {
         console.log('VOTE NO')
-        socket.broadcast.emit('inc-vote-no', voterId) 
+        socket.to(roomId).broadcast.emit('inc-vote-no', voterId)
     })
 
     socket.on('close-vote', (roomId) => {
@@ -168,9 +163,10 @@ io.on('connection', (socket) => {
     })
 
     socket.on('start-vote', (roomId, userId, stream) => {
-        console.log('START VOTE', userId, stream)
-        socket.broadcast.emit('vote', roomId, userId, stream)
-        socket.emit('vote', roomId, userId, stream)
+        console.log('Start Vote')
+        console.log(io.sockets.adapter.rooms)
+        console.log(socket.id, 'USER SOCKET ID')
+        socket.to(roomId).emit("vote");
     })
 
     socket.on('add-friend', (senderId, receiverId) => {

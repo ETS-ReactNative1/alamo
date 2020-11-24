@@ -1,12 +1,10 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import io from 'socket.io-client'
 import { v4 as uuid } from 'uuid';
 import axios from 'axios';
 
 import AddStreamCard from './AddStreamCard';
 
-let socket = io.connect('http://localhost:8080')
 
 const CreateRoom = (props) => {
 
@@ -29,7 +27,7 @@ const CreateRoom = (props) => {
         axios.post('/room/create-room', payload)
             .then(response => {
                 console.log(response)
-                socket.emit('join-room', roomId, userId);
+                this.props.socket.emit('join-room', roomId, userId);
                 redirect(roomId);
             })
 

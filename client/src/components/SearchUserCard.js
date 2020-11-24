@@ -1,7 +1,6 @@
 import React from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
 import axios from 'axios';
-import io from 'socket.io-client';
 
 class SearchUserCard extends React.Component  {
     constructor(props) {

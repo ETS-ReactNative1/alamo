@@ -83,7 +83,7 @@ function App(props) {
                     <ErrorBoundary>
                         <Switch>
                             <Route path="/login" component={Login}/>
-                            <Dashboard auth={isAuth} user={user} fetchUserInformation={() => fetchUserInformation()} changeOnlineStatus={(props) => { changeOnlineStatus() }}></Dashboard>
+                            <Dashboard socket={socket} auth={isAuth} user={user} fetchUserInformation={() => fetchUserInformation()} changeOnlineStatus={(props) => { changeOnlineStatus() }}></Dashboard>
                         </Switch>
                     </ErrorBoundary>
                 </Router>

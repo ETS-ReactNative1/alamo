@@ -1,8 +1,5 @@
 import React from 'react';
 import axios from 'axios';
-import io from 'socket.io-client';
-
-const socket = io.connect('http://localhost:8080')
 
 class FriendCard extends React.Component {
     constructor(props) {
@@ -42,7 +39,7 @@ class FriendCard extends React.Component {
                 return this.setState({online: true})
             }
 
-        socket.on('new-user-online', (userId, clients) => {
+        this.props.socket.on('new-user-online', (userId, clients) => {
             if (this.state.user.id === userId) {
                 return this.setState({online: true})
             }
