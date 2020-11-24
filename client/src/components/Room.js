@@ -20,9 +20,9 @@ class Room extends React.Component {
         super(props)
 
         this.state = {
-            roomTitle: null,
-            admins: null,
-            channel: null,
+            roomTitle: '',
+            admins: '',
+            channel: '',
             vote: false,
             voterId: '',
             voterChannel: ''

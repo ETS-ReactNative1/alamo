@@ -137,6 +137,16 @@ io.on('connection', (socket) => {
         })
     })
 
+    socket.on('voice-active', (roomId, userId) => {
+        console.log(userId, 'is speaking')
+        socket.to(roomId).broadcast.emit('user-speaking', userId)
+    });
+
+    socket.on('voice-inactive', (roomId, userId) => {
+        console.log(userId, 'stopped speaking')
+        socket.to(roomId).broadcast.emit('user-stopped-speaking', userId)
+    });
+
     socket.on('vote-yes', (voterId) => {
         console.log('VOTE YES')
         socket.broadcast.emit('inc-vote-yes', voterId) 

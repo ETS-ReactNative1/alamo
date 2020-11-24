@@ -5,6 +5,7 @@ import io from 'socket.io-client';
 import Peer from 'peerjs';
 import axios from 'axios';
 import RoomUser from './RoomUser';
+import hark from 'hark';
 
 let socket = io.connect('http://localhost:8080/')
 
@@ -15,6 +16,7 @@ class RoomRTC extends React.Component {
         this.state = {
             peers: [],
             roomTitle: null,
+            speakingPeers: []
         }
     }
 
@@ -33,18 +35,11 @@ class RoomRTC extends React.Component {
         call.on('stream', userAudioStream  => {
             this.playUserAudio(userId, userAudioStream)
         })
-
-        call.on('close', () => {
-            console.log('CALL CLOSED')
-        })
-
     }
 
     componentDidUpdate(prevProps) {
         if (this.props.location.pathname !== prevProps.location.pathname) {
             this.peer.disconnect();
-            console.log(this.peer)
-            console.log(prevProps.location, 'this is what is sent to leave room')
 
             //Disconnect from join before joining new room
             socket.emit('leave-room', prevProps.location.pathname, localStorage.getItem('userId'))
@@ -64,70 +59,80 @@ class RoomRTC extends React.Component {
         socket.emit('join-room', window.location.pathname, localStorage.getItem('userId'))
     }
 
+    updatePeersInRoom = (peers) => {
+        //Create Ref of updatePeersList
+        peers.forEach(thing => {
+            this[`${thing}_ref`] = React.createRef()
+        });
+
+        //Add the peers state
+        this.setState({
+            peers: peers
+        })
+    }
+
+    voiceActivation = (status) => {
+        if (status) {
+            const speaking = this.state.speakingPeers.concat(localStorage.getItem('userId'));
+            this.setState({...this.state, speakingPeers: speaking})
+            socket.emit('voice-active', window.location.pathname, localStorage.getItem('userId'))
+        } else {
+            const notSpeaking = this.state.speakingPeers.filter((user) => user !== localStorage.getItem('userId'));
+            this.setState({...this.state, speakingPeers: notSpeaking})
+            socket.emit('voice-inactive', window.location.pathname, localStorage.getItem('userId'))
+        }
+    }
+
     componentDidMount() {
 
-        setTimeout(() => {
-            
-            navigator.mediaDevices.getUserMedia({
-                audio: true
-            }).then(stream => {
+        navigator.mediaDevices.getUserMedia({
+            audio: true
+        }).then(stream => {
 
-                this.updateRoomChange();
-                socket.on('client-connected', (userId, updatedPeersList) => {
-                    //Create Ref of updatePeersList
-                    updatedPeersList.forEach(thing => {
-                        this[`${thing}_ref`] = React.createRef()
-                    });
+            const speakingEvents = hark(stream, {threshold: '-55', interval: '50'})
 
-                    //Add the peers state
-                    this.setState({
-                        peers: updatedPeersList
+            speakingEvents.on('speaking', () => this.voiceActivation(true))
+            speakingEvents.on('stopped_speaking', () => this.voiceActivation(false))
+
+            this.updateRoomChange();
+
+            socket.on('client-connected', (userId, updatedPeersList) => {
+                this.updatePeersInRoom(updatedPeersList);
+
+                //Once client is connected and state is update with peers, connect client audio
+                this.playUserAudio(localStorage.getItem('userId'), stream)
+
+                this.peer.on('call', call => {
+                    call.answer(stream);
+                    call.on('stream', userAudioStream => {
+                        this.playUserAudio(call.peer, userAudioStream)
                     })
-
-                    //Once client is connected and state is update with peers, connect client audio
-                    this.playUserAudio(localStorage.getItem('userId'), stream)
-
-                    this.peer.on('call', call => {
-                        call.answer(stream);
-                        call.on('stream', userAudioStream => {
-                            this.playUserAudio(call.peer, userAudioStream)
-                        })
-                    })
-
                 })
 
-                socket.on('user-connected', (userId, updatedPeersList) => {
-                    //Create Ref of updatePeersList
-                    updatedPeersList.forEach(thing => {
-                        this[`${thing}_ref`] = React.createRef()
-                    });
-
-                    //Add the peers state
-                    this.setState({
-                        peers: updatedPeersList
-                    })
-
-                    //Connect user
-                    this.connectToNewUser(userId, stream)
-                    console.log('user-connected', userId)
-                })
-
-                socket.on('user-disconnected', (userId, updatedPeersList) => {
-                    //Create Ref of updatePeersList
-                    updatedPeersList.forEach(thing => {
-                        this[`${thing}_ref`] = React.createRef()
-                    });
-
-                    //Add the peers state
-                    this.setState({
-                        peers: updatedPeersList
-                    })
-
-                    console.log('user-disconnected', userId)
-                })
             })
-            
-        }, 1000)
+
+            socket.on('user-connected', (userId, updatedPeersList) => {
+                this.updatePeersInRoom(updatedPeersList);
+
+                //Connect user
+                this.connectToNewUser(userId, stream)
+            })
+
+            socket.on('user-disconnected', (userId, updatedPeersList) => {
+                this.updatePeersInRoom(updatedPeersList);
+            })
+
+            socket.on('user-speaking', (userId) => {
+                const speaking = this.state.speakingPeers.concat(userId);
+                this.setState({...this.state, speakingPeers: speaking})
+            })
+
+            socket.on('user-stopped-speaking', (userId) => {
+                const notSpeaking = this.state.speakingPeers.filter((user) => user !== userId);
+                this.setState({...this.state, speakingPeers: notSpeaking})
+            })
+
+        })
     }
 
     render() {
@@ -136,7 +141,7 @@ class RoomRTC extends React.Component {
                 {this.state.peers.map((userId) => {
                     return(
                         <React.Fragment>
-                            <RoomUser userId={userId} admins={this.props.admins}/>
+                            <RoomUser speakingPeers={this.state.speakingPeers} userId={userId} admins={this.props.admins}/>
                             <audio id={userId} key={userId} ref={this[`${userId}_ref`]} controls volume="true" autoPlay/>
                         </React.Fragment>
                     )

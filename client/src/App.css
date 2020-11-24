@@ -687,6 +687,7 @@ a {
     padding-top: 56.25%;
 }
 
+
 iframe {
     position: absolute;
     top: 0;
@@ -702,6 +703,10 @@ iframe {
     width: 65px;
     display: inline;
     margin-right: 8px;
+}
+
+.speaking {
+    border: 5px solid green;
 }
 
 .room-avatar-container {

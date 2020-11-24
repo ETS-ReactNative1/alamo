@@ -16,7 +16,9 @@ router.get('/', (req, res) => {
         searchQuery = {username: req.query.username}
 
     User.find(searchQuery)
-    .then(response => res.status(200).json(response))
+    .then(response => {
+        console.log(response)
+        res.status(200).json(response)})
     .catch(error => console.error(error));
 });
 

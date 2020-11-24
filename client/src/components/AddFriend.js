@@ -96,6 +96,7 @@ class AddFriend extends React.Component {
 
         axios.get('/user', {params: {username: username}})
             .then(response => {
+                console.log(response)
 
                 console.log(response.data[0]._id)
                 //Prevent searching/adding own profile id
