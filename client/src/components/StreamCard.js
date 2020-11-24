@@ -7,11 +7,13 @@ class StreamCard extends React.Component {
 
         this.state = {
             channelImage: '',
-            showOptions: false
+            showOptions: false,
+            admins: []
         }
     }
 
     componentDidMount() {
+        this.setState({admins: this.props.admins})
         axios.get('/twitchapi/channels/', {params: {channel: this.props.stream.user_name}})
             .then((response) => {
                 this.setState({channelImage: response.data[0].thumbnail_url})
@@ -33,7 +35,7 @@ class StreamCard extends React.Component {
                 <div className="stream-card-options">
                     <div className="row" style={{height: '100%'}}>
                         <div className="col-6">
-                            <i className={this.props.admins.includes(localStorage.getItem('userId')) ? "fas fa-3x stream-card-options-icons font-color fa-tv" : "fas fa-3x stream-card-options-icons font-color disabled fa-tv"} data-image={this.props.image} data-channelImage={this.state.channelImage} data-streamTitle={this.props.stream.title} data-username={this.props.stream.user_name} title="Change Stream" id={this.props.stream.user_name} onClick={this.props.changeStream}></i>
+                            <i className={this.state.admins.includes(localStorage.getItem('userId')) ? "fas fa-3x stream-card-options-icons font-color fa-tv" : "fas fa-3x stream-card-options-icons font-color disabled fa-tv"} data-image={this.props.image} data-channelImage={this.state.channelImage} data-streamTitle={this.props.stream.title} data-username={this.props.stream.user_name} title="Change Stream" id={this.props.stream.user_name} onClick={this.props.changeStream}></i>
                         </div>
                         <div className="col-6">
                             <i className="fas fa-3x stream-card-options-icons font-color fa-poll" title="Vote" id={this.props.stream.user_name} data-image={this.props.image} data-channelImage={this.state.channelImage} data-streamTitle={this.props.stream.title} data-username={this.props.stream.user_name} onClick={this.props.vote}></i>

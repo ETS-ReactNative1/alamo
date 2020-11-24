@@ -80,8 +80,7 @@ class Room extends React.Component {
 
     componentDidMount() {
         this.props.socket.on('update-stream', (roomId, stream) => {
-            if (roomId === window.location.pathname)
-                this.setState({channel: stream})
+            this.setState({channel: stream})
         })
 
         this.props.socket.on('vote', (userId, stream, usersInRoom) => {

@@ -155,7 +155,7 @@ io.on('connection', (socket) => {
     })
 
     socket.on('change-stream', (roomId, stream) => {
-        socket.broadcast.emit('update-stream', roomId, stream)
+        io.in(roomId).emit('update-stream', stream);
     })
 
 
