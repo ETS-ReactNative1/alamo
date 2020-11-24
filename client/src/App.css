@@ -912,6 +912,10 @@ iframe {
     min-width: 317px;
 }
 
+.vote-actions-row {
+    margin: 0 !important;
+}
+
 .stream-card:hover {
     transform: scale(1.03);
     border: 3px 4px 0px 2px  #3700B3 !important;

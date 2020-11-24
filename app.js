@@ -150,13 +150,11 @@ io.on('connection', (socket) => {
         io.in(roomId).emit('vote-poll', userId, vote)        
     })
 
-    socket.on('finish-vote', (roomId) =>{
-        console.log(roomId, 'finish vote')
-        io.in(roomId).emit('end-vote')
+    socket.on('finish-vote', (roomId, result) =>{
+        io.in(roomId).emit('end-vote', result)
     })
 
     socket.on('change-stream', (roomId, stream) => {
-        console.log('change stream to', stream)
         socket.broadcast.emit('update-stream', roomId, stream)
     })
 
