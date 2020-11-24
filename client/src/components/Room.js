@@ -63,7 +63,7 @@ class Room extends React.Component {
         if (this.state.vote)
             alert('Vote already in progress')
 
-        setTimeout(() => {
+        this.voteTimer = setTimeout(() => {
             this.props.socket.emit('finish-vote', window.location.pathname, 'failed')
         }, 1000 * 30)
     }
@@ -79,7 +79,8 @@ class Room extends React.Component {
     }
 
     componentDidMount() {
-        this.props.socket.on('update-stream', (roomId, stream) => {
+        this.props.socket.on('update-stream', (stream) => {
+            console.log(stream)
             this.setState({channel: stream})
         })
 
@@ -111,8 +112,10 @@ class Room extends React.Component {
 
         this.props.socket.on('end-vote', (result) => {
             if (result === 'passed') {
+                clearTimeout(this.voteTimer);
                 this.props.socket.emit('change-stream', window.location.pathname, this.state.voterChannel.channel)           
             } else {
+                clearTimeout(this.voteTimer);
                 this.setState({...this.state, vote: false, yesVotes: 1, noVotes: 0, noUsers: [], yesUsers: []})
             }
         })
