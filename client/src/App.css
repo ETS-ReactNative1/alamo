@@ -690,11 +690,18 @@ a {
     bottom: 50px;
     left: 0px;
     z-index: -99999;
+    cursor: pointer;
 }
 
 .mini-rtc-active {
     z-index: 99999 !important;
 }
+
+.rtc-room-size {
+    float: right;
+    transform: scale(0.7);
+}
+
 
 .hangup-room {
     cursor: pointer;
@@ -852,6 +859,11 @@ iframe {
 .room-container {
     height: calc(100% - 100px);
     padding-bottom: 50px;
+    opacity: 0;
+}
+
+.show-room {
+    opacity: 1;
 }
 
 .room-title {

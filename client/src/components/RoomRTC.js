@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import { withRouter } from 'react-router-dom';
 import Peer from 'peerjs';
 import axios from 'axios';
-import RoomUser from './RoomUser';
 import hark from 'hark';
 
 const clientId = localStorage.getItem('userId');
@@ -40,15 +39,16 @@ class RoomRTC extends React.Component {
     componentDidUpdate(prevProps) {
         if (this.props.location.pathname !== prevProps.location.pathname) {
             if (this.props.location.pathname.substring(1, 5) === 'room') {
-                this.setState({miniRTC: false})
+                this.setState({miniRTC: false, roomId: this.props.location.pathname})
                 console.log('LEAVE ROOM')
                 this.peer.disconnect();
                 //Disconnect from join before joining new room
                 this.props.socket.emit('leave-room', prevProps.location.pathname, clientId)
                 this.updateRoomChange();
             } else {
+                this.fetchRoomInformation();
+                this.setState({...this.state, miniRTC: true})
                 console.log('minimise rtc')
-                this.setState({miniRTC: true})
             }
         }
     }
@@ -61,7 +61,6 @@ class RoomRTC extends React.Component {
         })
 
         //Join new room
-        this.props.socket.emit('join-room', window.location.pathname, clientId)
     }
 
     updatePeersInRoom = (peers) => {
@@ -76,7 +75,25 @@ class RoomRTC extends React.Component {
         })
     }
 
+    closeCall = () => {
+        this.props.socket.emit('leave-room', this.props.activeRoom, localStorage.getItem('userId'))
+        this.peer.disconnect();
+        this.setState({miniRTC: false});
+        this.props.leaveRoom();
+    }
+
+    fetchRoomInformation = () => {
+        axios.get('/room', {params: {roomId: this.props.activeRoom}})
+            .then(response => {
+                console.log(response)
+                this.setState({roomTitle: response.data.room_title, admins: response.data.admins, channel: response.data.stream_channel})
+            })
+    }
+
+
     componentDidMount() {
+
+        this.fetchRoomInformation();
 
         navigator.mediaDevices.getUserMedia({
             audio: true
@@ -114,22 +131,32 @@ class RoomRTC extends React.Component {
         })
     }
 
+    redirect = (path) => {
+        this.props.history.push(path)
+    }
+
+    handleMiniRTCClick = (event) => {
+        this.redirect(event.currentTarget.id)
+        this.props.showRoom();
+    }
+
     render() {
         return(
-            <div className={this.state.miniRTC ? "container web-rtc mini-rtc-active" : "container web-rtc"}>
+            <div id={this.props.activeRoom} onClick={this.handleMiniRTCClick} className={this.state.miniRTC ? "container web-rtc mini-rtc-active" : "container web-rtc"}>
                 <div className="row room-avatar-row align-items-center">
                     <div className="col-9">
+                        <h5>{this.state.roomTitle} <span className="rtc-room-size thin">{this.state.peers.length} / 6 </span></h5>
+                        <h6 className="thin">Watching Counter-Strike...</h6>
                         {this.state.peers.map((userId) => {
                             return(
                                 <div data-userId={userId}>
-                                    <h6>{userId} | </h6>
                                     <audio id={userId} key={userId} ref={this[`${userId}_ref`]} controls volume="true" autoPlay/>
                                 </div>
                             )
                         })}
                     </div>
                     <div className="col-3" style={{borderLeft: '1px solid white'}}>
-                        <i class="hangup-room fas fa-3x font-color fa-phone-slash"></i>
+                        <i className="hangup-room fas fa-3x font-color fa-phone-slash" onClick={this.closeCall}></i>
                     </div>
                 </div>
             </div>

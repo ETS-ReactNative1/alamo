@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import { useAuth0 } from '@auth0/auth0-react';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, withRouter } from 'react-router-dom';
 
 import ContextMenu from './ContextMenu';
 import Sidebar from './Sidebar';
@@ -19,6 +19,8 @@ class Dashboard extends React.Component {
         this.state = {
             user: [],
             admins: ["5fbd007cd13e171ac9d8f331"],
+            show: false,
+            activeRoom: null,
             contextMenu: {
                 type: '',
                 id: '',
@@ -39,6 +41,13 @@ class Dashboard extends React.Component {
     }
 
     componentDidMount() {
+        if(window.location.pathname.substring(1, 5) === 'room') this.setState({activeRoom: window.location.pathname, show: true})
+        
+        this.unlisten = this.props.history.listen((location, action) => {
+            if (window.location.pathname === this.state.activeRoom) this.setState({show: true})
+            else this.setState({show: false})
+        });
+
         window.addEventListener("beforeunload", function(event) { 
             this.props.socket.emit('user-offline', localStorage.getItem('userId'))
         });
@@ -78,6 +87,10 @@ class Dashboard extends React.Component {
         })
     }
 
+    leaveRoom = () => {
+        this.setState({...this.state, activeRoom: null, show: false}) 
+        this.props.history.push('/')
+    }
 
     //Handle Context Menu Click
     handleContextMenu = (id, type, x, y, onlineStatus) => {
@@ -88,27 +101,36 @@ class Dashboard extends React.Component {
         this.setState({contextMenu: {status: false, x: '-400px', y: '-400px'}})
     }
 
+    showRoom = () => {
+        console.log('SHOW ROOM')
+        this.setState({showRoom: true});
+    }
+
     render() {
         const rooms = this.props.user && this.props.user.rooms;
         return (
-        <React.Fragment>
-            <div className="container-fluid" onClick={this.clearContextMenu}>
-                <div className="row">
-                    <RoomRTC socket={this.props.socket} admins={this.state.admins}/>
-                    <ContextMenu socket={this.props.socket} status={this.state.contextMenu} fetchUserInformation={this.fetchUserInformation} />
-                    <Sidebar socket={this.props.socket} user={this.state.user} handleContextMenu={this.handleContextMenu} onlineUsers={this.state.onlineUsers}/>
-                    <main className="col px-4">
-                        <NavigationBar/>
-                        <Notification socket={this.props.socket} userId={this.state.user._id}/>
-                        <Route path="/create-room" render={(props) => (<CreateRoom socket={this.props.socket} fetchUserInformation={this.fetchUserInformation}/>)}/>
-                        <Route path="/room/" render={(props) => <Room socket={this.props.socket} admins={this.props.admins} rooms={this.props.user.rooms} fetchUserInformation={this.fetchUserInformation}/>}/>
-                        <Route path="/account-settings" render={(props) => (<AccountSettings userInformation={this.state.user}/>)}/>
-                    </main>
+            <React.Fragment>
+                <div className="container-fluid" onClick={this.clearContextMenu}>
+                    <div className="row">
+
+                        {this.state.activeRoom !== null ? <RoomRTC socket={this.props.socket} activeRoom={this.state.activeRoom} showRoom={this.showRoom} admins={this.state.admins} leaveRoom={this.leaveRoom}/> : null}
+
+                        <ContextMenu socket={this.props.socket} status={this.state.contextMenu} fetchUserInformation={this.fetchUserInformation} />
+
+                        <Sidebar socket={this.props.socket} showRoom={this.showRoom} activeRoom={this.state.activeRoom} changeRoom={this.changeRoom} user={this.state.user} handleContextMenu={this.handleContextMenu} onlineUsers={this.state.onlineUsers}/>
+
+                        <main className="col px-4">
+                            <NavigationBar/>
+                            <Notification socket={this.props.socket} userId={this.state.user._id}/>
+                            <Route path="/create-room" render={(props) => (<CreateRoom socket={this.props.socket} fetchUserInformation={this.fetchUserInformation}/>)}/>
+                            {this.state.activeRoom !== null ? <Room socket={this.props.socket} show={this.state.show} activeRoom={this.state.activeRoom} admins={this.props.admins} rooms={this.props.user.rooms} fetchUserInformation={this.fetchUserInformation}/> : null}
+                            <Route path="/account-settings" render={(props) => (<AccountSettings userInformation={this.state.user}/>)}/>
+                        </main>
+                    </div>
                 </div>
-            </div>
-        </React.Fragment>
+            </React.Fragment>
         );
     }
 }
 
-export default Dashboard;
+export default withRouter(Dashboard);

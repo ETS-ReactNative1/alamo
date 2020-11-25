@@ -29,27 +29,34 @@ const RoomItem = (props) => {
 
     const handleClick = (event) => {
         redirect(event.currentTarget.id)
-    }
-
-    const activeChannel = () => {
-        if (window.location.pathname === props.roomId) {
-            return(
-                <i class="fas fa-microphone active-room-icon"></i>
-            )
-        }
+        props.showRoom();
     }
 
     const room_title = room && room.room_title;
+    const activeChannel = () => {
+        if (props.activeRoom === props.roomId) {
+            return(
+                <li onContextMenu={handleContextClick} id={props.roomId} className="nav-item" onClick={(event) => handleClick(event)}>
+                    {(props.activeRoom === props.roomId) ? <i className="fas fa-microphone active-room-icon"></i> : null}
+                    {room_title}
+                </li>
+            )
+        } else {
+            return(
+                <a href={props.roomId} className="nav-item">
+                    <li onContextMenu={handleContextClick} id={props.roomId}>
+                        {room_title}
+                    </li>
+                </a>
+            )
+
+        }
+    }
+
 
     return(
         <React.Fragment>
-            <li onContextMenu={handleContextClick} id={props.roomId} onClick={(event) => handleClick(event)} className="nav-item">
-
-                {activeChannel()}
-
-                {room_title}
-
-            </li>
+            {activeChannel()}
         </React.Fragment>
     )
 }

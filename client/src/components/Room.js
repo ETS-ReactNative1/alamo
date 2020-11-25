@@ -34,7 +34,7 @@ class Room extends React.Component {
     }
 
     fetchRoomInformation = () => {
-        axios.get('/room', {params: {roomId: window.location.pathname}})
+        axios.get('/room', {params: {roomId: this.props.activeRoom}})
             .then(response => {
                 this.setState({roomTitle: response.data.room_title, admins: response.data.admins, channel: response.data.stream_channel})
             })
@@ -43,10 +43,10 @@ class Room extends React.Component {
     changeStream = (event) => {
         const channel = event.currentTarget.id
         this.setState({channel: channel})
-        axios.post('/room/change-stream', {roomId: window.location.pathname, channel: channel})
+        axios.post('/room/change-stream', {roomId: this.props.activeRoom, channel: channel})
             .then((response) => {
                 console.log('fire response')
-                this.props.socket.emit('change-stream', window.location.pathname, channel)
+                this.props.socket.emit('change-stream', this.props.activeRoom, channel)
             })
             .catch((err) => console.log(err))
     }
@@ -59,27 +59,28 @@ class Room extends React.Component {
         const stream = {channel: channel, thumbnail: thumbnail, avatar: avatar, title: title}
 
         if (!this.state.vote) 
-            this.props.socket.emit('start-vote', window.location.pathname, localStorage.getItem('userId'), stream)
+            this.props.socket.emit('start-vote', this.props.activeRoom, localStorage.getItem('userId'), stream)
 
         if (this.state.vote)
             alert('Vote already in progress')
 
         this.voteTimer = setTimeout(() => {
-            this.props.socket.emit('finish-vote', window.location.pathname, 'failed')
+            this.props.socket.emit('finish-vote', this.props.activeRoom, 'failed')
         }, 1000 * 30)
     }
 
     votingActions = (event) => {
-        this.props.socket.emit('vote-actions', window.location.pathname, localStorage.getItem('userId'), event.currentTarget.id)
+        this.props.socket.emit('vote-actions', this.props.activeRoom, localStorage.getItem('userId'), event.currentTarget.id)
     }
 
-    componentDidUpdate(prevProps) {
-        if (this.props.location.pathname !== prevProps.location.pathname) {
-            this.fetchRoomInformation();
-        } 
+    componentWillUnmount() {
+        this.props.socket.emit('leave-room', this.props.activeRoom, localStorage.getItem('userId'))
     }
 
     componentDidMount() {
+
+        this.props.socket.emit('join-room', this.props.activeRoom, localStorage.getItem('userId'));
+
         this.props.socket.on('update-stream', (stream) => {
             console.log(stream)
             this.setState({channel: stream})
@@ -106,15 +107,15 @@ class Room extends React.Component {
                 this.setState({...this.state, noVotes: this.state.noVotes + 1, noUsers: newNoVote})
             }
 
-            if (this.state.yesVotes === this.state.votesNeeded) this.props.socket.emit('finish-vote', window.location.pathname, 'passed')
-            if ((this.state.yesVotes + this.state.noVotes) === this.state.votesNeeded) this.props.socket.emit('finish-vote', window.location.pathname, 'failed')
+            if (this.state.yesVotes === this.state.votesNeeded) this.props.socket.emit('finish-vote', this.props.activeRoom, 'passed')
+            if ((this.state.yesVotes + this.state.noVotes) === this.state.votesNeeded) this.props.socket.emit('finish-vote', this.props.activeRoom, 'failed')
 
         })
 
         this.props.socket.on('end-vote', (result) => {
             if (result === 'passed') {
                 clearTimeout(this.voteTimer);
-                this.props.socket.emit('change-stream', window.location.pathname, this.state.voterChannel.channel)           
+                this.props.socket.emit('change-stream', this.props.activeRoom, this.state.voterChannel.channel)           
             } else {
                 clearTimeout(this.voteTimer);
                 this.setState({...this.state, vote: false, yesVotes: 1, noVotes: 0, noUsers: [], yesUsers: []})
@@ -128,7 +129,7 @@ class Room extends React.Component {
         return(
             <React.Fragment>
                 {this.state.vote ? <Vote yesUsers={this.state.yesUsers} noUsers={this.state.noUsers} yesVotes={this.state.yesVotes} noVotes={this.state.noVotes} usersInRoom={this.state.usersInRoom} votesNeeded={this.state.votesNeeded} voterId={this.state.voterId} votingActions={this.votingActions} stream={this.state.voterChannel}/> : null}
-                <div className="room-container d-flex">
+                <div className={this.props.show ? "room-container show-room d-flex" : "room-container d-flex"}>
                     <div className="container-fluid">
                         <h1 className="room-title">{this.state.roomTitle}</h1>
                         <TwitchPlayer twitchChannel={this.state.channel}/>

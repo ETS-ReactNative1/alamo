@@ -33,7 +33,7 @@ class Sidebar extends React.Component {
 
                     <ProfileCard userId={userId} username={username} status={'Watching Valorant...'} avatar={avatar} handleContextMenu={this.props.handleContextMenu}/>
 
-                    { rooms ? <RoomList rooms={rooms} handleContextMenu={this.props.handleContextMenu} /> : null}
+                    { rooms ? <RoomList activeRoom={this.props.activeRoom} showRoom={this.props.showRoom} changeRoom={this.props.changeRoom} rooms={rooms} handleContextMenu={this.props.handleContextMenu} /> : null}
 
                     { friends ? <FriendsList socket={this.props.socket} friends={friends} onlineUsers={this.props.onlineUsers} handleContextMenu={this.props.handleContextMenu}/> : null }
 
