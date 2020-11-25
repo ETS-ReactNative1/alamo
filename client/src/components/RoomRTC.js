@@ -6,6 +6,8 @@ import axios from 'axios';
 import RoomUser from './RoomUser';
 import hark from 'hark';
 
+const clientId = localStorage.getItem('userId');
+
 class RoomRTC extends React.Component {
     constructor(props) {
         super(props)
@@ -13,13 +15,14 @@ class RoomRTC extends React.Component {
         this.state = {
             peers: [],
             roomTitle: null,
-            speakingPeers: []
+            speakingPeers: [],
+            miniRTC: false
         }
     }
 
     playUserAudio = (userId, stream) => {
         //If connected user is client, then we want to mute that audio ref element
-        if (userId === localStorage.getItem('userId')) {
+        if (userId === clientId) {
             this[`${userId}_ref`].current.srcObject = stream;
             this[`${userId}_ref`].current.muted = true;
         } else {
@@ -36,24 +39,29 @@ class RoomRTC extends React.Component {
 
     componentDidUpdate(prevProps) {
         if (this.props.location.pathname !== prevProps.location.pathname) {
-            this.peer.disconnect();
-
-            //Disconnect from join before joining new room
-            this.props.socket.emit('leave-room', prevProps.location.pathname, localStorage.getItem('userId'))
-
-            this.updateRoomChange();
+            if (this.props.location.pathname.substring(1, 5) === 'room') {
+                this.setState({miniRTC: false})
+                console.log('LEAVE ROOM')
+                this.peer.disconnect();
+                //Disconnect from join before joining new room
+                this.props.socket.emit('leave-room', prevProps.location.pathname, clientId)
+                this.updateRoomChange();
+            } else {
+                console.log('minimise rtc')
+                this.setState({miniRTC: true})
+            }
         }
     }
 
     updateRoomChange = (userId) => {
 
-        this.peer = new Peer(localStorage.getItem('userId'), {
+        this.peer = new Peer(clientId, {
             host: '/',
             port: '8081'
         })
 
         //Join new room
-        this.props.socket.emit('join-room', window.location.pathname, localStorage.getItem('userId'))
+        this.props.socket.emit('join-room', window.location.pathname, clientId)
     }
 
     updatePeersInRoom = (peers) => {
@@ -68,28 +76,11 @@ class RoomRTC extends React.Component {
         })
     }
 
-    voiceActivation = (status) => {
-        if (status) {
-            const speaking = this.state.speakingPeers.concat(localStorage.getItem('userId'));
-            this.setState({...this.state, speakingPeers: speaking})
-            this.props.socket.emit('voice-active', window.location.pathname, localStorage.getItem('userId'))
-        } else {
-            const notSpeaking = this.state.speakingPeers.filter((user) => user !== localStorage.getItem('userId'));
-            this.setState({...this.state, speakingPeers: notSpeaking})
-            this.props.socket.emit('voice-inactive', window.location.pathname, localStorage.getItem('userId'))
-        }
-    }
-
     componentDidMount() {
 
         navigator.mediaDevices.getUserMedia({
             audio: true
         }).then(stream => {
-
-            const speakingEvents = hark(stream, {threshold: '-55', interval: '50'})
-
-            speakingEvents.on('speaking', () => this.voiceActivation(true))
-            speakingEvents.on('stopped_speaking', () => this.voiceActivation(false))
 
             this.updateRoomChange();
 
@@ -120,30 +111,27 @@ class RoomRTC extends React.Component {
                 this.updatePeersInRoom(updatedPeersList);
             })
 
-            this.props.socket.on('user-speaking', (userId) => {
-                const speaking = this.state.speakingPeers.concat(userId);
-                this.setState({...this.state, speakingPeers: speaking})
-            })
-
-            this.props.socket.on('user-stopped-speaking', (userId) => {
-                const notSpeaking = this.state.speakingPeers.filter((user) => user !== userId);
-                this.setState({...this.state, speakingPeers: notSpeaking})
-            })
-
         })
     }
 
     render() {
         return(
-            <div className="row room-avatar-row align-items-center">
-                {this.state.peers.map((userId) => {
-                    return(
-                        <div data-userId={userId}>
-                            <RoomUser speakingPeers={this.state.speakingPeers} userId={userId} admins={this.props.admins}/>
-                            <audio id={userId} key={userId} ref={this[`${userId}_ref`]} controls volume="true" autoPlay/>
-                        </div>
-                    )
-                })}
+            <div className={this.state.miniRTC ? "container web-rtc mini-rtc-active" : "container web-rtc"}>
+                <div className="row room-avatar-row align-items-center">
+                    <div className="col-9">
+                        {this.state.peers.map((userId) => {
+                            return(
+                                <div data-userId={userId}>
+                                    <h6>{userId} | </h6>
+                                    <audio id={userId} key={userId} ref={this[`${userId}_ref`]} controls volume="true" autoPlay/>
+                                </div>
+                            )
+                        })}
+                    </div>
+                    <div className="col-3" style={{borderLeft: '1px solid white'}}>
+                        <i class="hangup-room fas fa-3x font-color fa-phone-slash"></i>
+                    </div>
+                </div>
             </div>
         )
     }

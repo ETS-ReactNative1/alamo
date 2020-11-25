@@ -680,6 +680,30 @@ a {
     color: #FFD700;
 }
 
+.web-rtc {
+    height: 80px;
+    background-color: #050505;
+    position: fixed;
+    min-width: 299px;
+    max-width: 299px;
+    font-size: 50% !important;
+    bottom: 50px;
+    left: 0px;
+    z-index: -99999;
+}
+
+.mini-rtc-active {
+    z-index: 99999 !important;
+}
+
+.hangup-room {
+    cursor: pointer;
+}
+
+.hangup-room:hover {
+    color: #3700B3 !important;
+}
+
 .room-video {
     position: relative;
     overflow: hidden;

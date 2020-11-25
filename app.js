@@ -114,6 +114,8 @@ io.on('connection', (socket) => {
             }
         }
 
+        console.log(rooms)
+
         //Need to send a direct message to the client of peers list, emit does not seem to work
         socket.emit('client-connected', userId, rooms[roomId]);
 

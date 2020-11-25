@@ -1,4 +1,5 @@
 import React from 'react';
+import { withRouter } from 'react-router-dom'
 import ProfileCard from './ProfileCard';
 import RoomList from './RoomList';
 import FriendsList from './FriendsList';
@@ -7,6 +8,10 @@ import SidebarFriendsControls from './SidebarFriendsControls';
 class Sidebar extends React.Component {
     constructor(props) {
         super(props)
+    }
+
+    returnHome = () => {
+        this.props.history.push('/');
     }
 
     render() {
@@ -22,9 +27,7 @@ class Sidebar extends React.Component {
                 <div className="sidebar-sticky">
                     <div className="row">
                         <div className="col">
-                            <a href="/">
-                                <h1 className="logo-main centered margin-bottom">alamo</h1>
-                            </a>
+                            <h1 className="logo-main centered margin-bottom" onClick={this.returnHome}>alamo</h1>
                         </div>
                     </div>
 
@@ -42,4 +45,4 @@ class Sidebar extends React.Component {
     }
 }
 
-export default Sidebar;
+export default withRouter(Sidebar);

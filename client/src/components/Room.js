@@ -6,6 +6,7 @@ import { withRouter } from 'react-router-dom';
 
 import RoomUser from './RoomUser';
 import RoomRTC from './RoomRTC';
+import RoomPeers from './RoomPeers';
 import TwitchPlayer from './TwitchPlayer';
 import TwitchChat from './TwitchChat';
 import TwitchLogin from './TwitchLogin';
@@ -131,7 +132,7 @@ class Room extends React.Component {
                     <div className="container-fluid">
                         <h1 className="room-title">{this.state.roomTitle}</h1>
                         <TwitchPlayer twitchChannel={this.state.channel}/>
-                        <RoomRTC socket={this.props.socket} admins={this.state.admins}/>
+                        <RoomPeers socket={this.props.socket} admins={this.state.admins}/>
                         <MoreStreams admins={this.state.admins} changeStream={this.changeStream} vote={this.vote}/>
                     </div>
                     <TwitchChat twitchChannel={this.state.channel}/>

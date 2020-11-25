@@ -9,6 +9,7 @@ import NavigationBar from './NavigationBar';
 import Notification from './Notification';
 import Room from './Room';
 import CreateRoom from './CreateRoom';
+import RoomRTC from './RoomRTC';
 import AccountSettings from './AccountSettings';
 
 class Dashboard extends React.Component {
@@ -17,6 +18,7 @@ class Dashboard extends React.Component {
 
         this.state = {
             user: [],
+            admins: ["5fbd007cd13e171ac9d8f331"],
             contextMenu: {
                 type: '',
                 id: '',
@@ -92,13 +94,14 @@ class Dashboard extends React.Component {
         <React.Fragment>
             <div className="container-fluid" onClick={this.clearContextMenu}>
                 <div className="row">
+                    <RoomRTC socket={this.props.socket} admins={this.state.admins}/>
                     <ContextMenu socket={this.props.socket} status={this.state.contextMenu} fetchUserInformation={this.fetchUserInformation} />
                     <Sidebar socket={this.props.socket} user={this.state.user} handleContextMenu={this.handleContextMenu} onlineUsers={this.state.onlineUsers}/>
                     <main className="col px-4">
                         <NavigationBar/>
                         <Notification socket={this.props.socket} userId={this.state.user._id}/>
                         <Route path="/create-room" render={(props) => (<CreateRoom socket={this.props.socket} fetchUserInformation={this.fetchUserInformation}/>)}/>
-                        <Route path="/room/" render={(props) => <Room socket={this.props.socket} rooms={this.props.user.rooms} fetchUserInformation={this.fetchUserInformation}/>}/>
+                        <Route path="/room/" render={(props) => <Room socket={this.props.socket} admins={this.props.admins} rooms={this.props.user.rooms} fetchUserInformation={this.fetchUserInformation}/>}/>
                         <Route path="/account-settings" render={(props) => (<AccountSettings userInformation={this.state.user}/>)}/>
                     </main>
                 </div>
