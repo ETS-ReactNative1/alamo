@@ -133,7 +133,15 @@ class Room extends React.Component {
                     <div className="container-fluid">
                         <h1 className="room-title">{this.state.roomTitle}</h1>
                         <TwitchPlayer twitchChannel={this.state.channel}/>
-                        <RoomPeers socket={this.props.socket} admins={this.state.admins}/>
+                        <div className="row room-avatar-row justify-content-between">
+                            <RoomPeers socket={this.props.socket} admins={this.state.admins}/>
+                            <div className="col-4 d-flex flex-row-reverse">
+                                <i className="fas fa-2x fa-cog room-settings-icon font-color"></i>
+                                <button className="muted-btn">Share</button>
+                                <button className="primary-btn small-btn">Invite</button>
+                            </div>
+                        </div>
+
                         <MoreStreams admins={this.state.admins} changeStream={this.changeStream} vote={this.vote}/>
                     </div>
                     <TwitchChat twitchChannel={this.state.channel}/>

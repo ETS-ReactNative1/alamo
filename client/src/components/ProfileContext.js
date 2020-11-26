@@ -16,7 +16,7 @@ const ProfileContext = (props) => {
                         <li className="context-item">Update Status</li>
                         <li className="context-item" onClick={() => redirect('/update-avatar')}>Change Avatar</li>
                         <li className="context-item" onClick={() => redirect('/account-settings')}>Account Settings</li>
-                        <LogoutItem socket={this.props.socket}/>
+                        <LogoutItem socket={props.socket}/>
                     </ul>
                 </div>
             </div>

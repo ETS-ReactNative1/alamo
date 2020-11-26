@@ -167,7 +167,6 @@ io.on('connection', (socket) => {
     })
 
     socket.on('friend-event', (type, senderId, receiverId) => {
-        console.log(type, 'FRIEND EVENT TYPE')
         if (type === 'accept' && typeof clients[receiverId].socketId != 'undefined')
             io.to(clients[receiverId].socketId).emit('friend-event', type);
 

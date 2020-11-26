@@ -306,7 +306,6 @@ a {
 .online {
     width: 5px;
     height: 5px;
-    z-index: 999;
     position: absolute;
     bottom: 10px;
     right: 0%;
@@ -385,6 +384,26 @@ a {
     margin: 0 50px 0 0;
 }
 
+.muted-btn {
+    min-width: 100px;
+    height: 35px;
+    background-color: #3a3a3e;
+    color: #F2E7FE;
+    border-radius: 8px;
+    border: none;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 400;
+    margin: 0 15px 0 15px;
+}
+
+.room-settings-icon {
+    cursor: pointer;
+}
+
+.small-btn {
+    min-width: 100px !important;
+    height: 35px !important;
+}
 
 .primary-btn {
     min-width: 130px;
@@ -747,7 +766,7 @@ iframe {
 }
 
 .room-avatar-row {
-    padding: 15px 0 0 0;
+    padding: 15px 0 0 15px;
     width: auto;
 }
 
@@ -858,13 +877,22 @@ iframe {
 }
 
 .room-container {
+    position: absolute;
+    top: -5000px;
+    left: -5000px;
     height: calc(100% - 100px);
     padding-bottom: 50px;
     opacity: 0;
+    z-index: -999;
 }
 
 .show-room {
+    position: relative;
+    top: 0;
+    left: 0;
     opacity: 1;
+    z-index: 999;
+    pointer-event: none;
 }
 
 .room-title {
