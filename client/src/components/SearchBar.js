@@ -10,17 +10,28 @@ class SearchBar extends React.Component {
         this.state = {
             query: '',
             loading: false,
-            results: []
+            streamResults: [],
+            channelResults: []
         }
     }
 
-    searchTwitch = (query) => {
+    searchTwitchStream = (query) => {
         this.setState({loading: true})
         axios.get('/twitchapi/streams', {params: {search: query}})
             .then((response) => {
-                this.setState({results: []})
-                this.setState({results: response.data})
-                console.log(this.state.results)
+                this.setState({streamResults: []})
+                this.setState({streamResults: response.data})
+            })
+            .catch((err) => console.log(err))
+    }
+
+    searchTwitchChannel = (query) => {
+        this.setState({loading: true})
+        axios.get('/twitchapi/channels', {params: {channel: query}})
+            .then((response) => {
+                console.log(response)
+                this.setState({channelResults: []})
+                this.setState({channelResults: response.data})
             })
             .catch((err) => console.log(err))
     }
@@ -29,17 +40,19 @@ class SearchBar extends React.Component {
         const query = event.target.value
         this.setState({query: query})
         
-        if (this.state.query.length > 2)
-            this.searchTwitch(query)
+        if (this.state.query.length > 2) {
+            this.searchTwitchStream(query)
+            this.searchTwitchChannel(query)
+        }
 
         if (query.includes('twitch.tv/', 0)) {
             if (query.includes('https://', 0)) {
                 const removeHTTPS = query.substring(query.indexOf('/')+2)
                 const channel = removeHTTPS.substring(removeHTTPS.indexOf('/')+1)
-                this.searchTwitch(channel)
+                this.searchTwitchChannel(channel)
             } else {
                 const channel = query.substring(query.indexOf('/')+1)
-                this.searchTwitch(channel)
+                this.searchTwitchChannel(channel)
             }
         }
     }
@@ -50,7 +63,7 @@ class SearchBar extends React.Component {
 
     clear = () => {
         this.searchInput.current.value = '';
-        this.setState({query: '', results: []})
+        this.setState({query: '', streamResults: [], channelResults: []})
     }
 
     render() {
@@ -64,7 +77,7 @@ class SearchBar extends React.Component {
                     onInput={this.handleInputChange}
                 />
                 {this.state.query.length > 2 ? <i className="fas fa-1x font-color search-bar-close fa-times" onClick={this.clear}></i> : null}
-                {this.state.query.length > 2 ? <SearchResults loading={this.state.loading} loaded={this.loaded} results={this.state.results}/> : null}
+                {this.state.query.length > 2 ? <SearchResults loading={this.state.loading} loaded={this.loaded} channels={this.state.channelResults} streamResults={this.state.streamResults}/> : null}
             </div>
         )
     }

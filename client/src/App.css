@@ -68,13 +68,56 @@ label {
     border-radius: 8px 8px 0 0 !important;
 }
 
+.channel-results-card {
+    position: relative;
+    height: 250px;
+    width: 100%;
+    padding: 5px;
+    margin-bottom: 8px;
+    color: #212529 !important;
+    background-color: rgba(243, 231, 254, 0.9) !important;
+}
+
+.live {
+    background-color: red;
+    color: white;
+    width: 34px;
+    text-align: center;
+    border-radius: 3px;
+    font-size: 0.85em;
+}
+
+.view-more {
+    height: 25px;
+    width: 100%;
+    z-index: 9999;
+    text-align: center;
+    margin-bottom: 8px;
+    border-radius: 8px;
+    cursor: pointer;
+    background-color: #2D2D2F;
+}
+
+.vote-icon {
+    transform: scale(0.93) !important;
+    padding-left: 5px;
+}
+
+.channel-results-img {
+    display:block;
+    margin:auto;
+    text-align: center;
+    max-width: 70%;
+    height: auto;
+}
+
 .stream-results-card {
     height: 150px;
     width: 100%;
     padding: 5px;
     margin-bottom: 8px;
     color: #212529 !important;
-    background-color: rgba(243, 231, 254, 0.8) !important;
+    background-color: rgba(243, 231, 254, 0.9) !important;
 }
 
 .hide-results {
@@ -94,6 +137,24 @@ label {
     cursor: pointer;
     transform: scale(0.8);
 }
+
+.channel-font {
+    color: #212529 !important;
+    padding-bottom: 15px;
+}
+
+.channel-result-title {
+    color: #212529 !important;
+    text-overflow: ellipsis;
+    overflow:hidden;
+    font-size: 1.2em;
+}
+
+.channel-result-username {
+    color: #212529 !important;
+    font-weight: 200;
+}
+
 .stream-result-title {
     color: #212529 !important;
     max-height: 35px;
@@ -478,7 +539,7 @@ a {
     height: 35px;
     background-color: #3a3a3e;
     color: #F2E7FE;
-    border-radius: 8px;
+    border-radius: 4px;
     border: none;
     font-family: 'Open Sans', sans-serif;
     font-weight: 700;
@@ -496,6 +557,7 @@ a {
 .small-btn {
     min-width: 100px !important;
     height: 35px !important;
+    border-radius: 4px !important;
 }
 
 .primary-btn {
@@ -1306,6 +1368,8 @@ iframe {
   height: 40px;
   z-index: 9999;
 }
+
+/* Credit for search bar loader -  https://loading.io/css/ */
 
 .lds-roller div {
   animation: lds-roller 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
