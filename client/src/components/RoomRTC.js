@@ -45,7 +45,6 @@ class RoomRTC extends React.Component {
             if (this.props.location.pathname.substring(1, 5) !== 'room') {
                 this.fetchRoomInformation();
                 this.setState({...this.state, miniRTC: true});
-                console.log('minimise rtc')
             } else {
                 this.setState({...this.state, miniRTC: false});
             }
@@ -75,7 +74,6 @@ class RoomRTC extends React.Component {
     fetchRoomInformation = () => {
         axios.get('/room', {params: {roomId: this.props.activeRoom}})
             .then(response => {
-                console.log(response)
                 this.setState({roomTitle: response.data.room_title, admins: response.data.admins, channel: response.data.stream_channel})
             })
     }
@@ -134,9 +132,8 @@ class RoomRTC extends React.Component {
     }
 
     render() {
-        console.log(this.props.friendsControlsActive)
         return(
-            <div id={this.props.activeRoom} onClick={this.handleMiniRTCClick} className={this.state.miniRTC ? "container web-rtc mini-rtc-active" : "container web-rtc"} >
+            <div id={this.props.activeRoom} onClick={this.handleMiniRTCClick} className={this.state.miniRTC ? "container web-rtc mini-rtc-active d-none d-md-block" : "container web-rtc d-none d-md-block"} >
                 <div className="row padding-top align-items-center">
                     <div className="col-9">
                         <h5>{this.state.roomTitle} <span className="rtc-room-size thin">{this.state.peers.length} / 6 </span></h5>

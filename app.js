@@ -284,6 +284,10 @@ const corsOptions = {
   }
 }
 
+app.get('/rooms-info', (req, res) => {
+    res.send(rooms)
+})
+
 app.use(cors(corsOptions))
 
 // Serve any static files

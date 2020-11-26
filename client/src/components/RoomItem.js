@@ -40,6 +40,10 @@ const RoomItem = (props) => {
             if (roomId === props.roomId)
                 setParticipants(Object.keys(size).length)
         })
+
+        props.socket.on('user-disconnected', () => {
+            roomParticipants();
+        })
     }, [props.roomId])
 
     const handleContextClick = (event) => {
