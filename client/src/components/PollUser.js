@@ -7,7 +7,6 @@ const PollUser = (props) => {
     const getUser = () =>{
         axios.get('/user', {params: {userId: props.user}})
             .then((response) =>{
-                console.log(response)
                 setAvatar(response.data[0].user_metadata.avatar)
             })
             .catch((err) => console.log(err))

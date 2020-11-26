@@ -31,13 +31,37 @@ class Sidebar extends React.Component {
                         </div>
                     </div>
 
-                    <ProfileCard userId={userId} username={username} status={'Watching Valorant...'} avatar={avatar} handleContextMenu={this.props.handleContextMenu}/>
+                    <ProfileCard 
+                        userId={userId} 
+                        username={username} 
+                        status={'Watching Valorant...'} 
+                        avatar={avatar} 
+                        handleContextMenu={this.props.handleContextMenu}
+                    />
 
-                    { rooms ? <RoomList activeRoom={this.props.activeRoom} showRoom={this.props.showRoom} changeRoom={this.props.changeRoom} rooms={rooms} handleContextMenu={this.props.handleContextMenu} /> : null}
+                    { rooms ? 
+                        <RoomList 
+                            activeRoom={this.props.activeRoom} 
+                            showRoom={this.props.showRoom} 
+                            changeRoom={this.props.changeRoom} 
+                            rooms={rooms} 
+                            handleContextMenu={this.props.handleContextMenu} 
+                        /> : null}
 
-                    { friends ? <FriendsList socket={this.props.socket} friends={friends} onlineUsers={this.props.onlineUsers} handleContextMenu={this.props.handleContextMenu}/> : null }
+                    { friends ? 
+                        <FriendsList 
+                            socket={this.props.socket} 
+                            friends={friends} 
+                            onlineUsers={this.props.onlineUsers} 
+                            handleContextMenu={this.props.handleContextMenu}
+                        /> : null }
 
-                    { pendingInvitation ? <SidebarFriendsControls socket={this.props.socket} pendingInvitations={pendingInvitation}/> : null }
+                    { pendingInvitation ? 
+                        <SidebarFriendsControls 
+                            socket={this.props.socket} 
+                            pendingInvitations={pendingInvitation} 
+                            fetchUserInformation={this.props.fetchUserInformation}
+                        /> : null }
 
                 </div>
             </nav>

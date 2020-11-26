@@ -64,32 +64,16 @@ class Dashboard extends React.Component {
             })
         }
 
-        //If friend invite has been declined, update user
-        this.props.socket.on('decline-friend-invite', (receiverId) => {
-            if (receiverId === localStorage.getItem('userId')) {
-                console.log('declined invite')
-                this.fetchUserInformation();
-            }
-        })
-        
-        //If friend invite has been accepted, update both accepter and acceptee users
-        this.props.socket.on('accept-friend-invite', (senderId, receiverId) => {
-            if (receiverId === localStorage.getItem('userId') || senderId === localStorage.getItem('userId')) {
-                this.fetchUserInformation();
-            }
-        })
-
-        //If user has sent an invite to become friends, update user to reflect pending invite
-        this.props.socket.on('pending-invitation', (senderId, receiverId) => {
-            if (receiverId === localStorage.getItem('userId')) {
-                this.fetchUserInformation();
-            }
+        this.props.socket.on('friend-event', (type) => {
+            console.log('FRIEND EVENT', type)
+            if (type === 'accept') this.fetchUserInformation();
+            if (type === 'invite') this.fetchUserInformation();
         })
     }
 
     leaveRoom = () => {
         this.setState({...this.state, activeRoom: null, show: false}) 
-        this.props.history.push('/')
+        this.props.history.push('/');
     }
 
     //Handle Context Menu Click
@@ -102,7 +86,6 @@ class Dashboard extends React.Component {
     }
 
     showRoom = () => {
-        console.log('SHOW ROOM')
         this.setState({showRoom: true});
     }
 
@@ -113,18 +96,58 @@ class Dashboard extends React.Component {
                 <div className="container-fluid" onClick={this.clearContextMenu}>
                     <div className="row">
 
-                        {this.state.activeRoom !== null ? <RoomRTC socket={this.props.socket} activeRoom={this.state.activeRoom} showRoom={this.showRoom} admins={this.state.admins} leaveRoom={this.leaveRoom}/> : null}
+                        {this.state.activeRoom !== null ? 
+                            <RoomRTC 
+                                socket={this.props.socket} 
+                                activeRoom={this.state.activeRoom} 
+                                showRoom={this.showRoom} 
+                                admins={this.state.admins} 
+                                leaveRoom={this.leaveRoom}
+                            /> : null}
 
-                        <ContextMenu socket={this.props.socket} status={this.state.contextMenu} fetchUserInformation={this.fetchUserInformation} />
+                        <ContextMenu 
+                            socket={this.props.socket} 
+                            status={this.state.contextMenu} 
+                            fetchUserInformation={this.fetchUserInformation} 
+                        />
 
-                        <Sidebar socket={this.props.socket} showRoom={this.showRoom} activeRoom={this.state.activeRoom} changeRoom={this.changeRoom} user={this.state.user} handleContextMenu={this.handleContextMenu} onlineUsers={this.state.onlineUsers}/>
+                        <Sidebar 
+                            socket={this.props.socket} 
+                            showRoom={this.showRoom} 
+                            activeRoom={this.state.activeRoom} 
+                            changeRoom={this.changeRoom} 
+                            user={this.state.user} 
+                            handleContextMenu={this.handleContextMenu} 
+                            onlineUsers={this.state.onlineUsers} 
+                            friendsControlsActive={this.friendsControlsActive}
+                            fetchUserInformation={this.fetchUserInformation}
+                        />
 
                         <main className="col px-4">
                             <NavigationBar/>
-                            <Notification socket={this.props.socket} userId={this.state.user._id}/>
-                            <Route path="/create-room" render={(props) => (<CreateRoom socket={this.props.socket} fetchUserInformation={this.fetchUserInformation}/>)}/>
-                            {this.state.activeRoom !== null ? <Room socket={this.props.socket} show={this.state.show} activeRoom={this.state.activeRoom} admins={this.props.admins} rooms={this.props.user.rooms} fetchUserInformation={this.fetchUserInformation}/> : null}
-                            <Route path="/account-settings" render={(props) => (<AccountSettings userInformation={this.state.user}/>)}/>
+                            <Notification 
+                                socket={this.props.socket} 
+                                userId={this.state.user._id}
+                            />
+                            <Route path="/create-room" render={(props) => (
+                                <CreateRoom 
+                                    socket={this.props.socket} 
+                                    fetchUserInformation={this.fetchUserInformation}
+                                />
+                            )}/>
+
+                            {this.state.activeRoom !== null ? 
+                                <Room 
+                                    socket={this.props.socket} 
+                                    show={this.state.show} 
+                                    activeRoom={this.state.activeRoom} 
+                                    admins={this.props.admins} 
+                                    rooms={this.props.user.rooms}
+                                    fetchUserInformation={this.fetchUserInformation}
+                                /> : null}
+                            <Route path="/account-settings" render={(props) => (
+                                <AccountSettings userInformation={this.state.user}/>
+                            )}/>
                         </main>
                     </div>
                 </div>

@@ -29,10 +29,10 @@ class MoreStreams extends React.Component {
 
                 {(this.state.showStreams) ? 
                     <div className="row">
-                            {this.state.streams.map((stream) => {
+                            {this.state.streams.map((stream, index) => {
                                 let image = stream.thumbnail_url.replace('{width}', '347').replace('{height}', '195')
                                 return(
-                                    <StreamCard admins={this.props.admins} stream={stream} image={image} changeStream={this.props.changeStream} vote={this.props.vote}/>
+                                    <StreamCard key={index} admins={this.props.admins} stream={stream} image={image} changeStream={this.props.changeStream} vote={this.props.vote}/>
                                 )
                             })}
                     </div>

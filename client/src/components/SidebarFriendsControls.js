@@ -37,7 +37,11 @@ class SidebarFriendsControls extends React.Component {
         return(
             <div className="sidebar-friends-control-container">
                 <div className="row">
-                    <AddFriend socket={this.props.socket} pendingInvitations={this.props.pendingInvitations} addFriendActive={this.state.addFriend}/>
+                    <AddFriend 
+                        socket={this.props.socket} 
+                        pendingInvitations={this.props.pendingInvitations} 
+                        addFriendActive={this.state.addFriend} 
+                        fetchUserInformation={this.props.fetchUserInformation}/>
                     <SearchFriend searchFriendActive={this.state.searchFriend}/>
                 </div>
                 <div className="row align-items-center">

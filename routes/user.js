@@ -89,26 +89,24 @@ router.post('/add-friend', (req, res) => {
 })
 
 router.post('/decline-friend', (req, res) => {
-    User.updateOne({_id: ObjectId(req.body.receiverId)}, {$pull: {pending_invitations: {$in: [req.body.senderId]}}})
-    .then(response => {
-        User.updateOne({_id: ObjectId(req.body.senderId)}, {$pull: {sent_invitations: {$in: [req.body.receiverId]}}})
-    }).then(response => res.status(200).json({status: 'success'}))
-    .catch(error => console.error(error));
+    console.log(req.body.receiverId, req.body.senderId)
+    User.updateOne({_id: ObjectId(req.body.senderId)}, {$pull: {sent_invitations: req.body.receiverId}})
+        .catch(error => console.error(error));
+    User.updateOne({_id: ObjectId(req.body.receiverId)}, {$pull: {pending_invitations: req.body.senderId}})
+        .then(response => res.status(200).json({status: 'success'}))
+        .catch(error => console.error(error));
 })
 
 
 router.post('/accept-friend', (req, res) => {
-    console.log(req.body.senderId, 'would like to add ', req.body.receiverId, 'as a friend')
-
     //1. Remove recipent from senders sent_invitations and add to senders friends array
     //2. Remove sendersID from recipents pending_invitations and add to recipents friends array
 
     User.updateOne({_id: ObjectId(req.body.senderId)}, {$pull: {pending_invitations: req.body.receiverId}, $push: {friends: req.body.receiverId}})
-    .then(response => {
-        User.updateOne({_id: ObjectId(req.body.receiverId)}, {$pull: {sent_invitations: req.body.senderId}, $push: {friends: req.body.senderId}})
+        .catch(error => console.error(error));
+    User.updateOne({_id: ObjectId(req.body.receiverId)}, {$pull: {sent_invitations: req.body.senderId}, $push: {friends: req.body.senderId}})
         .then(response => res.status(200).json({status: 'success'}))
-    })
-    .catch(error => console.error(error));
+        .catch(error => console.error(error));
 })
 
 router.post('/unfriend', (req, res) => {

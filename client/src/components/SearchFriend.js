@@ -12,7 +12,6 @@ class SearchFriend extends React.Component {
         }
     }
 
-
     handleFriendSearch = (event) => {
         console.log('search user')
         event.preventDefault();
@@ -28,7 +27,6 @@ class SearchFriend extends React.Component {
                     this.setState({searchResults: [], userNotFound: 'No Friend Found.'})
                 } else {
                     this.setState({searchResults: [response.data], userNotFound: ''})
-                    console.log(response)
                 }
             })
             .catch(err => {

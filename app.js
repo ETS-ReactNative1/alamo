@@ -82,12 +82,12 @@ io.on('connection', (socket) => {
 
     socket.on('leave-room', (roomId, userId) => {
         //On disconnect remove peer from list of connected peers
+        console.log(roomId, userId, 'has left this room')
         let updateRoomPeers;
         updateRoomPeers = rooms[roomId];
         updateRoomPeers = updateRoomPeers.filter(item => item !== userId)
         rooms[roomId] = updateRoomPeers;
 
-        console.log(roomId, userId, 'has left this room')
         //Send notitification of user left room, use to trigger audio que
         socket.to(roomId).broadcast.emit('user-disconnected', userId, rooms[roomId])
 
@@ -167,14 +167,12 @@ io.on('connection', (socket) => {
     })
 
     socket.on('friend-event', (type, senderId, receiverId) => {
-        if (type === 'decline') {
-            socket.broadcast.emit('decline-friend-invite', receiverId);
-        }
+        console.log(type, 'FRIEND EVENT TYPE')
+        if (type === 'accept' && typeof clients[receiverId].socketId != 'undefined')
+            io.to(clients[receiverId].socketId).emit('friend-event', type);
 
-        if (type === 'accept') {
-            socket.broadcast.emit('accept-friend-invite', senderId, receiverId)
-        }
-        
+        if (type === 'invite' && typeof clients[receiverId].socketId != 'undefined')
+            io.to(clients[receiverId].socketId).emit('friend-event', type);
     })
 
 })

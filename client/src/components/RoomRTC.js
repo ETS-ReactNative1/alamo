@@ -36,31 +36,20 @@ class RoomRTC extends React.Component {
         })
     }
 
-    componentDidUpdate(prevProps) {
-        if (this.props.location.pathname !== prevProps.location.pathname) {
-            if (this.props.location.pathname.substring(1, 5) === 'room') {
-                this.setState({miniRTC: false, roomId: this.props.location.pathname})
-                console.log('LEAVE ROOM')
-                this.peer.disconnect();
-                //Disconnect from join before joining new room
-                this.props.socket.emit('leave-room', prevProps.location.pathname, clientId)
-                this.updateRoomChange();
-            } else {
-                this.fetchRoomInformation();
-                this.setState({...this.state, miniRTC: true})
-                console.log('minimise rtc')
-            }
-        }
+    componentWillUnmount() {
+        this.peer.disconnect();
     }
 
-    updateRoomChange = (userId) => {
-
-        this.peer = new Peer(clientId, {
-            host: '/',
-            port: '8081'
-        })
-
-        //Join new room
+    componentDidUpdate(prevProps) {
+        if (this.props.location.pathname !== prevProps.location.pathname) {
+            if (this.props.location.pathname.substring(1, 5) !== 'room') {
+                this.fetchRoomInformation();
+                this.setState({...this.state, miniRTC: true});
+                console.log('minimise rtc')
+            } else {
+                this.setState({...this.state, miniRTC: false});
+            }
+        }
     }
 
     updatePeersInRoom = (peers) => {
@@ -75,7 +64,8 @@ class RoomRTC extends React.Component {
         })
     }
 
-    closeCall = () => {
+    closeCall = (event) => {
+        event.stopPropagation();
         this.props.socket.emit('leave-room', this.props.activeRoom, localStorage.getItem('userId'))
         this.peer.disconnect();
         this.setState({miniRTC: false});
@@ -95,11 +85,14 @@ class RoomRTC extends React.Component {
 
         this.fetchRoomInformation();
 
+        this.peer = new Peer(clientId, {
+            host: '/',
+            port: '8081'
+        })
+
         navigator.mediaDevices.getUserMedia({
             audio: true
         }).then(stream => {
-
-            this.updateRoomChange();
 
             this.props.socket.on('client-connected', (userId, updatedPeersList) => {
                 this.updatePeersInRoom(updatedPeersList);
@@ -141,16 +134,17 @@ class RoomRTC extends React.Component {
     }
 
     render() {
+        console.log(this.props.friendsControlsActive)
         return(
-            <div id={this.props.activeRoom} onClick={this.handleMiniRTCClick} className={this.state.miniRTC ? "container web-rtc mini-rtc-active" : "container web-rtc"}>
+            <div id={this.props.activeRoom} onClick={this.handleMiniRTCClick} className={this.state.miniRTC ? "container web-rtc mini-rtc-active" : "container web-rtc"} >
                 <div className="row room-avatar-row align-items-center">
                     <div className="col-9">
                         <h5>{this.state.roomTitle} <span className="rtc-room-size thin">{this.state.peers.length} / 6 </span></h5>
                         <h6 className="thin">Watching Counter-Strike...</h6>
                         {this.state.peers.map((userId) => {
                             return(
-                                <div data-userId={userId}>
-                                    <audio id={userId} key={userId} ref={this[`${userId}_ref`]} controls volume="true" autoPlay/>
+                                <div data-userid={userId}>
+                                    <audio id={userId} key={'audio'+userId} ref={this[`${userId}_ref`]} controls volume="true" autoPlay/>
                                 </div>
                             )
                         })}
