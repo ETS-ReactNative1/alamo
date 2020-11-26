@@ -23,6 +23,9 @@ label {
     display: block;
 }
 
+.passthrough {
+    pointer-events: none;
+}
 
 .input-password label {
     margin: 0;
@@ -50,6 +53,10 @@ label {
 
 #success-message {
     margin: 25px 0 15px 0;
+}
+
+.padding-top {
+    padding-top: 15px;
 }
 
 .login-box {
@@ -392,7 +399,7 @@ a {
     border-radius: 8px;
     border: none;
     font-family: 'Open Sans', sans-serif;
-    font-weight: 400;
+    font-weight: 700;
     margin: 0 15px 0 15px;
 }
 
@@ -522,6 +529,14 @@ a {
 
 .nav-item {
     cursor: pointer;
+}
+
+.room-item-size {
+    position: absolute;
+    top: 50%;
+    right: 15px;
+    transform: translateY(-50%);
+    font-weight: 200; 
 }
 
 .sidebar {
@@ -872,7 +887,7 @@ iframe {
 .active-room-icon {
     position: absolute;
     top: 50%;
-    right: 15px;
+    right: 55px;
     transform: translateY(-50%);
 }
 

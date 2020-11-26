@@ -137,7 +137,7 @@ class RoomRTC extends React.Component {
         console.log(this.props.friendsControlsActive)
         return(
             <div id={this.props.activeRoom} onClick={this.handleMiniRTCClick} className={this.state.miniRTC ? "container web-rtc mini-rtc-active" : "container web-rtc"} >
-                <div className="row room-avatar-row align-items-center">
+                <div className="row padding-top align-items-center">
                     <div className="col-9">
                         <h5>{this.state.roomTitle} <span className="rtc-room-size thin">{this.state.peers.length} / 6 </span></h5>
                         <h6 className="thin">Watching Counter-Strike...</h6>

@@ -3,7 +3,8 @@ import axios from 'axios';
 import { withRouter } from 'react-router-dom';
 
 const RoomItem = (props) => {
-    const [room, setRooms] = React.useState([])
+    const [room, setRooms] = React.useState([]);
+    const [participants, setParticipants] = React.useState(0);
 
     const redirect = (path) => {
         props.history.push(path);
@@ -15,9 +16,30 @@ const RoomItem = (props) => {
                 setRooms(response.data)
             })
     }
+    
+    const roomParticipants = () => {
+        props.socket.emit('room-size-query', props.roomId, (size) => {
+            if (Object.keys(size).length > 0) {
+                console.log(Object.keys(size).length, "ROOM SDIZE")
+                setParticipants(Object.keys(size).length)
+                console.log(participants, 'PARTICIPANTS')
+            }
+        })
+    }
 
     React.useEffect(() => {
+        roomParticipants();
         getRoomInformation();
+        //Listen for when any user joins or leaves a room that belongs to the client
+        props.socket.on('user-joined-room', (roomId, size) => {
+            if (roomId === props.roomId)
+                setParticipants(Object.keys(size).length)
+        })
+
+        props.socket.on('user-left-room', (roomId, size) => {
+            if (roomId === props.roomId)
+                setParticipants(Object.keys(size).length)
+        })
     }, [props.roomId])
 
     const handleContextClick = (event) => {
@@ -39,13 +61,15 @@ const RoomItem = (props) => {
                 <li onContextMenu={handleContextClick} id={props.roomId} className="nav-item" onClick={(event) => handleClick(event)}>
                     {(props.activeRoom === props.roomId) ? <i className="fas fa-microphone active-room-icon"></i> : null}
                     {room_title}
+                    <span className="room-item-size">{participants}/6</span>
                 </li>
             )
         } else {
             return(
-                <a href={props.roomId} className="nav-item">
+                <a href={props.roomId} className={participants === 6 ? "nav-item passthrough" : "nav-item"}>
                     <li onContextMenu={handleContextClick} id={props.roomId}>
                         {room_title}
+                        <span className="room-item-size">{participants}/6</span>
                     </li>
                 </a>
             )

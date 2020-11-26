@@ -91,6 +91,10 @@ io.on('connection', (socket) => {
         //Send notitification of user left room, use to trigger audio que
         socket.to(roomId).broadcast.emit('user-disconnected', userId, rooms[roomId])
 
+        //Broadcast to anyone that may have this room favourited that a user has joined and update room size
+        socket.broadcast.emit('user-left-room', roomId, rooms[roomId])
+        socket.emit('user-left-room', roomId, rooms[roomId])
+
         //Leave room
         socket.leave(roomId)
     })
@@ -100,6 +104,7 @@ io.on('connection', (socket) => {
 
         //Join new room
         socket.join(roomId)
+
 
         //If room is newly created or empty, add first peer
         if (typeof rooms[roomId] == 'undefined') {
@@ -115,6 +120,9 @@ io.on('connection', (socket) => {
         }
 
         console.log(rooms)
+        //Broadcast to anyone that may have this room favourited that a user has joined and update room size
+        socket.broadcast.emit('user-joined-room', roomId, rooms[roomId])
+        socket.emit('user-joined-room', roomId, rooms[roomId])
 
         //Need to send a direct message to the client of peers list, emit does not seem to work
         socket.emit('client-connected', userId, rooms[roomId]);
@@ -132,6 +140,13 @@ io.on('connection', (socket) => {
             //Send updated peers list minus disconnected user
             socket.to(roomId).broadcast.emit('user-disconnected', userId, rooms[roomId])
         })
+    })
+
+    socket.on('room-size-query', (roomId, callback) => {
+        if (typeof rooms[roomId] != 'undefined')
+            callback(rooms[roomId])
+        else
+            callback(0)
     })
 
     socket.on('voice-active', (roomId, userId) => {

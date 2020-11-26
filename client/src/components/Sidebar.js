@@ -41,6 +41,7 @@ class Sidebar extends React.Component {
 
                     { rooms ? 
                         <RoomList 
+                            socket={this.props.socket}
                             activeRoom={this.props.activeRoom} 
                             showRoom={this.props.showRoom} 
                             changeRoom={this.props.changeRoom} 
