@@ -9,12 +9,13 @@ class SearchBar extends React.Component {
         this.searchInput = React.createRef();
         this.state = {
             query: '',
+            loading: false,
             results: []
         }
     }
 
     searchTwitch = (query) => {
-        console.log('FETCH FEYHNTCH')
+        this.setState({loading: true})
         axios.get('/twitchapi/streams', {params: {search: query}})
             .then((response) => {
                 this.setState({results: []})
@@ -43,6 +44,10 @@ class SearchBar extends React.Component {
         }
     }
 
+    loaded = () => {
+        this.setState({loading: false});
+    }
+
     clear = () => {
         this.searchInput.current.value = '';
         this.setState({query: '', results: []})
@@ -59,7 +64,7 @@ class SearchBar extends React.Component {
                     onInput={this.handleInputChange}
                 />
                 {this.state.query.length > 2 ? <i className="fas fa-1x font-color search-bar-close fa-times" onClick={this.clear}></i> : null}
-                {this.state.query.length > 2 ? <SearchResults results={this.state.results}/> : null}
+                {this.state.query.length > 2 ? <SearchResults loading={this.state.loading} loaded={this.loaded} results={this.state.results}/> : null}
             </div>
         )
     }

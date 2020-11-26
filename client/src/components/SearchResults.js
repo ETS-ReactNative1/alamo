@@ -9,10 +9,12 @@ class SearchResults extends React.Component {
 
     render() {
         return(
-            <div className="search-results-container">
+            <div className={this.props.loading === false ? "search-results-container" : "search-results-container hide-results" }>
+                {this.props.loading ? <div className="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div> : null }
+
                 {this.props.results.map((stream) => {
                     return(
-                        <ResultsCard stream={stream}/>
+                        <ResultsCard loaded={this.props.loaded} stream={stream}/>
                     )
                 })}
             </div>
