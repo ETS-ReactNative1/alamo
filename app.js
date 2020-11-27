@@ -37,7 +37,7 @@ io.on('connection', (socket) => {
     //Add user to list of connected clients and broadcast that user is online
     socket.on('online', (userId, callback) => {
         if (!(userId in clients)) {
-            clients[userId] = {socketId: socket.id}
+            clients[userId] = {socketId: socket.id, status: ''}
             io.sockets.emit('new-user-online', userId, clients);
 
             //If a user is has recently disconnected and is waiting to be purged, remove them
@@ -142,6 +142,20 @@ io.on('connection', (socket) => {
         })
     })
 
+    //Check friends status on load, all active clients status are tracked in client object
+    socket.on('check-status', (user, callback) => {
+        if (typeof clients[user] !== 'undefined')
+            callback(clients[user].status)
+    })
+
+    //Listen for users watching streams and broadcast to their friends
+    socket.on('now-watching', (user, game) => {
+        clients[user].status = 'Watching ' + game;
+        socket.broadcast.emit('update-status', user, game)
+        socket.emit('update-status', user, game)
+    })
+
+    //Listening for Users automatically querying room size on load/refresh
     socket.on('room-size-query', (roomId, callback) => {
         if (typeof rooms[roomId] != 'undefined')
             callback(rooms[roomId])

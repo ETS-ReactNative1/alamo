@@ -11,7 +11,8 @@ class FriendCard extends React.Component {
                 username: '',
                 avatar: ''
             },
-            online: false
+            online: false,
+            status: ''
         }
     }
 
@@ -36,14 +37,24 @@ class FriendCard extends React.Component {
     componentDidMount() {
         this.fetchUserInformation()
         if (this.props.userId in this.props.onlineUsers) {
-                return this.setState({online: true})
+                this.setState({online: true})
             }
 
         this.props.socket.on('new-user-online', (userId, clients) => {
             if (this.state.user.id === userId) {
-                return this.setState({online: true})
+                this.setState({online: true})
             }
+        })
 
+        this.props.socket.emit('check-status', this.props.userId, (status) => {
+            this.setState({status: status})
+        })
+
+        this.props.socket.on('update-status', (user, game) => {
+            if (user === this.props.userId) {
+                const message = 'Watching ' + game
+                this.setState({status: message})
+            }
         })
     }
 
@@ -63,7 +74,7 @@ class FriendCard extends React.Component {
                     </div>
                     <div className="row">
                         <div className="col">
-                            <h6 className="user-status thin">Watching Valorant...</h6>
+                            <h6 className="user-status overflow-dots thin">{this.state.status}</h6>
                         </div>
                     </div>
                 </div>

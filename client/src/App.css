@@ -23,6 +23,13 @@ label {
     display: block;
 }
 
+.overflow-dots {
+    overflow: hidden !important;
+    white-space: nowrap !important;
+    text-overflow: ellipsis !important;
+    padding-right: 8px;
+}
+
 .passthrough {
     pointer-events: none;
 }
@@ -1000,7 +1007,6 @@ iframe {
 
 .user-status {
     margin: 0 0 0 15px;
-    display: inline;
 }
 
 .sidebar-sticky {

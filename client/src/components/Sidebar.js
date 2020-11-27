@@ -32,6 +32,7 @@ class Sidebar extends React.Component {
                     </div>
 
                     <ProfileCard 
+                        socket={this.props.socket}
                         userId={userId} 
                         username={username} 
                         status={'Watching Valorant...'} 
