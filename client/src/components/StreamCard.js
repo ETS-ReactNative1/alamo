@@ -35,10 +35,10 @@ class StreamCard extends React.Component {
                 <div className="stream-card-options">
                     <div className="row" style={{height: '100%'}}>
                         <div className="col-6">
-                            <i className={this.state.admins.includes(localStorage.getItem('userId')) ? "fas fa-3x stream-card-options-icons font-color fa-tv" : "fas fa-3x stream-card-options-icons font-color disabled fa-tv"} data-image={this.props.image} data-channelImage={this.state.channelImage} data-streamTitle={this.props.stream.title} data-username={this.props.stream.user_name} title="Change Stream" id={this.props.stream.user_name} onClick={this.props.changeStream}></i>
+                            <i className={this.state.admins.includes(localStorage.getItem('userId')) ? "fas fa-3x stream-card-options-icons font-color fa-tv" : "fas fa-3x stream-card-options-icons font-color disabled fa-tv"} data-userid={this.props.stream.user_id} data-image={this.props.image} data-channel-image={this.state.channelImage} data-stream-title={this.props.stream.title} data-username={this.props.stream.user_name} title="Change Stream" id={this.props.stream.user_id} onClick={this.props.changeStream}></i>
                         </div>
                         <div className="col-6">
-                            <i className="fas fa-3x stream-card-options-icons font-color fa-poll" title="Vote" id={this.props.stream.user_name} data-image={this.props.image} data-channelImage={this.state.channelImage} data-streamTitle={this.props.stream.title} data-username={this.props.stream.user_name} onClick={this.props.vote}></i>
+                            <i className="fas fa-3x stream-card-options-icons font-color fa-poll" title="Vote" id={this.props.stream.user_id} data-userid={this.props.stream.user_id} data-image={this.props.image} data-channel-image={this.state.channelImage} data-stream-title={this.props.stream.title} data-username={this.props.stream.user_name} onClick={this.props.vote}></i>
                         </div>
                     </div>
                 </div>
@@ -47,7 +47,7 @@ class StreamCard extends React.Component {
 
     render() {
         return(
-            <div id={this.props.stream.user_name} className="col stream-card" onMouseOver={this.handleMouseOver} onMouseLeave={this.handleMouseLeave}>
+            <div id={this.props.stream.user_id} className="col stream-card" onMouseOver={this.handleMouseOver} onMouseLeave={this.handleMouseLeave}>
                 {this.streamCardOptions()}
                 <img className="stream-card-image" src={this.props.image} alt={this.props.stream.title}/>
                 <img className="stream-avatar rounded-circle" src={this.state.channelImage}/>

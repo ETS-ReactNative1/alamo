@@ -30,41 +30,46 @@ class Room extends React.Component {
             yesUsers: [],
             noVotes: 0,
             noUsers: [],
+            streamId: '',
             stream: {}
         }
+    }
+
+    fetchStream = (streamId) => {
+        axios.get('/twitchapi/streams', {params : {user_id: streamId}})
+            .then((response) => {
+                this.setState({stream: response.data[0]})
+                //Emit to server, than user is currently watching this game
+                this.props.socket.emit('now-watching', localStorage.getItem('userId'), response.data[0].game_name)
+            })
     }
 
     fetchRoomInformation = () => {
         axios.get('/room', {params: {roomId: this.props.activeRoom}})
             .then(response => {
-                this.setState({roomTitle: response.data.room_title, admins: response.data.admins, channel: response.data.stream})
-                axios.get('/twitchapi/streams', {params : {user_id: response.data.stream}})
-                    .then((response) => {
-                        this.setState({stream: response.data[0]})
-                        //Emit to server, than user is currently watching this game
-                        this.props.socket.emit('now-watching', localStorage.getItem('userId'), response.data[0].game_name)
-                    })
-
+                this.setState({roomTitle: response.data.room_title, admins: response.data.admins, streamId: response.data.stream})
+                this.fetchStream(response.data.stream)
             })
     }
 
     changeStream = (event) => {
-        const channel = event.currentTarget.id
-        this.setState({channel: channel})
-        axios.post('/room/change-stream', {roomId: this.props.activeRoom, channel: channel})
+        const streamId = event.currentTarget.id
+        this.setState({streamId: streamId})
+        axios.post('/room/change-stream', {roomId: this.props.activeRoom, channel: streamId})
             .then((response) => {
                 console.log('fire response')
-                this.props.socket.emit('change-stream', this.props.activeRoom, channel)
+                this.props.socket.emit('change-stream', this.props.activeRoom, streamId)
             })
             .catch((err) => console.log(err))
     }
 
     vote = (event) => {
-        const channel = event.currentTarget.id
-        const thumbnail = event.currentTarget.getAttribute('data-image')
-        const avatar = event.currentTarget.getAttribute('data-channelImage')
-        const title = event.currentTarget.getAttribute('data-streamTitle')
-        const stream = {channel: channel, thumbnail: thumbnail, avatar: avatar, title: title}
+        const channel = event.currentTarget.id;
+        const gameId = event.currentTarget.getAttribute('data-gameid');
+        const thumbnail = event.currentTarget.getAttribute('data-image');
+        const avatar = event.currentTarget.getAttribute('data-channel-image');
+        const title = event.currentTarget.getAttribute('data-stream-title');
+        const stream = {gameId : gameId, channel: channel, thumbnail: thumbnail, avatar: avatar, title: title};
 
         if (!this.state.vote) 
             this.props.socket.emit('start-vote', this.props.activeRoom, localStorage.getItem('userId'), stream)
@@ -90,8 +95,9 @@ class Room extends React.Component {
         this.props.socket.emit('join-room', this.props.activeRoom, localStorage.getItem('userId'));
 
         this.props.socket.on('update-stream', (stream) => {
-            console.log(stream)
-            this.setState({channel: stream})
+            this.setState({streamId: stream}, () => {
+                this.fetchStream(stream);
+            })
         })
 
         this.props.socket.on('vote', (userId, stream, usersInRoom) => {

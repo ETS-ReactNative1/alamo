@@ -36,20 +36,24 @@ class FriendCard extends React.Component {
 
     componentDidMount() {
         this.fetchUserInformation()
+        //If users is currently already in client object, show them as online
         if (this.props.userId in this.props.onlineUsers) {
                 this.setState({online: true})
             }
 
+        //Listen for whether user comes online
         this.props.socket.on('new-user-online', (userId, clients) => {
             if (this.state.user.id === userId) {
                 this.setState({online: true})
             }
         })
 
+        //Check the current status of all online status on load
         this.props.socket.emit('check-status', this.props.userId, (status) => {
             this.setState({status: status})
         })
 
+        //Listen for change in the stream that a friend is currently watching
         this.props.socket.on('update-status', (user, game) => {
             if (user === this.props.userId) {
                 const message = 'Watching ' + game
