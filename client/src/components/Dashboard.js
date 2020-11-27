@@ -48,10 +48,6 @@ class Dashboard extends React.Component {
             else this.setState({show: false})
         });
 
-        window.addEventListener("beforeunload", function(event) { 
-            this.props.socket.emit('user-offline', localStorage.getItem('userId'))
-        });
-
         this.fetchUserInformation();
 
         if (this.props.auth) {

@@ -101,6 +101,7 @@ class RoomRTC extends React.Component {
                 this.peer.on('call', call => {
                     call.answer(stream);
                     call.on('stream', userAudioStream => {
+                        this.updatePeersInRoom(updatedPeersList);
                         this.playUserAudio(call.peer, userAudioStream)
                     })
                 })
