@@ -12,6 +12,9 @@ import CreateRoom from './CreateRoom';
 import RoomRTC from './RoomRTC';
 import AccountSettings from './AccountSettings';
 
+import RoomShowcase from './RoomShowcase';
+import PopularStreams from './PopularStreams';
+
 class Dashboard extends React.Component {
     constructor(props) {
         super(props)
@@ -148,6 +151,10 @@ class Dashboard extends React.Component {
                             <Route path="/account-settings" render={(props) => (
                                 <AccountSettings userInformation={this.state.user}/>
                             )}/>
+
+                            <RoomShowcase/>
+
+                            <PopularStreams admins={this.state.admins}/>
                         </main>
                     </div>
                 </div>
