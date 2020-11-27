@@ -60,6 +60,22 @@ router.post('/add-room', (req, res) => {
         .catch((err) => console.log(err))
 })
 
+router.delete('/room', (req, res) => {
+    const roomId = req.body.roomId
+    const userId = req.body.userId
+
+    console.log(req.params)
+
+    console.log(roomId, userId, "DELETE FROM ROOM")
+
+    User.updateOne({_id: userId}, {$pull: {rooms: roomId}})
+        .then((response) => {
+            res.status(200).json({status: 'User removed from room'})
+        })
+        .catch((err) => console.log(err))
+
+})
+
 router.post('/remove-room', (req, res) => {
     const roomId = req.body.roomId
     const userId = req.body.userId

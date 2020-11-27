@@ -120,7 +120,11 @@ class Dashboard extends React.Component {
                         />
 
                         <main className="col px-4">
-                            <NavigationBar/>
+                            <NavigationBar 
+                                socket={this.props.socket}
+                                activeRoom={this.state.activeRoom}
+                            />
+
                             <Notification 
                                 socket={this.props.socket} 
                                 userId={this.state.user._id}

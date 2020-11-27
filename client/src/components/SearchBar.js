@@ -77,7 +77,7 @@ class SearchBar extends React.Component {
                     onInput={this.handleInputChange}
                 />
                 {this.state.query.length > 2 ? <i className="fas fa-1x font-color search-bar-close fa-times" onClick={this.clear}></i> : null}
-                {this.state.query.length > 2 ? <SearchResults loading={this.state.loading} loaded={this.loaded} channels={this.state.channelResults} streamResults={this.state.streamResults}/> : null}
+                {this.state.query.length > 2 ? <SearchResults activeRoom={this.props.activeRoom} socket={this.props.socket} loading={this.state.loading} loaded={this.loaded} channels={this.state.channelResults} streamResults={this.state.streamResults}/> : null}
             </div>
         )
     }

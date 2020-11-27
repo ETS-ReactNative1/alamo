@@ -10,6 +10,7 @@ import RoomPeers from './RoomPeers';
 import TwitchPlayer from './TwitchPlayer';
 import TwitchChat from './TwitchChat';
 import TwitchLogin from './TwitchLogin';
+import FavouriteBtn from './FavouriteBtn';
 import MoreStreams from './MoreStreams';
 import Vote from './Vote';
 
@@ -39,6 +40,7 @@ class Room extends React.Component {
         axios.get('/twitchapi/streams', {params : {user_id: streamId}})
             .then((response) => {
                 this.setState({stream: response.data[0]})
+                console.log(response)
                 //Emit to server, than user is currently watching this game
                 this.props.socket.emit('now-watching', localStorage.getItem('userId'), response.data[0].game_name)
             })
@@ -54,6 +56,7 @@ class Room extends React.Component {
 
     changeStream = (event) => {
         const streamId = event.currentTarget.id
+        console.log(streamId, 'STREAM ID BEFORE CHANGE')
         this.setState({streamId: streamId})
         axios.post('/room/change-stream', {roomId: this.props.activeRoom, channel: streamId})
             .then((response) => {
@@ -64,12 +67,13 @@ class Room extends React.Component {
     }
 
     vote = (event) => {
-        const channel = event.currentTarget.id;
+        const channelId = event.currentTarget.id;
+        const channel = event.currentTarget.getAttribute('data-channel')
         const gameId = event.currentTarget.getAttribute('data-gameid');
         const thumbnail = event.currentTarget.getAttribute('data-image');
         const avatar = event.currentTarget.getAttribute('data-channel-image');
         const title = event.currentTarget.getAttribute('data-stream-title');
-        const stream = {gameId : gameId, channel: channel, thumbnail: thumbnail, avatar: avatar, title: title};
+        const stream = {gameId : gameId, channelId: channelId, channel: channel, thumbnail: thumbnail, avatar: avatar, title: title};
 
         if (!this.state.vote) 
             this.props.socket.emit('start-vote', this.props.activeRoom, localStorage.getItem('userId'), stream)
@@ -95,12 +99,14 @@ class Room extends React.Component {
         this.props.socket.emit('join-room', this.props.activeRoom, localStorage.getItem('userId'));
 
         this.props.socket.on('update-stream', (stream) => {
+            console.log('UPDATE STREAM', stream)
             this.setState({streamId: stream}, () => {
                 this.fetchStream(stream);
             })
         })
 
         this.props.socket.on('vote', (userId, stream, usersInRoom) => {
+            console.log(stream)
             if (usersInRoom % 2 === 0 && usersInRoom > 2) {
                 const votesNeeded = Math.ceil(this.state.usersInRoom / 2)
                 this.setState({...this.state, vote: true, voterId: userId, voterChannel: stream, usersInRoom: usersInRoom, votesNeeded: votesNeeded, yesUsers: [userId]})
@@ -129,7 +135,7 @@ class Room extends React.Component {
         this.props.socket.on('end-vote', (result) => {
             if (result === 'passed') {
                 clearTimeout(this.voteTimer);
-                this.props.socket.emit('change-stream', this.props.activeRoom, this.state.voterChannel.channel)           
+                this.props.socket.emit('change-stream', this.props.activeRoom, this.state.voterChannel.channelId)           
             } else {
                 clearTimeout(this.voteTimer);
                 this.setState({...this.state, vote: false, yesVotes: 1, noVotes: 0, noUsers: [], yesUsers: []})
@@ -151,7 +157,7 @@ class Room extends React.Component {
                             <RoomPeers socket={this.props.socket} admins={this.state.admins}/>
                             <div className="col-4 d-flex flex-row-reverse">
                                 <i className="fas fa-2x fa-cog room-settings-icon font-color"></i>
-                                <button className="muted-btn">Share</button>
+                                <FavouriteBtn fetchUserInformation={this.props.fetchUserInformation} activeRoom={this.props.activeRoom}/>
                                 <button className="primary-btn small-btn">Invite</button>
                             </div>
                         </div>

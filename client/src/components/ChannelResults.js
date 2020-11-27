@@ -11,13 +11,14 @@ class ChannelResults extends React.Component {
     }
 
     render() {
+        console.log(this.props.channels)
         return(
             <div className="container-fluid channel-results-card d-flex align-items-center">
-                <div className="row align-items-center">
-                    <div className="col-5" style={{minWidth: '288', maxWidth: '289'}}>
+                <div className="row d-flex align-items-center">
+                    <div className="col-5 channel-results-col-img">
                         <img className="channel-results-img rounded-circle" src={this.props.channels.thumbnail_url} alt="" />
                     </div>
-                    <div className="col">
+                    <div className="col channel-results-col-content">
                         <div className="row">
                             <div className="col">
                                 <h6 className="channel-font thin">Channel</h6>
@@ -27,11 +28,29 @@ class ChannelResults extends React.Component {
                         </div>
                         <div className="row align-items-center">
                             <div className="col-8">
-                                {this.props.channels.is_live ? <div className="live">LIVE</div> : null}
+                                {this.props.channels.is_live ? <div className="live">LIVE</div> : <div className="thin">Offline</div>}
                             </div>
                             <div className="col">
-                                <i className="fas fa-2x results-icons primary-color fa-tv" title="Change Stream"></i>
-                                <i className="fas fa-2x results-icons vote-icon primary-color fa-poll" title="Vote"></i>
+                                <i 
+                                    id={this.props.channels.id} 
+                                    onClick={this.props.changeStream} 
+                                    className={this.props.channels.is_live ? "fas fa-2x results-icons primary-color fa-tv" : "fas fa-2x results-cions disabled fa-tv"} 
+                                    title="Change Stream"
+                                    data-gameid={this.props.channels.id}
+                                    data-image={this.props.channels.thumbnail_url}
+                                    data-channel-image={this.props.channels.thumbnail_url}
+                                    data-stream-title={this.props.channels.title}
+                                ></i>
+                                <i 
+                                    id={this.props.channels.id} 
+                                    onClick={this.props.vote}
+                                    className={this.props.channels.is_live ? "fas fa-2x results-icons vote-icon primary-color fa-poll" : "fas fa-2x results-icons vote-icon disabled fa-poll"} 
+                                    title="Vote"
+                                    data-gameid={this.props.channels.id}
+                                    data-image={this.props.channels.thumbnail_url}
+                                    data-channel-image={this.props.channels.thumbnail_url}
+                                    data-stream-title={this.props.channels.title}
+                                ></i>
                             </div>
                         </div>
                     </div>

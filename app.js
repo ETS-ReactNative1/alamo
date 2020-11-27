@@ -186,6 +186,7 @@ io.on('connection', (socket) => {
     })
 
     socket.on('change-stream', (roomId, stream) => {
+        console.log('CHANGE STREAM', roomId, stream)
         io.in(roomId).emit('update-stream', stream);
     })
 

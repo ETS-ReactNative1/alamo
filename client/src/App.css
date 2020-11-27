@@ -85,6 +85,11 @@ label {
     background-color: rgba(243, 231, 254, 0.9) !important;
 }
 
+.channel-results-col {
+    max-width: 289 !important;
+    min-width: 288 !important;
+}
+
 .live {
     background-color: red;
     color: white;
@@ -115,6 +120,7 @@ label {
     margin:auto;
     text-align: center;
     max-width: 70%;
+    min-width: 173px;
     height: auto;
 }
 
@@ -143,6 +149,16 @@ label {
 .results-icons {
     cursor: pointer;
     transform: scale(0.8);
+}
+
+.channel-results-col-img {
+    max-width: 289px !important;
+    min-width: 288px !important;
+}
+
+.channel-results-col-content {
+    max-width: 370px !important;
+    min-width: 370px !important;
 }
 
 .channel-font {
@@ -551,9 +567,15 @@ a {
     font-family: 'Open Sans', sans-serif;
     font-weight: 700;
     margin: 0 15px 0 15px;
+    padding-left: 14px;
+}
+
+.favourite-icon {
+    padding: 0 8px 0 8px;
 }
 
 .muted-btn:hover {
+    background-color: #3700B3;
     border: 2px solid white;
 }
 
@@ -564,7 +586,9 @@ a {
 .small-btn {
     min-width: 100px !important;
     height: 35px !important;
+    white-space: nowrap;
     border-radius: 4px !important;
+    width: fit-content;
 }
 
 .primary-btn {
