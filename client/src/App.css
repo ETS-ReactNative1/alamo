@@ -1080,6 +1080,13 @@ iframe {
     z-index: -999;
 }
 
+.hide-main {
+    position: absolute;
+    top: -5000px;
+    left: -5000px;
+    opacity: 0;
+}
+
 .show-room {
     position: relative;
     top: 0;

@@ -12,6 +12,7 @@ import CreateRoom from './CreateRoom';
 import RoomRTC from './RoomRTC';
 import AccountSettings from './AccountSettings';
 
+import MainWrapper from './MainWrapper';
 import RoomShowcase from './RoomShowcase';
 import PopularStreams from './PopularStreams';
 
@@ -152,9 +153,15 @@ class Dashboard extends React.Component {
                                 <AccountSettings userInformation={this.state.user}/>
                             )}/>
 
-                            <RoomShowcase/>
+                            <Route path="/" render={(props) => (
+                                <MainWrapper activeRoom={this.state.activeRoom}>
+                                    <RoomShowcase/>
+                                    <PopularStreams admins={this.state.admins}/>
+                                </MainWrapper>
+                            )}/>
 
-                            <PopularStreams admins={this.state.admins}/>
+
+
                         </main>
                     </div>
                 </div>
