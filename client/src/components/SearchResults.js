@@ -15,7 +15,7 @@ class SearchResults extends React.Component {
                 {this.props.loading ? <div className="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div> : null }
 
                 {this.props.channels.length > 0 ? <ChannelResults channels={this.props.channels}/> : null}
-                <div className="view-more font-color thin">View More Channels</div>
+                {this.props.channels.length > 0 ? <div className="view-more font-color thin">View More Channels</div> : null}
 
                 {this.props.streamResults.map((stream) => {
                     return(

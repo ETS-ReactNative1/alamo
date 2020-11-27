@@ -36,9 +36,29 @@ router.get('/streams', (req, res) => {
     let client_id = req.app.locals.client_id;
     let headers = {'client-id': client_id, 'Authorization': `Bearer ${token}`}
     let search = req.query.search;
+    let params = {}
 
-    axios.get('https://api.twitch.tv/helix/streams', {query: search, headers: headers})
-        .then((response) => res.json(response.data.data))
+    if (req.query.user_id)
+        params = {user_id: req.query.user_id}
+
+    if (req.query.game_id)
+        params = {game_id: req.query.game_id}
+
+    console.log(req.query.game_id, "GAME IDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD")
+
+    console.log(params, 'THIS IS PARAMS')
+    //const ids = ['31239503', '173162545'];
+    //const games = ['32399']
+    //const x = new URLSearchParams();
+
+    //games.forEach((game) => {
+    //    x.append('game_id', game)
+    //})
+
+    axios.get('https://api.twitch.tv/helix/streams', {params: params, headers: headers})
+        .then((response) => {
+            res.json(response.data.data) 
+        })
         .catch((err) => console.log(err))
 })
 

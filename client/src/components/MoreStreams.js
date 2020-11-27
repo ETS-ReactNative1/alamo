@@ -7,13 +7,13 @@ class MoreStreams extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = {streams: [], showStreams: false}
+        this.state = {streams: [], game: '', showStreams: false}
     }
 
     componentDidMount() {
-        axios.get('/twitchapi/streams', {params: {search: 'csgo'}})
+        axios.get('/twitchapi/streams', {params: {game_id: this.props.gameId}})
             .then((response) => {
-                this.setState({streams: response.data, showStreams: true})
+                this.setState({streams: response.data, game: response.data[0].game_name, showStreams: true})
             })
             .catch((error) => console.log(error))
     }
@@ -23,7 +23,7 @@ class MoreStreams extends React.Component {
             <div className="container-fluid more-streams-container">
                 <div className="row">
                     <div className="col">
-                        <h3 className="more-stream-heading thin d-block">More Streams</h3>
+                        <h3 className="more-stream-heading thin d-block">More {this.state.game} Streams</h3>
                     </div>
                 </div>
 

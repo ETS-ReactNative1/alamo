@@ -22,7 +22,7 @@ router.post('/create-room', (req, res) => {
     const roomTitle = req.body.roomTitle
 
     //Store new room in db
-    Room.create({roomId: roomId, room_title: roomTitle, stream_channel: 'ESL_CSGO'})
+    Room.create({roomId: roomId, room_title: roomTitle, stream: '31239503'})
     .then(response => {
         Room.updateOne({roomId: roomId}, {$push: {admins: userId}}, (err, object) => {
             if (!err)
@@ -37,7 +37,7 @@ router.post('/change-stream', (req, res) => {
     const roomId = req.body.roomId;
     const channel = req.body.channel;
     console.log(roomId, channel)
-    Room.updateOne({roomId: roomId}, {stream_channel: channel})
+    Room.updateOne({roomId: roomId}, {stream: channel})
     .then(response => {
         res.status(200).json(response)
     })

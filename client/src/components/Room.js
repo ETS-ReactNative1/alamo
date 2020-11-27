@@ -29,14 +29,20 @@ class Room extends React.Component {
             yesVotes: 1,
             yesUsers: [],
             noVotes: 0,
-            noUsers: []
+            noUsers: [],
+            stream: {}
         }
     }
 
     fetchRoomInformation = () => {
         axios.get('/room', {params: {roomId: this.props.activeRoom}})
             .then(response => {
-                this.setState({roomTitle: response.data.room_title, admins: response.data.admins, channel: response.data.stream_channel})
+                this.setState({roomTitle: response.data.room_title, admins: response.data.admins, channel: response.data.stream})
+                axios.get('/twitchapi/streams', {params : {user_id: response.data.stream}})
+                    .then((response) => {
+                        this.setState({stream: response.data[0]})
+                    })
+
             })
     }
 
@@ -132,7 +138,7 @@ class Room extends React.Component {
                 <div className={this.props.show ? "room-container show-room d-flex" : "room-container d-flex"}>
                     <div className="container-fluid">
                         <h1 className="room-title">{this.state.roomTitle}</h1>
-                        <TwitchPlayer twitchChannel={this.state.channel}/>
+                        <TwitchPlayer twitchChannel={this.state.stream.user_name}/>
                         <div className="row room-avatar-row justify-content-between">
                             <RoomPeers socket={this.props.socket} admins={this.state.admins}/>
                             <div className="col-4 d-flex flex-row-reverse">
@@ -142,9 +148,9 @@ class Room extends React.Component {
                             </div>
                         </div>
 
-                        <MoreStreams admins={this.state.admins} changeStream={this.changeStream} vote={this.vote}/>
+                        {this.state.stream.game_id ? <MoreStreams admins={this.state.admins} gameId={this.state.stream.game_id} changeStream={this.changeStream} vote={this.vote}/> : null}
                     </div>
-                    <TwitchChat twitchChannel={this.state.channel}/>
+                    <TwitchChat twitchChannel={this.state.stream.user_name}/>
                 </div>
             </React.Fragment>
         )
