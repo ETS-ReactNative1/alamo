@@ -48,6 +48,12 @@ class FriendCard extends React.Component {
             }
         })
 
+        this.props.socket.on('offline', (user) => {
+            if (user === this.props.userId)
+                this.props.userOffline(user);
+                this.setState({online: false})
+        })
+
         //Check the current status of all online status on load
         this.props.socket.emit('check-status', this.props.userId, (status) => {
             this.setState({status: status})

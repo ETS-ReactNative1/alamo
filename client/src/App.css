@@ -585,7 +585,7 @@ a {
 }
 
 .small-btn {
-    min-width: 100px !important;
+    min-width: 150px !important;
     height: 35px !important;
     white-space: nowrap;
     border-radius: 4px !important;

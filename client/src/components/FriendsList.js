@@ -21,6 +21,11 @@ class FriendsList extends React.Component  {
         }
     }
 
+    userOffline = (user) => {
+        console.log('REMOVE USER FROM ONLINE FRIENDS', user)
+        
+    }
+
     componentDidUpdate(prevProps) {
         if (this.props.onlineUsers != prevProps.onlineUsers)
             this.numberOfFriends()
@@ -53,7 +58,7 @@ class FriendsList extends React.Component  {
                 {friends.map((friend) => {
                     if ((friend in this.props.onlineUsers)) {
                         return(
-                            <FriendCard socket={this.props.socket} key={friend} onlineUsers={this.props.onlineUsers} handleContextMenu={this.props.handleContextMenu} userId={friend}/>
+                            <FriendCard socket={this.props.socket} userOffline={this.userOffline} key={friend} onlineUsers={this.props.onlineUsers} handleContextMenu={this.props.handleContextMenu} userId={friend}/>
                         )
                     }
                 })}

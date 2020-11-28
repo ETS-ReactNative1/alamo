@@ -35,7 +35,7 @@ io.on('connection', (socket) => {
     console.log(socket.id)
 
     //Add user to list of connected clients and broadcast that user is online
-    socket.on('online', (userId, callback) => {
+    socket.on('online', (userId, friendsList, callback) => {
         if (!(userId in clients)) {
             clients[userId] = {socketId: socket.id, status: ''}
             io.sockets.emit('new-user-online', userId, clients);
@@ -68,17 +68,19 @@ io.on('connection', (socket) => {
         })
         console.log('Purge Complete') 
         io.sockets.emit('user-offline-update', clients);
-
     }
 
     socket.on('user-offline', (userId) => {
         console.log('user offline', userId)
         disconnectedClients[userId] = {}
         console.log('Purge clients', disconnectedClients)
-        setTimeout(() => {
-            purgeDisconnectedClients();
-        }, 1000 * 5)
     })
+
+    //PurgeDisconnectedClients every 5 seconds
+    setInterval(() => {
+        purgeDisconnectedClients();
+    }, 1000 * 5)
+
 
     socket.on('leave-room', (roomId, userId) => {
         //On disconnect remove peer from list of connected peers

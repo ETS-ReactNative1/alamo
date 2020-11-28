@@ -47,21 +47,23 @@ function App(props) {
                     localStorage.setItem('userId', user._id)                
 
                     if (user.account_setup) {
-                        changeOnlineStatus();
+                        changeOnlineStatus(user);
                     }
                 } 
             })
             .catch(err => console.log(err))
     }
 
-    const changeOnlineStatus = () => {
-        socket.emit('online', localStorage.getItem('userId'), (response) => {
+    const changeOnlineStatus = (user) => {
+        socket.emit('online', localStorage.getItem('userId'), user.friends, (response) => {
             fetchAuthentication(false)
         })        
     }
 
     React.useEffect(() => {
-        console.log(React.Children)
+        window.addEventListener("beforeunload", function(event) { 
+            socket.emit('user-offline', localStorage.getItem('userId'))
+        });
         checkAuth()
     }, [])
 
