@@ -5,6 +5,7 @@ import { withRouter } from 'react-router-dom';
 const RoomItem = (props) => {
     const [room, setRooms] = React.useState([]);
     const [participants, setParticipants] = React.useState(0);
+    const componentMounted = React.useRef();
 
     const redirect = (path) => {
         props.history.push(path);
@@ -20,7 +21,7 @@ const RoomItem = (props) => {
     const roomParticipants = () => {
         props.socket.emit('room-size-query', props.roomId, (size) => {
             if (Object.keys(size).length > 0) {
-                console.log(Object.keys(size).length, "ROOM SDIZE")
+                console.log(Object.keys(size).length, "ROOM SDIZE", props.roomId)
                 setParticipants(Object.keys(size).length)
                 console.log(participants, 'PARTICIPANTS')
             }
@@ -28,6 +29,7 @@ const RoomItem = (props) => {
     }
 
     React.useEffect(() => {
+        console.log('room item')
         roomParticipants();
         getRoomInformation();
         //Listen for when any user joins or leaves a room that belongs to the client
@@ -43,7 +45,7 @@ const RoomItem = (props) => {
 
         props.socket.on('user-disconnected', () => {
             roomParticipants();
-        })
+        })        
     }, [props.roomId])
 
     const handleContextClick = (event) => {

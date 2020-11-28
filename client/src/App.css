@@ -16,6 +16,10 @@ h1, h2, h3, h4, h5, h6, p, label {
     opacity:0.6; 
 }
 
+button:focus {
+    outline: none;
+}
+
 label {
     margin: 50px 0 25px 0;
     font-size: 2em;
@@ -70,6 +74,15 @@ label {
     position: relative;
     width: 50%;
     max-width: 667.5px;
+    transform: translateX(28px);
+    margin: auto;
+}
+
+.back-arrow {
+    position: absolute;
+    top: 50%;
+    left: 15px;
+    transform: translateY(-50%); 
 }
 
 .rm-bottom-border {
