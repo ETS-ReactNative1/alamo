@@ -18,7 +18,7 @@ class RoomUser extends React.Component {
         }
     }
 
-    componentDidMount() {
+    fetchUserInformation = () => {
         axios.get('/user', {params: {userId: this.props.userId}})
             .then(response => {
                 this.setState({username: response.data[0].user_metadata.username, avatar: response.data[0].user_metadata.avatar})
@@ -29,6 +29,15 @@ class RoomUser extends React.Component {
                     })
             })
             .catch(err => console.log(err))
+    }
+
+    componentDidUpdate(prevProps) {
+        if (prevProps.userId !== this.props.userId)
+            this.fetchUserInformation();
+    }
+
+    componentDidMount() {
+        this.fetchUserInformation();
     }
 
     handleClick = (event) => {

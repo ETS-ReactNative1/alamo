@@ -18,7 +18,7 @@ const socket = io();
 
 function App(props) {
     const [isAuth, checkAuthentication] = React.useState([])
-    const [isLoading, fetchAuthentication] = React.useState([])
+    const [isLoading, pageLoading] = React.useState([])
     const [accountSetup, checkAccountSetup] = React.useState([])
     const [user, fetchUser] = React.useState([])
 
@@ -31,7 +31,7 @@ function App(props) {
     }
 
     const checkAuth = async () => {
-        fetchAuthentication(true)
+        pageLoading(true)
         axios.get('/auth/check')
             .then(response => {
                 const auth = response.data.auth;
@@ -39,7 +39,7 @@ function App(props) {
                 return response.data.user
             }) 
             .then((user) => {
-                fetchAuthentication(false)
+                pageLoading(false)
                 if (isAuth) {
                     checkAccountSetup(user.account_setup)
                     fetchUser(user)
@@ -55,8 +55,8 @@ function App(props) {
     }
 
     const changeOnlineStatus = (user) => {
-        socket.emit('online', localStorage.getItem('userId'), user.friends, (response) => {
-            fetchAuthentication(false)
+        socket.emit('online', localStorage.getItem('userId'), (response) => {
+            pageLoading(false)
         })        
     }
 

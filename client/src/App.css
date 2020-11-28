@@ -561,7 +561,7 @@ a {
 }
 
 .muted-btn {
-    min-width: 100px;
+    min-width: 150px;
     height: 35px;
     background-color: #3a3a3e;
     color: #F2E7FE;
@@ -586,8 +586,20 @@ a {
     cursor: pointer;
 }
 
+.invite-friends-container {
+    max-width: 820px;
+}
+
 .small-btn {
     min-width: 150px !important;
+    height: 35px !important;
+    white-space: nowrap;
+    border-radius: 4px !important;
+    width: fit-content;
+}
+
+.small-btn-invite {
+    min-width: 100px !important;
     height: 35px !important;
     white-space: nowrap;
     border-radius: 4px !important;
@@ -656,6 +668,10 @@ a {
 
 .avatar-image-selection {
     cursor: pointer;
+}
+
+.friend-card-avatar {
+    max-width: 80px;
 }
 
 .avatar-selected {

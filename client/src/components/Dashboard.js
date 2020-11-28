@@ -11,6 +11,7 @@ import Room from './Room';
 import CreateRoom from './CreateRoom';
 import RoomRTC from './RoomRTC';
 import AccountSettings from './AccountSettings';
+import InviteFriends from './InviteFriends';
 
 import MainWrapper from './MainWrapper';
 import RoomShowcase from './RoomShowcase';
@@ -55,12 +56,12 @@ class Dashboard extends React.Component {
         this.fetchUserInformation();
 
         if (this.props.auth) {
-            this.props.socket.on('new-user-online', (userId, clients) => {
-                this.setState({onlineUsers: clients})
+            this.props.socket.on('new-user-online', (userId, users) => {
+                this.setState({onlineUsers: users})
             })
 
-            this.props.socket.on('user-offline-update', (clients) => {
-                this.setState({onlineUsers: clients})
+            this.props.socket.on('user-offline-update', (users) => {
+                this.setState({onlineUsers: users})
             })
         }
 
@@ -87,6 +88,10 @@ class Dashboard extends React.Component {
 
     showRoom = () => {
         this.setState({showRoom: true});
+    }
+
+    roomFavourited = () => {
+
     }
 
     render() {
@@ -153,14 +158,21 @@ class Dashboard extends React.Component {
                                 <AccountSettings userInformation={this.state.user}/>
                             )}/>
 
+                            <Route path="/invite-friends" render={(props) => (
+                                <InviteFriends 
+                                    socket={this.props.socket} 
+                                    friends={this.state.user.friends} 
+                                    onlineUsers={this.state.onlineUsers}
+                                    activeRoom={this.state.activeRoom}
+                                />
+                            )}/>
+
                             <Route path="/" render={(props) => (
                                 <MainWrapper activeRoom={this.state.activeRoom}>
                                     {this.props.user.rooms ? <RoomShowcase socket={this.props.socket} rooms={this.props.user.rooms}/> : null}
                                     <PopularStreams admins={this.state.admins}/>
                                 </MainWrapper>
                             )}/>
-
-
 
                         </main>
                     </div>

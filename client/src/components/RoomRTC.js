@@ -51,16 +51,21 @@ class RoomRTC extends React.Component {
         }
     }
 
-    updatePeersInRoom = (peers) => {
-        //Create Ref of updatePeersList
-        peers.forEach(thing => {
-            this[`${thing}_ref`] = React.createRef()
-        });
+    updatePeersInRoom = async (peers) => {
+        const updatePeers = new Promise((resolve, reject) => {
+            //Create Ref of updatePeersList
+            peers.forEach(thing => {
+                this[`${thing}_ref`] = React.createRef()
+            });
 
-        //Add the peers state
-        this.setState({
-            peers: peers
+            //Add the peers state
+            this.setState({
+                peers: peers
+            }, () => {
+                resolve()
+            })
         })
+        return updatePeers;
     }
 
     closeCall = (event) => {
@@ -93,16 +98,20 @@ class RoomRTC extends React.Component {
         }).then(stream => {
 
             this.props.socket.on('client-connected', (userId, updatedPeersList) => {
-                this.updatePeersInRoom(updatedPeersList);
+                this.updatePeersInRoom(updatedPeersList)
+                    .then(() => {
+                        //Once client is connected and state is update with peers, connect client audio
+                        this.playUserAudio(localStorage.getItem('userId'), stream)
+                    })
 
-                //Once client is connected and state is update with peers, connect client audio
-                this.playUserAudio(localStorage.getItem('userId'), stream)
 
                 this.peer.on('call', call => {
                     call.answer(stream);
                     call.on('stream', userAudioStream => {
-                        this.updatePeersInRoom(updatedPeersList);
-                        this.playUserAudio(call.peer, userAudioStream)
+                        this.updatePeersInRoom(updatedPeersList)
+                            .then(() => {
+                                this.playUserAudio(call.peer, userAudioStream)
+                            })
                     })
                 })
 
@@ -110,10 +119,12 @@ class RoomRTC extends React.Component {
 
             this.props.socket.on('user-connected', (userId, updatedPeersList) => {
                 console.log('user connection', userId)
-                this.updatePeersInRoom(updatedPeersList);
+                this.updatePeersInRoom(updatedPeersList)
+                    .then(() => {
+                        //Connect user
+                        this.connectToNewUser(userId, stream)
+                    })
 
-                //Connect user
-                this.connectToNewUser(userId, stream)
             })
 
             this.props.socket.on('user-disconnected', (userId, updatedPeersList) => {

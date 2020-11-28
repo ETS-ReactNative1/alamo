@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Peer from 'peerjs';
 import axios from 'axios';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
 
 import RoomUser from './RoomUser';
 import RoomRTC from './RoomRTC';
@@ -162,7 +162,7 @@ class Room extends React.Component {
                             <div className="col-4 d-flex flex-row-reverse">
                                 <i className="fas fa-2x fa-cog room-settings-icon font-color"></i>
                                 <FavouriteBtn fetchUserInformation={this.props.fetchUserInformation} activeRoom={this.props.activeRoom}/>
-                                <button className="primary-btn small-btn">Invite</button>
+                                <button className="primary-btn small-btn-invite" style={{maxWidth: '100px'}} onClick={() => this.props.history.push('/invite-friends')}>Invite</button>
                             </div>
                         </div>
 

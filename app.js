@@ -31,33 +31,25 @@ const clients = {}
 const disconnectedClients = {}
 const rooms = {}
 
+
 io.on('connection', (socket) => {
     console.log(socket.id)
 
     //Add user to list of connected clients and broadcast that user is online
-    socket.on('online', (userId, friendsList, callback) => {
+    socket.on('online', (userId, callback) => {
         if (!(userId in clients)) {
             clients[userId] = {socketId: socket.id, status: ''}
-            io.sockets.emit('new-user-online', userId, clients);
 
             //If a user is has recently disconnected and is waiting to be purged, remove them
             if (userId in disconnectedClients)
                 delete disconnectedClients[userId]
-
-        } else {
-            //Update socket id but do not broadcast new user online
-            clients[userId] = {socketId: socket.id }
-
-            if (userId in disconnectedClients)
-                delete disconnectedClients[userId]
-
-            io.sockets.emit('new-user-online', userId, clients);
-        }
-
-        console.log('List of connected Clients', clients)
+        } 
+        //Emit updated connected clients to users 
+        io.sockets.emit('new-user-online', userId, clients);
 
         //Send back list of active clients when user logs on
         callback(clients)
+
     })
 
     //To avoid users being spammed with refresh appearing them offline, when a user leaves, they will be added to a object, and after 30 seconsds anyone in this object is purged/remove from list of active clients
@@ -66,20 +58,16 @@ io.on('connection', (socket) => {
             if (disconnectedUser in clients)
                 delete clients[disconnectedUser]
         })
-        console.log('Purge Complete') 
         io.sockets.emit('user-offline-update', clients);
     }
 
     socket.on('user-offline', (userId) => {
-        console.log('user offline', userId)
         disconnectedClients[userId] = {}
-        console.log('Purge clients', disconnectedClients)
+        //Allow for 5 seconds before client is purged and made offline
+        setTimeout(() => {
+            purgeDisconnectedClients();
+        }, 1000 * 5)
     })
-
-    //PurgeDisconnectedClients every 5 seconds
-    setInterval(() => {
-        purgeDisconnectedClients();
-    }, 1000 * 5)
 
 
     socket.on('leave-room', (roomId, userId) => {
