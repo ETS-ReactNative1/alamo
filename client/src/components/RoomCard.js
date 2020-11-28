@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import { withRouter } from 'react-router-dom';
 
 import RoomCardUser from './RoomCardUser';
 
@@ -51,32 +52,62 @@ const RoomCard = (props) => {
 
     }, [])
 
-    return(
-        <div className="col room-card">
-            <div className="row room-card-participants align-items-center">
-                <div className="col">
-                    <h1 className="thin">{participants}/6</h1>
+    if (props.activeRoom === props.roomId) {
+        return(
+            <div className="col room-card" onClick={() => props.history.push(props.roomId)}>
+                <div className="row room-card-participants align-items-center">
+                    <div className="col">
+                        <h1 className="thin">{participants}/6</h1>
+                    </div>
+                </div>
+                <div className="row room-card-users">
+                    <div className="col align-items-center">
+                        {user.map((user) => {
+                            return(
+                                <RoomCardUser userId={user}/>
+                            )
+                        })}
+                    </div>
+                </div>
+                <div className="row room-card-title align-items-center">
+                    <div className="col">{room}</div>
+                </div>
+                <div className="row room-card-button">
+                    <div className="col align-items-center">
+                        <button className="muted-btn">Join</button>
+                    </div>
                 </div>
             </div>
-            <div className="row room-card-users">
-                <div className="col align-items-center">
-                    {user.map((user) => {
-                        return(
-                            <RoomCardUser userId={user}/>
-                        )
-                    })}
-                </div>
-            </div>
-            <div className="row room-card-title align-items-center">
-                <div className="col">{room}</div>
-            </div>
-            <div className="row room-card-button">
-                <div className="col align-items-center">
-                    <button className="muted-btn">Join</button>
-                </div>
-            </div>
-        </div>
-    )
+        )
+    } else {
+        return(
+            <a href={props.roomId} className="col room-card">
+                    <div className="row room-card-participants align-items-center">
+                        <div className="col">
+                            <h1 className="thin">{participants}/6</h1>
+                        </div>
+                    </div>
+                    <div className="row room-card-users">
+                        <div className="col align-items-center">
+                            {user.map((user) => {
+                                return(
+                                    <RoomCardUser userId={user}/>
+                                )
+                            })}
+                        </div>
+                    </div>
+                    <div className="row room-card-title align-items-center">
+                        <div className="col">{room}</div>
+                    </div>
+                    <div className="row room-card-button">
+                        <div className="col align-items-center">
+                            <button className="muted-btn">Join</button>
+                        </div>
+                    </div>
+            </a>
+        )
+    }
+
 }
 
-export default RoomCard;
+export default withRouter(RoomCard);

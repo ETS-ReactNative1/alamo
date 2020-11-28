@@ -169,7 +169,13 @@ class Dashboard extends React.Component {
 
                             <Route path="/" render={(props) => (
                                 <MainWrapper activeRoom={this.state.activeRoom}>
-                                    {this.props.user.rooms ? <RoomShowcase socket={this.props.socket} rooms={this.props.user.rooms}/> : null}
+                                    {this.props.user.rooms ? 
+                                        <RoomShowcase 
+                                            activeRoom={this.state.activeRoom}
+                                            socket={this.props.socket} 
+                                            rooms={this.props.user.rooms}
+                                        />
+                                    : null}
                                     <PopularStreams admins={this.state.admins}/>
                                 </MainWrapper>
                             )}/>

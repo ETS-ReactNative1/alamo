@@ -15,7 +15,7 @@ const RoomShowcase = (props) => {
                 <AddRoomCard/>
                 {props.rooms.map((room) => {
                     return(
-                        <RoomCard socket={props.socket} roomId={room}/>
+                        <RoomCard socket={props.socket} activeRoom={props.activeRoom} roomId={room}/>
                     )
                 })}
             </div>
