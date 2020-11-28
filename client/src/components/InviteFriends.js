@@ -8,7 +8,7 @@ const InviteFriends = (props) => {
 
     const inviteUser = (event) => {
         const friend = event.currentTarget.id
-        props.socket.emit('invite-friend', friend)
+        props.socket.emit('room-invite', localStorage.getItem('userId'), friend, props.activeRoom)
         setInvite(friend)
     }
 

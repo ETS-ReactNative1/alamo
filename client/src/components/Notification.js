@@ -1,12 +1,19 @@
 import React from 'react';
 import axios from 'axios';
 
+import InviteAlert from './InviteAlert';
+
 class Notification extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
             show: false,
+            showInvite: false,
+            inviteeId: '',
+            inviterId: '',
+            inviteRoomId: '',
+            inviteStream: '',
             notification: null,
             pendingInvitation: ''
         }
@@ -39,6 +46,15 @@ class Notification extends React.Component {
             }, 500)
         })
 
+        this.props.socket.on('inc-room-invite', (invitee, inviter, roomId) => {
+            console.log(inviter, 'would like you to join their room')
+            this.setState({showInvite: true, inviteeId: invitee, inviterId: inviter, inviteRoomId: roomId});
+
+            setTimeout(() => {
+                this.setState({showInvite: false})
+            }, 1000 * 30)
+        })
+
         this.props.socket.on('pending-invitation', (senderId, receiverId) => {
             if (receiverId === localStorage.getItem('userId')) {
 
@@ -67,16 +83,23 @@ class Notification extends React.Component {
         
     }
 
+    declineVote = () => {
+        this.setState({showInvite: false})
+    }
+
     render() {
         return(
-            <div update={this.state.pendingInvitation} className={(this.state.show) ? "toast show" : "toast"} role="alert" aria-live="assertive" aria-atomic="true">
+            <React.Fragment>
+                {this.state.showInvite ? <InviteAlert inviteeId={this.state.inviteeId} inviterId={this.state.inviterId} roomId={this.state.inviteRoomId} declineVote={this.declineVote}/> : null}
+                <div update={this.state.pendingInvitation} className={(this.state.show) ? "toast show" : "toast"} role="alert" aria-live="assertive" aria-atomic="true">
                     <div className="toast-body bold">
                         <button type="button" className="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                         </button>
                         <h6 className="toast-message">{this.state.notification}</h6>
                     </div>
-            </div>
+                </div>
+            </React.Fragment>
         )
     }
 }

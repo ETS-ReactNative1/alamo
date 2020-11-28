@@ -33,23 +33,25 @@ const rooms = {}
 
 
 io.on('connection', (socket) => {
-    console.log(socket.id)
-
     //Add user to list of connected clients and broadcast that user is online
     socket.on('online', (userId, callback) => {
         if (!(userId in clients)) {
             clients[userId] = {socketId: socket.id, status: ''}
+            io.sockets.emit('new-user-online', userId, clients);
+        } else {
+            //Update socket id but do not broadcast new user online
+            clients[userId] = {socketId: socket.id }
+        }
 
-            //If a user is has recently disconnected and is waiting to be purged, remove them
-            if (userId in disconnectedClients)
-                delete disconnectedClients[userId]
-        } 
+        //If a user is has recently disconnected and is waiting to be purged, remove them
+        if (userId in disconnectedClients)
+            delete disconnectedClients[userId]
+
         //Emit updated connected clients to users 
         io.sockets.emit('new-user-online', userId, clients);
 
         //Send back list of active clients when user logs on
         callback(clients)
-
     })
 
     //To avoid users being spammed with refresh appearing them offline, when a user leaves, they will be added to a object, and after 30 seconsds anyone in this object is purged/remove from list of active clients
@@ -143,6 +145,14 @@ io.on('connection', (socket) => {
         clients[user].status = 'Watching ' + game;
         socket.broadcast.emit('update-status', user, game)
         socket.emit('update-status', user, game)
+    })
+
+    socket.on('room-invite', (inviter, invitee, roomId) => {
+        console.log('room invite', inviter, invitee, roomId)
+        console.log(clients[invitee], 'INVITE CLIENTS ')
+        console.log(clients, 'ALL CLIENTS')
+        if (typeof clients[invitee] !== 'undefined')
+            io.to(clients[invitee].socketId).emit('inc-room-invite', invitee, inviter, roomId)
     })
 
     //Listening for Users automatically querying room size on load/refresh

@@ -2,14 +2,14 @@ import React from 'react';
 import axios from 'axios';
 
 
-const LogoutItem = () => {
+const LogoutItem = (props) => {
 
     const logout = () => {
         console.log('logout')
         axios.get('/auth/logout')
             .then((response) => {
                 if (response.status === 200)
-                    this.props.socket.emit('user-offline', localStorage.getItem('userId'))
+                    props.socket.emit('user-offline', localStorage.getItem('userId'))
                     window.location.reload();
             })
     }

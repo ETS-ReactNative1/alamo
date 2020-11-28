@@ -74,7 +74,7 @@ const RoomCard = (props) => {
                 </div>
                 <div className="row room-card-button">
                     <div className="col align-items-center">
-                        <button className="muted-btn">Join</button>
+                        <button className="muted-btn" style={{padding: '0'}}>Join</button>
                     </div>
                 </div>
             </div>
@@ -82,28 +82,28 @@ const RoomCard = (props) => {
     } else {
         return(
             <a href={props.roomId} className="col room-card">
-                    <div className="row room-card-participants align-items-center">
-                        <div className="col">
-                            <h1 className="thin">{participants}/6</h1>
-                        </div>
+                <div className="row room-card-participants align-items-center">
+                    <div className="col">
+                        <h1 className="thin">{participants}/6</h1>
                     </div>
-                    <div className="row room-card-users">
-                        <div className="col align-items-center">
-                            {user.map((user) => {
-                                return(
-                                    <RoomCardUser userId={user}/>
-                                )
-                            })}
-                        </div>
+                </div>
+                <div className="row room-card-users">
+                    <div className="col align-items-center">
+                        {user.map((user) => {
+                            return(
+                                <RoomCardUser userId={user}/>
+                            )
+                        })}
                     </div>
-                    <div className="row room-card-title align-items-center">
-                        <div className="col">{room}</div>
+                </div>
+                <div className="row room-card-title align-items-center">
+                    <div className="col">{room}</div>
+                </div>
+                <div className="row room-card-button">
+                    <div className="col align-items-center">
+                        <button className="muted-btn" style={{padding: '0'}}>Join</button>
                     </div>
-                    <div className="row room-card-button">
-                        <div className="col align-items-center">
-                            <button className="muted-btn">Join</button>
-                        </div>
-                    </div>
+                </div>
             </a>
         )
     }

@@ -469,7 +469,7 @@ a {
     background-color: #080808;
     color: #F2E7FE !important;
     border-radius: 10px;
-    z-index: 999;
+    z-index: 9999999999;
     overflow: hidden;
 }
 
@@ -1287,6 +1287,14 @@ iframe {
     min-width: 317px;
 }
 
+.invite-stream-card {
+    overflow-x: hidden !important;
+    margin-right: 20px auto;
+    margin-bottom: 20px;
+    width: 100%;
+    max-width: 347px;
+    min-width: 317px;
+}
 .stream-card-vote {
     overflow-x: hidden !important;
     margin-right: 20px auto;
@@ -1344,6 +1352,17 @@ iframe {
 .stream-avatar {
     float: left;
     width: 50px;
+}
+
+.invite-container {
+    padding: 25px;
+    position: fixed;
+    right: 24px;
+    top: calc(100vh - 525px);
+    width: 400px;
+    height: 505px;
+    background-color: #050505;
+    z-index: 999999;
 }
 
 .vote-container {
