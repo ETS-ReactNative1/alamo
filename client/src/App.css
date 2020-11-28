@@ -69,6 +69,7 @@ label {
 .main-search-box {
     position: relative;
     width: 50%;
+    max-width: 667.5px;
 }
 
 .rm-bottom-border {
@@ -205,6 +206,7 @@ label {
 
 .search-results-container {
     width: 100%;
+    max-width: 667.5px;
     position: absolute;
     top: 55px;
     left: 50%;

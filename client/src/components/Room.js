@@ -25,8 +25,8 @@ class Room extends React.Component {
             vote: false,
             voterId: '',
             voterChannel: '',
-            usersInRoom: 2,
-            votesNeeded: 2,
+            usersInRoom: 1,
+            votesNeeded: 1,
             yesVotes: 1,
             yesUsers: [],
             noVotes: 0,
@@ -81,6 +81,8 @@ class Room extends React.Component {
         if (this.state.vote)
             alert('Vote already in progress')
 
+        if (this.state.vote)
+
         this.voteTimer = setTimeout(() => {
             this.props.socket.emit('finish-vote', this.props.activeRoom, 'failed')
         }, 1000 * 30)
@@ -110,6 +112,8 @@ class Room extends React.Component {
             if (usersInRoom % 2 === 0 && usersInRoom > 2) {
                 const votesNeeded = Math.ceil(this.state.usersInRoom / 2)
                 this.setState({...this.state, vote: true, voterId: userId, voterChannel: stream, usersInRoom: usersInRoom, votesNeeded: votesNeeded, yesUsers: [userId]})
+            } else if (usersInRoom === 1) {
+                this.props.socket.emit('finish-vote', this.props.activeRoom, 'passed')
             } else {
                 const votesNeeded = Math.ceil(this.state.usersInRoom / 2) + 1
                 this.setState({...this.state, vote: true, voterId: userId, voterChannel: stream, votesNeeded: votesNeeded, yesUsers: [userId]})
