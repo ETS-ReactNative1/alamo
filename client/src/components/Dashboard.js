@@ -93,7 +93,7 @@ class Dashboard extends React.Component {
         const rooms = this.props.user && this.props.user.rooms;
         return (
             <React.Fragment>
-                <div className="container-fluid" onClick={this.clearContextMenu}>
+                <div className="container-fluid dashboard" onClick={this.clearContextMenu}>
                     <div className="row">
 
                         {this.state.activeRoom !== null ? 
@@ -155,7 +155,7 @@ class Dashboard extends React.Component {
 
                             <Route path="/" render={(props) => (
                                 <MainWrapper activeRoom={this.state.activeRoom}>
-                                    <RoomShowcase/>
+                                    {this.props.user.rooms ? <RoomShowcase socket={this.props.socket} rooms={this.props.user.rooms}/> : null}
                                     <PopularStreams admins={this.state.admins}/>
                                 </MainWrapper>
                             )}/>

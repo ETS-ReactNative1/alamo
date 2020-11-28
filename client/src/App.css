@@ -492,6 +492,7 @@ a {
 /* width */
 ::-webkit-scrollbar {
     width: 5px;
+    height: 7px;
     margin-top: 60vh !important;
     margin-bottom: 50px;
 }
@@ -755,12 +756,100 @@ a {
 
 .add-stream-card {
     position: relative;
-    width: 250px;
+    max-width: 250px;
+    min-width: 250px;
     height: 300px;
     border: 3px dashed rgba(242, 231, 254, 0.2);
     text-align: center;
     padding: 35px;
     cursor: pointer;
+}
+
+.dashed-box {
+    border: 3px dashed rgba(242, 231, 254, 0.2) !important;
+}
+
+.add-room-card {
+    display: inline-block;
+    max-width: 250px;
+    min-width: 250px;
+    height: 300px;
+    border: 3px dashed rgba(242, 231, 254, 0.2);
+    text-align: center;
+    padding: 35px;
+    cursor: pointer;
+}
+
+.add-room-card:hover {
+    border-style: solid;
+    -webkit-box-shadow: 11px 12px 0px 2px  #3700B3 !important; 
+    box-shadow: 11px 12px 0px 2px  #3700B3 !important;
+}
+
+.dashboard > .row > .col {
+    min-width: 0 !important;
+}
+
+.room-showcase-row {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+.room-showcase-row > .col {
+    display: inline-block;
+    vertical-align: top;
+}
+
+.room-card {
+    width: 250px;
+    height: 300px;
+    margin-left: 22px;
+    border: 1px solid rgba(242, 231, 254, 0.2);
+    color: rgba(242, 231, 254, 0.7) !important;
+    cursor: pointer;
+    margin-bottom: 20px;
+}
+
+.room-card-participants {
+    height: 40%;
+    width: 100%;
+    font-size: 2.3em;
+    text-align: center;
+    margin: 0;
+}
+
+.room-card-title {
+    width: 100%;
+    text-align: center;
+    height: 25%;
+    font-size: 1.3em;
+    margin: 0;
+}
+
+.room-card-users {
+    height: 10%;
+    width: 100%;
+    text-align: center;
+    margin: 0;
+}
+
+.room-card-users img {
+    width: 30px;
+    margin: 0 2px 0 2px;
+}
+
+.room-card:hover {
+    border-style: solid;
+    -webkit-box-shadow: 11px 12px 0px 2px  #3700B3 !important; 
+    box-shadow: 11px 12px 0px 2px  #3700B3 !important;
+}
+
+.room-card-button {
+    width: 100%;
+    height: 25%;
+    text-align: center;
+    margin: 0;
 }
 
 .add-stream-card-contents {

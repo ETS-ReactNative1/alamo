@@ -163,6 +163,14 @@ io.on('connection', (socket) => {
             callback(0)
     })
 
+    //Listening for Users automatically querying room size on load/refresh
+    socket.on('room-query', (roomId, callback) => {
+        if (typeof rooms[roomId] != 'undefined')
+            callback(rooms[roomId])
+        else
+            callback(0)
+    })
+
     socket.on('voice-active', (roomId, userId) => {
         socket.to(roomId).broadcast.emit('user-speaking', userId)
     });
