@@ -35,11 +35,10 @@ Alamo's WebRTC is faciliated using [[PeerJS](https://peerjs.com/) and [socket.io
 The first challenge to acheive WebRTC was to configure and implement a web signalling protocol. All WebRTC signalling is handled using socket.io's websocket library.
 
 ### Socket.io
-Socket.io's client configuration take place at a high level in ReactJS's `App.js` file and passed down as a prop to React Components as required. This ensures that a client would only attempt to establish a websocket connection by triggering socket.io's `io.connect()` function once.
+Socket.io's server configuration is basic, straight forward and follows socket.io's documentation. No additional additional configuration options were used. Socket.io's client configuration take place at a high level in ReactJS's `App.js` file and passed down as a prop to React Components as required. This ensures that a client would only attempt to establish a WebSocket connection by triggering socket.io's `io.connect()` function once.
 
 Upon the client successfully establishing a WebSocket connection, the clients user ID is passed to Node and stored in a `clients` object. `clients` helps keeps track of all connected client, along with their respective `socket.id` and current activity status. Due to the nature of socket.io, once a client refreshes the page, a new `socket.id` will be randomly generate. As a result, it is important to ensure that any new `socket.id` is updated on behalf of that user in Node's `clients` object.
 
-    <pre><code>
         io.on('connection', (socket) => {
             socket.on('online', (userId, callback) => {
                 //Add user to list of connected clients and broadcast that user is online
@@ -50,13 +49,17 @@ Upon the client successfully establishing a WebSocket connection, the clients us
                     //Update socket id but do not broadcast new user online
                     clients[userId] = {socketId: socket.id }
                 }
+                //Emit updated connected clients to users 
+                io.sockets.emit('new-user-online', userId, clients);
+
+                //Send back list of active clients when user logs on
+                callback(clients)
             })
         })
-    </code></pre>
-    
 
+        
 ### Uniquely Identifying Rooms
-On creation, a unique UUID (Universally Unique Identifier) is generated and stored in a MongoDB database. This UUID is the primary means of room identification and is used as a primary key of each room document. The decision to overwrite MongoDB native ObjectId was made to distungish between users and rooms. Each room Id would begin with `room` followed by a verison 4 UUID number. For example, `/room/0e446e3d-8dd2-4e0b-886b-5b5f3c8fb182`. Using a UUID library gave me confidence to ensure all rooms generated would come with a unique primary key. 
+On creation, a unique UUID (Universally Unique Identifier) is generated and stored in a MongoDB database. This UUID is the primary means of room identification and is used as a primary key of each room document. The decision to overwrite MongoDB native ObjectId was made to distungish between users and rooms. Each room Id would begin with `room` followed by a verison 4 UUID number. For example, `/room/0e446e3d-8dd2-4e0b-886b-5b5f3c8fb182`. Using a UUID library ensures all rooms generated have a unique primary key. 
 
 Once a user has created a room and navigated to the room UUID URI, they essentially broadcast or emit that they would like to join a socket.io room. Socket.io rooms are no different than alamo rooms. They are a named space that sockets can join and leave. As a result, this allows for easy bi directional communication back and forth between each users in the room and between Alamo's Node server.
 
@@ -65,3 +68,11 @@ Once a user has created a room and navigated to the room UUID URI, they essentia
 Using Reacts ComponentDidMount lifecycle, a user emits to Node that they would like to join this room. 
 
 ### PeerJS
+During development, a PeerJS server was running locally on a local machine. However, this was unsuitable once alamo was pushed to its own [Heroku](https://www.heroku.com) server. PeerJS would required its own dedicated server. Thanksfully, Heroku makes this easy and provide a dedicated PeerJS button to quickly deloy a Peer server in only a few minutes. Configuration was straight forward, having only to update PeerJS host and port number on client-side.  
+
+        this.peer = new Peer(localStorage.getItem('userId'), {
+            host: 'https://alamo-peerjs.herokuapp.com',
+            secure: true,
+            host: 'alamo-peerjs.herokuapp.com',
+            port: 443
+        })
