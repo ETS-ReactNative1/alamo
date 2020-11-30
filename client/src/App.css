@@ -609,7 +609,7 @@ a {
 }
 
 .invite-friends-container {
-    max-width: 820px;
+    width: 100%;
 }
 
 .small-btn {

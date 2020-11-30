@@ -4,12 +4,17 @@ import { Redirect } from 'react-router-dom';
 import InviteCard from './InviteCard';
 
 const InviteFriends = (props) => {
-    const [ invite, setInvite ] = React.useState('')
+    const [ invite, setInvite ] = React.useState([])
 
     const inviteUser = (event) => {
         const friend = event.currentTarget.id
-        props.socket.emit('room-invite', localStorage.getItem('userId'), friend, props.activeRoom)
-        setInvite(friend)
+        if (props.createRoom) {
+            setInvite(friends => [...friends, friend])
+            props.friendsToInvite(friend)
+        } else {
+            setInvite(friends => [...friends, friend])
+            props.socket.emit('room-invite', localStorage.getItem('userId'), friend, props.activeRoom)
+        }
     }
 
     if (typeof props.activeRoom === null || typeof props.friends === 'undefined') {
@@ -31,13 +36,13 @@ const InviteFriends = (props) => {
                                     <InviteCard socket={props.socket} key={'invite-'+friend} userId={friend} onlineUsers={props.onlineUsers}/>
                                 </div>
                                 <div className="col-2">
-                                    {(invite === friend) ? 
-                                        <button id={friend} className="primary-btn small-btn-invite passthrough" style={{paddingLeft: '16px'}}>
+                                    {(invite.includes(friend, 0)) ? 
+                                        <button id={friend} type="button" className="primary-btn small-btn-invite passthrough" style={{paddingLeft: '16px'}}>
                                             Invited
                                             <i className="fas fa-check favourite-icon"></i>
                                         </button>
                                         :
-                                        <button id={friend} className="primary-btn small-btn-invite" onClick={(event) => inviteUser(event)}>
+                                        <button id={friend} type="button" className="primary-btn small-btn-invite" onClick={(event) => inviteUser(event)}>
                                             Invite
                                         </button>
                                     }
@@ -46,24 +51,6 @@ const InviteFriends = (props) => {
                         )
                     }
                 })}
-
-                <div className="row">
-                    <div classNamme="col">
-                        <h3 class="more-stream-heading thin d-block padding-top">Offline</h3>
-                    </div>
-                </div>
-                {props.friends.map((friend) => {
-                    if (!(friend in props.onlineUsers)) {
-                        return(
-                            <div className="row justify-content-between">
-                                <div className="col">
-                                    <InviteCard socket={props.socket} key={'invite-'+friend} userId={friend} onlineUsers={props.onlineUsers}/>
-                                </div>
-                            </div>
-                        )
-                    }
-                })}
-
             </div>
         )
     }

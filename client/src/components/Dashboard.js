@@ -143,6 +143,9 @@ class Dashboard extends React.Component {
                                 <CreateRoom 
                                     socket={this.props.socket} 
                                     fetchUserInformation={this.fetchUserInformation}
+                                    friends={this.state.user.friends} 
+                                    onlineUsers={this.state.onlineUsers}
+                                    activeRoom={this.state.activeRoom}
                                 />
                             )}/>
 
