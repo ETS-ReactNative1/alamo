@@ -15,14 +15,21 @@ const RoomContext = (props) => {
             })
     }
 
+    console.log(props.activeRoom, 'ACTIVE CONTEXT')
     return(
         <div className="container context-menu" style={{display: props.show, top: props.y, left: props.x}}>
             <div className="row">
                 <div className="col no-padding">
                     <ul className="nav flex-column font-color">
-                        <a href={props.id} className="context-item">
-                            <li>Join Room</li>
-                        </a>
+                        {(props.activeRoom === props.id) ?
+                            <a href={'/'} className="context-item">
+                                <li>Leave Room</li>
+                            </a>
+                            :
+                            <a href={props.id} className="context-item">
+                                <li>Join Room</li>
+                            </a>
+                        }
                         <li className="context-item" onClick={() => handleDeleteRoom()}>Delete Room</li>
                         <li className="context-item" onClick={() => redirect(`/edit${props.id}`)}>Edit Room</li>
                     </ul>

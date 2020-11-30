@@ -1,6 +1,8 @@
 import React from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
 
+import UserAvatar from './UserAvatar';
+
 const ProfileCard = (props) => {
     const [ status, setStatus ] = React.useState('')
     const handleContextClick = (event) => {
@@ -23,7 +25,7 @@ const ProfileCard = (props) => {
     return(
         <div id={props.userId} className="row sidebar-profile align-items-center" onContextMenu={handleContextClick}>
             <div className="col-3">
-                <img className="user-avatar rounded-circle w-15" src={props.avatar} />
+                <UserAvatar avatar={props.avatar}/>
             </div>
             <div className="col-9">
                 <div className="row">

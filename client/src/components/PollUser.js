@@ -17,7 +17,7 @@ const PollUser = (props) => {
     }, [])
 
     return(
-        <img className="user-avatar poll-icons-images rounded-circle w-10" src={'/images/avatars/' + avatar + '-avatar.png'} />
+        <img className="user-avatar poll-icons-images rounded-circle w-10" src={avatar} />
     )
 };
 

@@ -7,6 +7,8 @@ class StreamCard extends React.Component {
 
         this.state = {
             channelImage: '',
+            thumbnailLoading: true,
+            channelAvatarLoading: true,
             showOptions: false,
             admins: []
         }
@@ -49,8 +51,13 @@ class StreamCard extends React.Component {
         return(
             <div id={this.props.stream.user_id} className="col stream-card" onMouseOver={this.handleMouseOver} onMouseLeave={this.handleMouseLeave}>
                 {this.streamCardOptions()}
-                <img className="stream-card-image" src={this.props.image} alt={this.props.stream.title}/>
-                <img className="stream-avatar rounded-circle" src={this.state.channelImage}/>
+
+                {this.state.thumbnailLoading ? <div style={{transform: 'scale(0.4) translate(-50%, -50%)', top: '35%', left: '45%'}} className="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div> : null}
+                <img className="stream-card-image" src={this.props.image} alt={this.props.stream.title} onLoad={() => this.setState({thumbnailLoading: false})}/>
+
+
+                {this.state.channelAvatarLoading ? <div style={{transform: 'scale(0.4)', top: '200px', left: '13px'}} className="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div> : null}
+                <img className="stream-avatar rounded-circle" src={this.state.channelImage} onLoad={() => this.setState({channelAvatarLoading: false})}/>
                 <h6 className="stream-card-title">{this.props.stream.title}</h6>
                 <h6 className="stream-card-user">{this.props.stream.user_name}</h6>
             </div>

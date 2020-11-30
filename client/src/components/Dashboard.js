@@ -112,6 +112,7 @@ class Dashboard extends React.Component {
                             /> : null}
 
                         <ContextMenu 
+                            activeRoom={this.state.activeRoom}
                             socket={this.props.socket} 
                             status={this.state.contextMenu} 
                             fetchUserInformation={this.fetchUserInformation} 

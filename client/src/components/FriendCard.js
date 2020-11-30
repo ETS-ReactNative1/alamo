@@ -1,6 +1,8 @@
 import React from 'react';
 import axios from 'axios';
 
+import UserAvatar from './UserAvatar';
+
 class FriendCard extends React.Component {
     constructor(props) {
         super(props)
@@ -74,7 +76,7 @@ class FriendCard extends React.Component {
             <div id={this.props.userId} key={this.props.userId} data-online={this.state.online} className="row sidebar-friend align-items-center" onContextMenu={this.handleContextClick}>
                 <div className="col-3 friend-card-avatar">
                     {this.state.online ? <i className="fas fa-circle online"></i> : null }
-                    <img className="user-avatar rounded-circle w-15" src={this.state.user.avatar} />
+                    <UserAvatar avatar={this.state.user.avatar}/>
                 </div>
                 <div className="col-9">
                     <div className="row">

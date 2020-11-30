@@ -8,6 +8,7 @@ class RoomUser extends React.Component {
         super(props)
 
         this.state = {
+            loading: true,
             username: '',
             avatar: '',
             friendStatus: null,
@@ -52,8 +53,13 @@ class RoomUser extends React.Component {
     render() {
         return(
             <div data-userid={this.props.userId} className="col-1 room-avatar-col">
+
+                {this.state.loading ? <div style={{transform: 'scale(0.4)', top: '4px', left: '3px'}} className="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div> : null}
+
                 {this.props.admins.includes(this.props.userId, 0) ? <i className="admin-icon fas fa-crown"></i> : null}
-                <img onClick={this.handleClick} className={this.props.speakingPeers.includes(this.props.userId, 0) ? "room-avatar rounded-circle w-15 speaking" : "room-avatar rounded-circle w-15"} src={this.state.avatar} />
+
+                <img onClick={this.handleClick} className={this.props.speakingPeers.includes(this.props.userId, 0) ? "room-avatar rounded-circle w-15 speaking" : "room-avatar rounded-circle w-15"} src={this.state.avatar} onLoad={() => this.setState({loading: false})} />
+
                 { this.state.showCard ? <HoverCard position={this.state.position} x={this.state.x} y={this.state.y} userId={this.props.userId} username={this.state.username} avatar={this.state.avatar} online={true} friendStatus={this.state.friendStatus}/> : null}
             </div>
         )

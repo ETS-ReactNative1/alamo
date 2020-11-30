@@ -2,6 +2,8 @@ import React from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
 import axios from 'axios';
 
+import UserAvatar from './UserAvatar';
+
 const InviterCard = (props) => {
     const [voter, setVoter] = React.useState([])
 
@@ -19,7 +21,7 @@ const InviterCard = (props) => {
     return(
         <div id={props.userId} className="row sidebar-profile align-items-center">
             <div className="col-3">
-                <img className="user-avatar rounded-circle w-15" src={avatar} />
+                <UserAvatar avatar={avatar}/>
             </div>
             <div className="col-9">
                 <div className="row">

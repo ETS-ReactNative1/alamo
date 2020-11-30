@@ -16,6 +16,10 @@ h1, h2, h3, h4, h5, h6, p, label {
     opacity:0.6 !important; 
 }
 
+img[src=''] {
+  display: none;
+}
+
 button:focus {
     outline: none;
 }
@@ -1010,11 +1014,13 @@ a {
     color: green;
 }
 
+
 .user-avatar {
     width: 65px;
     height: 65px;
     display: inline;
     margin-left: 16px;
+    border: 0;
 }
 
 .admin-icon {
@@ -1421,6 +1427,7 @@ iframe {
     text-align: center;
     margin: 0 !important;
     width: 36px;
+    height: 36px;
 }
 
 @media only screen and (max-width: 1480px) {
