@@ -29,7 +29,6 @@ const RoomItem = (props) => {
     }
 
     React.useEffect(() => {
-        console.log('room item')
         roomParticipants();
         getRoomInformation();
         //Listen for when any user joins or leaves a room that belongs to the client
@@ -72,8 +71,8 @@ const RoomItem = (props) => {
             )
         } else {
             return(
-                <a href={props.roomId} className={participants === 6 ? "nav-item passthrough" : "nav-item"}>
-                    <li onContextMenu={handleContextClick} id={props.roomId}>
+                <a href={props.roomId} onContextMenu={handleContextClick} id={props.roomId} className={participants === 6 ? "nav-item passthrough" : "nav-item"}>
+                    <li>
                         {room_title}
                         <span className="room-item-size">{participants}/6</span>
                     </li>

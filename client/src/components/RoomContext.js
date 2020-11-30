@@ -20,9 +20,11 @@ const RoomContext = (props) => {
             <div className="row">
                 <div className="col no-padding">
                     <ul className="nav flex-column font-color">
-                        <li className="context-item" onClick={() => redirect(props.id)}>Join Room</li>
-                        <li className="context-item">Edit Room</li>
+                        <a href={props.id} className="context-item">
+                            <li>Join Room</li>
+                        </a>
                         <li className="context-item" onClick={() => handleDeleteRoom()}>Delete Room</li>
+                        <li className="context-item" onClick={() => redirect(`/edit${props.id}`)}>Edit Room</li>
                     </ul>
                 </div>
             </div>

@@ -27,6 +27,10 @@ Twitch provide a
 ### Twitch Authentication
 
 
+## File Uploading
+File uploading is handled using [Cloudinary](https://cloudinary.com). As file uploading is not necessarily a key feature of alamo, besides allowing users to upload their own custom avatar image, outsourcing file handling to a cloud hosting service made sense. All uploads are performed on the clients side using Cloudinary's API and upon a successful upload, a url is then stored in the users metadata object. Cloudinary allows for custom presets to be configured, meaning all images uploaded are resized to a fixed width and height of `128x128px`. Similiarly, files uploaded are checked for appropriate file formats and a max file size of `5MB`, thanks to [react-image-upload](https://www.npmjs.com/package/react-images-uploading).
+
+
 ## Technical Design
 Alamo is built upon the popular MERN stack - MongoDB, Express, React and Node.js. 
 
