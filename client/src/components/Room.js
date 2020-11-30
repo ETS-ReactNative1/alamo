@@ -42,7 +42,9 @@ class Room extends React.Component {
                 this.setState({stream: response.data[0]})
                 console.log(response)
                 //Emit to server, than user is currently watching this game
-                this.props.socket.emit('now-watching', localStorage.getItem('userId'), response.data[0].game_name)
+                this.props.socket.emit('now-watching', localStorage.getItem('userId'), response.data[0].game_name, () => {
+
+                })
             })
     }
 

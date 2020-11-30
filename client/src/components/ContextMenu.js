@@ -23,7 +23,7 @@ class ContextMenu extends React.Component {
 
     roomMenu = (show, id,  x, y) => {
         return (
-            <RoomContext show={show} activeRoom={this.props.activeRoom} id={id} x={x} y={y} fetchUserInformation={this.props.fetchUserInformation} />
+            <RoomContext show={show} socket={this.props.socket} activeRoom={this.props.activeRoom} id={id} x={x} y={y} fetchUserInformation={this.props.fetchUserInformation} />
         )
     }
 

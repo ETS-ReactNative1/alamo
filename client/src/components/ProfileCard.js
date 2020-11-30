@@ -14,9 +14,12 @@ const ProfileCard = (props) => {
 
     React.useEffect(() => {
         props.socket.on('update-status', (user, game) => {
-            if (game != null && user === props.userId) {
-                const message = 'Watching ' + game;
+            console.log(user, game)
+            if (user === props.userId && game !== null) {
+                const message = 'Watching ' + game
                 setStatus(message)
+            } else if (user === props.userId && game === null) {
+                setStatus('')
             }
         }) 
     })

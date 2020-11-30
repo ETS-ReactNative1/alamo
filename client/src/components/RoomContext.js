@@ -15,16 +15,19 @@ const RoomContext = (props) => {
             })
     }
 
-    console.log(props.activeRoom, 'ACTIVE CONTEXT')
+    const handleLeave = () => {
+        props.socket.emit('now-watching', localStorage.getItem('userId'), null, () => {
+            window.location.assign('/');
+        })
+    }
+
     return(
         <div className="container context-menu" style={{display: props.show, top: props.y, left: props.x}}>
             <div className="row">
                 <div className="col no-padding">
                     <ul className="nav flex-column font-color">
                         {(props.activeRoom === props.id) ?
-                            <a href={'/'} className="context-item">
-                                <li>Leave Room</li>
-                            </a>
+                            <li className="context-item" onClick={() => handleLeave()}>Leave Room</li>
                             :
                             <a href={props.id} className="context-item">
                                 <li>Join Room</li>

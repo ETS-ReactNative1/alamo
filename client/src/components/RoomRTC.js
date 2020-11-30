@@ -71,6 +71,9 @@ class RoomRTC extends React.Component {
     closeCall = (event) => {
         event.stopPropagation();
         this.props.socket.emit('leave-room', this.props.activeRoom, localStorage.getItem('userId'))
+        this.props.socket.emit('now-watching', localStorage.getItem('userId'), null, () => {
+
+        })
         this.peer.disconnect();
         this.setState({miniRTC: false});
         this.props.leaveRoom();

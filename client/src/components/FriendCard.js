@@ -63,9 +63,12 @@ class FriendCard extends React.Component {
 
         //Listen for change in the stream that a friend is currently watching
         this.props.socket.on('update-status', (user, game) => {
-            if (user === this.props.userId) {
+            console.log(game)
+            if (user === this.props.userId && game !== null) {
                 const message = 'Watching ' + game
                 this.setState({status: message})
+            } else if (user === this.props.userId && game === null) {
+                this.setState({status: ''})
             }
         })
     }
