@@ -12,15 +12,17 @@ Alamo is a concept that places a massive ammount of emphasis on collaboration. U
 ## UI Design
 
 ## Authentication
+Alamos implements a session based authentication strategy and uses PassportJS middleware. The decision to go with PassportJS as a authentication library was easy, it provides excellent documentation and supports various login types that can be easily plugged in at a later date, allowing users to sign in using their Google, Facebook or Twitch credentials. However for now, alamo uses PassportJS's `local-strategy` as a 
 
 ### PassportJS
 
 ## Error Handling
 
-## Third Party API
-Alamo 
+## Third Party API's
+Alamos Third Party API integration is 
 
 ### Twitch
+Twitch provide a 
 
 ### Twitch Authentication
 
@@ -63,12 +65,12 @@ On creation, a unique UUID (Universally Unique Identifier) is generated and stor
 
 Once a user has created a room and navigated to the room UUID URI, they essentially broadcast or emit that they would like to join a socket.io room. Socket.io rooms are no different than alamo rooms. They are a named space that sockets can join and leave. As a result, this allows for easy bi directional communication back and forth between each users in the room and between Alamo's Node server.
 
-    `this.props.socket.emit('join-room', this.props.activeRoom, localStorage.getItem('userId'))`
+        this.props.socket.emit('join-room', this.props.activeRoom, localStorage.getItem('userId'))
 
 Using Reacts ComponentDidMount lifecycle, a user emits to Node that they would like to join this room. 
 
 ### PeerJS
-During development, a PeerJS server was running locally on a local machine. However, this was unsuitable once alamo was pushed to its own [Heroku](https://www.heroku.com) server. PeerJS would required its own dedicated server. Thanksfully, Heroku makes this easy and provide a dedicated PeerJS button to quickly deloy a Peer server in only a few minutes. Configuration was straight forward, having only to update PeerJS host and port number on client-side.  
+During development, a PeerJS server was running locally on a local machine. However, this was unsuitable once alamo was pushed to its own [Heroku](https://www.heroku.com) server. PeerJS would required a dedicated server to handle all alamos Peer-to-Peer WebRTC. Thankfully, Heroku makes this easy and provide a dedicated PeerJS button to quickly deloy a Peer server in only a few minutes. Configuration was straight forward, having only to update PeerJS host and port number on client-side.  
 
         this.peer = new Peer(localStorage.getItem('userId'), {
             host: 'https://alamo-peerjs.herokuapp.com',

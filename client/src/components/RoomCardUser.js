@@ -8,6 +8,7 @@ const RoomCardUser = (props) => {
     const getUser = () => {
         axios.get('/user', {params: {userId: props.userId}})
             .then((response) => {
+                console.log(response)
                 setUser(response.data[0].user_metadata.username)
                 setAvatar(response.data[0].user_metadata.avatar)
             })
@@ -19,7 +20,7 @@ const RoomCardUser = (props) => {
     }, [])
 
     return(
-        <img src={"/images/avatars/" + avatar + "-avatar.png"} alt={user} />
+        <img className="rounded-circle w-15 small-room-avatar" src={avatar} alt={user} />
     )
 }
 

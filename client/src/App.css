@@ -12,8 +12,8 @@ h1, h2, h3, h4, h5, h6, p, label {
 }
 
 .disabled {
-    pointer-events: none;
-    opacity:0.6; 
+    pointer-events: none !important;
+    opacity:0.6 !important; 
 }
 
 button:focus {
@@ -36,6 +36,15 @@ label {
 
 .passthrough {
     pointer-events: none;
+}
+
+.file-upload-container {
+    position: relative;
+    width: 100%;
+}
+
+.fileContainer {
+    background-color: #18181B !important;
 }
 
 .input-password label {
@@ -1003,6 +1012,7 @@ a {
 
 .user-avatar {
     width: 65px;
+    height: 65px;
     display: inline;
     margin-left: 16px;
 }
@@ -1067,8 +1077,13 @@ iframe {
 
 .room-avatar {
     width: 65px;
+    height: 65px;
     display: inline;
     margin-right: 8px;
+}
+
+.small-room-avatar {
+    height: 35px;
 }
 
 .speaking {

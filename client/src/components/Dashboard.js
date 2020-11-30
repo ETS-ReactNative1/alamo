@@ -10,6 +10,7 @@ import Notification from './Notification';
 import Room from './Room';
 import CreateRoom from './CreateRoom';
 import RoomRTC from './RoomRTC';
+import ChangeAvatar from './ChangeAvatar';
 import AccountSettings from './AccountSettings';
 import InviteFriends from './InviteFriends';
 
@@ -164,6 +165,12 @@ class Dashboard extends React.Component {
                                     friends={this.state.user.friends} 
                                     onlineUsers={this.state.onlineUsers}
                                     activeRoom={this.state.activeRoom}
+                                />
+                            )}/>
+
+                            <Route path="/change-avatar" render={(props) => (
+                                <ChangeAvatar 
+                                    fetchUserInformation={this.fetchUserInformation}
                                 />
                             )}/>
 

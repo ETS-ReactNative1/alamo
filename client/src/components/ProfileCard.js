@@ -19,10 +19,11 @@ const ProfileCard = (props) => {
         }) 
     })
 
+
     return(
         <div id={props.userId} className="row sidebar-profile align-items-center" onContextMenu={handleContextClick}>
             <div className="col-3">
-                <img className="user-avatar rounded-circle w-15" src={'/images/avatars/' + props.avatar + '-avatar.png'} />
+                <img className="user-avatar rounded-circle w-15" src={props.avatar} />
             </div>
             <div className="col-9">
                 <div className="row">

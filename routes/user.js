@@ -104,13 +104,20 @@ router.post('/add-friend', (req, res) => {
     .catch(error => console.error(error));
 })
 
+router.post('/change-avatar', (req, res) => {
+    console.log(req.body.userId, req.body.avatar, 'CHANGE AVATAR')
+    User.updateOne({_id: ObjectId(req.body.userId)}, {'user_metadata.avatar': req.body.avatar})
+        .then((response) => res.status(200).json({status: 'success'}))
+        .catch(error => console.error(error));
+})
+
 router.post('/decline-friend', (req, res) => {
     console.log(req.body.receiverId, req.body.senderId)
     User.updateOne({_id: ObjectId(req.body.senderId)}, {$pull: {sent_invitations: req.body.receiverId}})
         .catch(error => console.error(error));
     User.updateOne({_id: ObjectId(req.body.receiverId)}, {$pull: {pending_invitations: req.body.senderId}})
         .then(response => res.status(200).json({status: 'success'}))
-        .catch(error => console.error(error));
+        .catch(error => res.status(400).json({status: 'failed'}));
 })
 
 
