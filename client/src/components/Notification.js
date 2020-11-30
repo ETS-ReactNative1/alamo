@@ -47,8 +47,9 @@ class Notification extends React.Component {
         })
 
         this.props.socket.on('inc-room-invite', (invitee, inviter, roomId) => {
-            console.log(inviter, 'would like you to join their room')
-            this.setState({showInvite: true, inviteeId: invitee, inviterId: inviter, inviteRoomId: roomId});
+            this.setState({showInvite: false}, () => {
+                this.setState({showInvite: true, inviteeId: invitee, inviterId: inviter, inviteRoomId: roomId});
+            })
 
             setTimeout(() => {
                 this.setState({showInvite: false})

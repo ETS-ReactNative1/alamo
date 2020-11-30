@@ -238,15 +238,6 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
 
-
-//Routes
-app.use('/user', user);
-app.use('/room', room);
-app.use('/check-friend-status', checkFriendStatus);
-
-//Twitch api access token
-app.use('/twitchapi', twitchApi);
-
 let client_id = process.env.TWITCH_CLIENT_ID;
 let client_secret = process.env.TWITCH_CLIENT_SECRET;
 let twitchUrl = `https://id.twitch.tv/oauth2/token?client_id=${client_id}&client_secret=${client_secret}&grant_type=client_credentials`
@@ -273,9 +264,7 @@ db.once('open', function() {
 
 app.use(session({
     secret: 'thisisasecret',
-    cookie: {
-        maxAge: 9000000
-    },
+    cookie: { maxAge: 24 * 60 * 60 * 1000 },
     saveUninitialized: true,
     resave: true,
     store: new MongoStore({ mongooseConnection: mongoose.connection })
@@ -286,13 +275,23 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use('/auth', auth);
 
+//Routes
+const isAuthenticated = (req, res, next) => {
+    if (req.isAuthenticated()) {
+        console.log('is auth')
+        return next();
+    }
+    else {
+        return res.status(401).json({status: 'User not Authorize'})
+    }
+};
+
+app.use('/user', isAuthenticated, user);
+app.use('/room', isAuthenticated, room);
+app.use('/check-friend-status', isAuthenticated, checkFriendStatus);
+app.use('/twitchapi', isAuthenticated, twitchApi);
 
 
-//MongoClient.connect(url, { useUnifiedTopology: true })
-//    .then(client => {
-//        const db = client.db('alamo-db');
-//        app.locals.db = db;
-//});
 
 const whitelist = ['http://localhost:3000', 'http://localhost:8080', 'https://alamo-d19124355.herokuapp.com/']
 const corsOptions = {
@@ -307,10 +306,6 @@ const corsOptions = {
     }
   }
 }
-
-app.get('/rooms-info', (req, res) => {
-    res.send(rooms)
-})
 
 app.use(cors(corsOptions))
 

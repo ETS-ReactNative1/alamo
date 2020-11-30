@@ -19,7 +19,7 @@ class Login extends React.Component {
                 if (response.data.auth)
                     this.redirect('/')
                 else
-                    return this.setState({showLogin: true})
+                    this.setState({showLogin: true})
             })
     }
 

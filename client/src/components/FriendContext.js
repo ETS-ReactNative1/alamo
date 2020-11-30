@@ -15,13 +15,16 @@ const FriendContext = (props) => {
             })
     }
 
-        console.log(props.online, "THIS IS CONTREXT ONLINE ?>?")
+    const inviteFriend = (friend) => {
+        props.socket.emit('room-invite', localStorage.getItem('userId'), friend, props.activeRoom)
+    }
+
     return(
         <div className="container context-menu" style={{display: props.show, top: props.y, left: props.x}}>
             <div className="row">
                 <div className="col no-padding">
                     <ul className="nav flex-column font-color">
-                        <li className={(props.online === 'true') ? "context-item" : "context-item disabled"} onClick={() => redirect(props.id)}>Invite to room</li>
+                        <li className={(props.online === 'true' && props.activeRoom != null) ? "context-item" : "context-item disabled"} onClick={() => inviteFriend(props.id)}>Invite to room</li>
                         <li className="context-item" onClick={() => handleDeleteRoom()}>Unfriend</li>
                     </ul>
                 </div>

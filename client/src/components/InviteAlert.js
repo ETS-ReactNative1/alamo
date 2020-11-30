@@ -24,7 +24,7 @@ class InviteAlert extends React.Component {
     }
 
     fetchStream = (streamId) => {
-        axios.get('/twitchapi/streams', {params : {user_id: this.props.streamId}})
+        axios.get('/twitchapi/streams', {params : {user_id: streamId}})
             .then((response) => {
                 let image = response.data[0].thumbnail_url.replace('{width}', '347').replace('{height}', '195')
                 this.setState({stream: response.data[0], channelImage: image})
