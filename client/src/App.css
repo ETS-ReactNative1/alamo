@@ -1323,13 +1323,20 @@ iframe {
 }
 
 .stream-card {
+    position: relative;
     overflow-x: hidden !important;
     margin-right: 20px auto;
     margin-bottom: 20px;
     width: 100%;
     max-width: 347px;
     min-width: 317px;
+    padding-left: 0;
+    margin: 7.5px;
     text-align: left;
+}
+
+.stream-card-contents {
+    padding: 5px;
 }
 
 .stream-card-selected {
@@ -1359,7 +1366,6 @@ iframe {
 }
 
 .stream-card:hover {
-    transform: scale(1.03);
     border: 3px 4px 0px 2px  #3700B3 !important;
     box-shadow: 3px 4px 0px 2px  #3700B3 !important;
 }

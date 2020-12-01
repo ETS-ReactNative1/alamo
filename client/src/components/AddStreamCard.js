@@ -25,7 +25,7 @@ class AddStreamCard extends React.Component {
     closeSearch = (event) => {
         event.stopPropagation(); 
         this.props.searchBarStatus(false)
-        this.setState({showSearch: false, results: []})
+        this.setState({showSearch: false, results: [], searchResults: 7})
     }
 
     viewMore = () => {
@@ -39,8 +39,9 @@ class AddStreamCard extends React.Component {
                     {this.state.showSearch ? <i className="fas fa-2x fa-times font-color" onClick={this.closeSearch} style={{position: 'absolute', top: '20px', right: '30px', zIndex: '99999'}}></i> : null }
                     {this.state.showSearch ? <SearchBox results={this.handleResults}/> : null}
 
+                    <div className="container-fluid">
                     {this.state.showSearch ?
-                        <div className="row" style={{marginTop: '50px'}}>
+                        <div className="row" style={{marginTop: '50px', marginLeft: 'auto', marginRight: 'auto'}}>
                             {this.state.results.map((stream, index) => {
                                 if (index <= this.state.searchResults) {
                                     let image = stream.thumbnail_url.replace('{width}', '347').replace('{height}', '195')
@@ -51,6 +52,7 @@ class AddStreamCard extends React.Component {
                             })}
                         </div>
                     : null }
+                    </div>
                     {this.state.results.length > 0 && this.state.searchResults <= this.state.results.length ? <div onClick={this.viewMore} className="view-more font-color thin">View More</div> : null}
 
                     {this.state.showSearch && this.state.results.length === 0 ? <h4 className="add-stream-card-contents thin">Don't be that guy, pick a stream everybody will enjoy</h4> : null }

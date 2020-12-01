@@ -53,10 +53,10 @@ class StreamCard extends React.Component {
 
         if (this.props.selected === userId && this.props.type === 'select') {
             return(
-                <div className="stream-card-options" style={{width: '337px', marginLeft: '15px'}}>
+                <div className="stream-card-options" style={{width: '100%', padding: '0'}}>
                     <div className="row" style={{height: '100%'}}>
-                        <div className="col-12">
-                            <i className="far stream-card-options-icons fa-4x fa-check-circle font-color" style={{paddingRight: '30px', paddingTop: '25px'}}></i>
+                        <div className="col-12" style={{padding: '0', right: '20px'}}>
+                            <i className="far stream-card-options-icons fa-4x fa-check-circle font-color"></i>
                         </div>
                     </div>
                 </div>
@@ -75,9 +75,12 @@ class StreamCard extends React.Component {
 
 
                 {this.state.channelAvatarLoading ? <div style={{transform: 'scale(0.4)', top: '200px', left: '13px'}} className="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div> : null}
-                <img className="stream-avatar rounded-circle" src={this.state.channelImage} onLoad={() => this.setState({channelAvatarLoading: false})}/>
-                <h6 className="stream-card-title">{this.props.stream.title}</h6>
-                <h6 className="stream-card-user">{this.props.stream.user_name}</h6>
+                <div className="stream-card-contents">                
+                    <img className="stream-avatar rounded-circle" src={this.state.channelImage} onLoad={() => this.setState({channelAvatarLoading: false})}/>
+                    <h6 className="stream-card-title">{this.props.stream.title}</h6>
+                    <h6 className="stream-card-user">{this.props.stream.user_name}</h6>
+                </div>
+
             </div>
         )
     }

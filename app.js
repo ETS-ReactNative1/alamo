@@ -134,6 +134,10 @@ io.on('connection', (socket) => {
         })
     })
 
+    socket.on('request-peers', (roomId, callback) => {
+        callback(rooms[roomId])
+    })
+
     //Check friends status on load, all active clients status are tracked in client object
     socket.on('check-status', (user, callback) => {
         if (typeof clients[user] !== 'undefined')

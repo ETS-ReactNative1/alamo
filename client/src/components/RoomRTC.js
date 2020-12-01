@@ -31,13 +31,14 @@ class RoomRTC extends React.Component {
 
     connectToNewUser = (userId, stream) => {
         const call = this.peer.call(userId, stream)
+        console.log(call, 'USER CONNECTED')
         call.on('stream', userAudioStream  => {
             this.playUserAudio(userId, userAudioStream)
         })
     }
 
     componentWillUnmount() {
-        this.peer.disconnect();
+        this.peer.destroy();
     }
 
     componentDidUpdate(prevProps) {
@@ -86,7 +87,6 @@ class RoomRTC extends React.Component {
             })
     }
 
-
     componentDidMount() {
 
         this.fetchRoomInformation();
@@ -102,22 +102,38 @@ class RoomRTC extends React.Component {
 
             this.props.socket.on('client-connected', (userId, updatedPeersList) => {
                 this.updatePeersInRoom(updatedPeersList)
-                    .then(() => {
-                        //Once client is connected and state is update with peers, connect client audio
-                        this.playUserAudio(localStorage.getItem('userId'), stream)
-                    })
+            })
 
-
-                this.peer.on('call', call => {
-                    call.answer(stream);
-                    call.on('stream', userAudioStream => {
-                        this.updatePeersInRoom(updatedPeersList)
+            this.peer.on('call', call => {
+                console.log(call)
+                call.answer(stream);
+                call.on('stream', userAudioStream => {
+                    //Request updated peers list before routing call
+                    this.props.socket.emit('request-peers', this.props.activeRoom, (peers) => {
+                        console.log(peers)
+                        this.updatePeersInRoom(peers)
                             .then(() => {
                                 this.playUserAudio(call.peer, userAudioStream)
                             })
                     })
                 })
+            })
 
+            this.peer.on('close', () => {
+                console.log("CALL CLOSED")
+            })
+
+            this.peer.on('connection', () => {
+                console.log('PEER CONNECTIOn')
+            })
+
+            this.peer.on('err', (err) => {
+                console.log(err)
+            })
+
+            this.peer.on('disconnected', () => {
+                console.log('CALL DISCONNECTED')
+                this.peer.reconnect();
             })
 
             this.props.socket.on('user-connected', (userId, updatedPeersList) => {
