@@ -58,7 +58,6 @@ class Room extends React.Component {
 
     changeStream = (event) => {
         const streamId = event.currentTarget.id
-        console.log(streamId, 'STREAM ID BEFORE CHANGE')
         this.setState({streamId: streamId})
         axios.post('/room/change-stream', {roomId: this.props.activeRoom, channel: streamId})
             .then((response) => {
@@ -111,14 +110,17 @@ class Room extends React.Component {
 
         this.props.socket.on('vote', (userId, stream, usersInRoom) => {
             console.log(stream)
+            this.setState({...this.state, vote: true, voterId: userId, voterChannel: stream, usersInRoom: usersInRoom, yesUsers: [userId]})
             if (usersInRoom % 2 === 0 && usersInRoom > 2) {
                 const votesNeeded = Math.ceil(this.state.usersInRoom / 2)
-                this.setState({...this.state, vote: true, voterId: userId, voterChannel: stream, usersInRoom: usersInRoom, votesNeeded: votesNeeded, yesUsers: [userId]})
             } else if (usersInRoom === 1) {
+                this.setState({...this.state, votesNeeded: 1})
                 this.props.socket.emit('finish-vote', this.props.activeRoom, 'passed')
+                clearTimeout(this.voteTimer);
             } else {
                 const votesNeeded = Math.ceil(this.state.usersInRoom / 2) + 1
-                this.setState({...this.state, vote: true, voterId: userId, voterChannel: stream, votesNeeded: votesNeeded, yesUsers: [userId]})
+                this.setState({...this.state, votesNeeded: votesNeeded})
+
             }
         });
 
@@ -133,9 +135,13 @@ class Room extends React.Component {
                 this.setState({...this.state, noVotes: this.state.noVotes + 1, noUsers: newNoVote})
             }
 
-            if (this.state.yesVotes === this.state.votesNeeded) this.props.socket.emit('finish-vote', this.props.activeRoom, 'passed')
-            if ((this.state.yesVotes + this.state.noVotes) === this.state.votesNeeded) this.props.socket.emit('finish-vote', this.props.activeRoom, 'failed')
+            if (this.state.yesVotes === this.state.votesNeeded) {
+                this.props.socket.emit('finish-vote', this.props.activeRoom, 'passed')
+            }   
 
+            if ((this.state.yesVotes + this.state.noVotes) === this.state.votesNeeded) {
+                this.props.socket.emit('finish-vote', this.props.activeRoom, 'failed')
+            }
         })
 
         this.props.socket.on('end-vote', (result) => {

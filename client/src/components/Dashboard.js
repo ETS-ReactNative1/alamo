@@ -8,6 +8,7 @@ import Sidebar from './Sidebar';
 import NavigationBar from './NavigationBar';
 import Notification from './Notification';
 import Room from './Room';
+import EditRoom from './EditRoom';
 import CreateRoom from './CreateRoom';
 import RoomRTC from './RoomRTC';
 import ChangeAvatar from './ChangeAvatar';
@@ -175,6 +176,13 @@ class Dashboard extends React.Component {
                             <Route path="/change-avatar" render={(props) => (
                                 <ChangeAvatar 
                                     fetchUserInformation={this.fetchUserInformation}
+                                />
+                            )}/>
+
+                            <Route path="/edit" render={(props) => (
+                                <EditRoom
+                                    activeRoom={this.state.activeRoom}
+                                    admins={this.state.admins}
                                 />
                             )}/>
 
