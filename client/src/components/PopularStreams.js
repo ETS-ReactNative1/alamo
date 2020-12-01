@@ -33,7 +33,7 @@ class PopularStreams extends React.Component {
                                 let image = stream.thumbnail_url.replace('{width}', '347').replace('{height}', '195')
                                 if (index <= 7) {
                                     return(
-                                        <StreamCard key={index} gameId={this.props.gameId} admins={this.props.admins} stream={stream} image={image} changeStream={this.props.changeStream} vote={this.props.vote}/>
+                                        <StreamCard type={'room'} key={index} gameId={this.props.gameId} admins={this.props.admins} stream={stream} image={image} changeStream={this.props.changeStream} vote={this.props.vote}/>
                                     )                                
                                 }
                             })}

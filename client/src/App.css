@@ -439,6 +439,11 @@ input:focus {
     margin: 50px 0 25px 0;
 }
 
+.margin-top-extra {
+    margin: 75px 0 50px 0;
+}
+
+
 .margin-bottom {
     margin: 0 0 25px 0;
 }
@@ -800,17 +805,35 @@ a {
 
 .add-stream-card {
     position: relative;
-    max-width: 250px;
-    min-width: 250px;
-    height: 300px;
+    min-width: 337px;
+    width: auto;
+    display: inline-block;
+    min-height: 257px;
     border: 3px dashed rgba(242, 231, 254, 0.2);
     text-align: center;
     padding: 35px;
+    margin-right: 50px;
     cursor: pointer;
+}
+
+.search-full-width {
+    width: 100% !important;
+    border: 3px dashed rgba(242, 231, 254, 0.2) !important;
+    -webkit-box-shadow: none !important; 
+    box-shadow: none !important;
+    cursor: auto !important;
+    height: auto;
+    overflow: auto;
 }
 
 .dashed-box {
     border: 3px dashed rgba(242, 231, 254, 0.2) !important;
+}
+
+.stream-border {
+    border-right: 3px solid rgba(242, 231, 254, 0.2) !important;
+    transform: translateX(-30px);
+    min-height: 257px;
 }
 
 .add-room-card {
@@ -910,8 +933,8 @@ a {
 
 .add-stream-card:hover {
     border-style: solid;
-    -webkit-box-shadow: 11px 12px 0px 2px  #3700B3 !important; 
-    box-shadow: 11px 12px 0px 2px  #3700B3 !important;
+    -webkit-box-shadow: 11px 12px 0px 2px  #3700B3; 
+    box-shadow: 11px 12px 0px 2px  #3700B3;
 }
 
 .friends-initial-message {
@@ -1306,6 +1329,11 @@ iframe {
     width: 100%;
     max-width: 347px;
     min-width: 317px;
+    text-align: left;
+}
+
+.stream-card-selected {
+    border: 5px solid purple !important;
 }
 
 .invite-stream-card {

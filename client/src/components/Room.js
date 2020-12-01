@@ -105,6 +105,10 @@ class Room extends React.Component {
             console.log('UPDATE STREAM', stream)
             this.setState({streamId: stream}, () => {
                 this.fetchStream(stream);
+                axios.post('/room/change-stream', {roomId: this.props.activeRoom, channel: stream})
+                    .then((response) => {
+                    })
+                    .catch((err) => console.log(err))
             })
         })
 
@@ -114,9 +118,8 @@ class Room extends React.Component {
             if (usersInRoom % 2 === 0 && usersInRoom > 2) {
                 const votesNeeded = Math.ceil(this.state.usersInRoom / 2)
             } else if (usersInRoom === 1) {
-                this.setState({...this.state, votesNeeded: 1})
+                this.setState({...this.state, votesNeeded: 1, vote: false})
                 this.props.socket.emit('finish-vote', this.props.activeRoom, 'passed')
-                clearTimeout(this.voteTimer);
             } else {
                 const votesNeeded = Math.ceil(this.state.usersInRoom / 2) + 1
                 this.setState({...this.state, votesNeeded: votesNeeded})
@@ -147,6 +150,7 @@ class Room extends React.Component {
         this.props.socket.on('end-vote', (result) => {
             if (result === 'passed') {
                 clearTimeout(this.voteTimer);
+                this.setState({vote: false});
                 this.props.socket.emit('change-stream', this.props.activeRoom, this.state.voterChannel.channelId)           
             } else {
                 clearTimeout(this.voteTimer);

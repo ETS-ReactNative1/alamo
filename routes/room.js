@@ -20,9 +20,12 @@ router.post('/create-room', (req, res) => {
     const roomId = req.body.roomId
     const userId = req.body.userId
     const roomTitle = req.body.roomTitle
+    const streamId = req.body.streamId
+
+    console.log(roomTitle, streamId, "!!!!!!!!!!!!!!!!!!!!!!!!!!!")
 
     //Store new room in db
-    Room.create({roomId: roomId, room_title: roomTitle, stream: '31239503'})
+    Room.create({roomId: roomId, room_title: roomTitle, stream: streamId})
     .then(response => {
         Room.updateOne({roomId: roomId}, {$push: {admins: userId}}, (err, object) => {
             if (!err)

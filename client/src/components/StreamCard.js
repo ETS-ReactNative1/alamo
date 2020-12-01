@@ -9,6 +9,7 @@ class StreamCard extends React.Component {
             channelImage: '',
             thumbnailLoading: true,
             channelAvatarLoading: true,
+            selected: '',
             showOptions: false,
             admins: []
         }
@@ -24,15 +25,18 @@ class StreamCard extends React.Component {
     }
 
     handleMouseOver = () => {
-        this.setState({showOptions: true})
+        if (this.props.type === 'room')
+            this.setState({showOptions: true})
     }
 
     handleMouseLeave = () => {
-        this.setState({showOptions: false})
+        if (this.props.type === 'room')
+            this.setState({showOptions: false})
     }
 
-    streamCardOptions = () => {
-        if (this.state.showOptions)
+
+    streamCardOptions = (userId) => {
+        if (this.state.showOptions && this.props.type === 'room') {
             return(
                 <div className="stream-card-options">
                     <div className="row" style={{height: '100%'}}>
@@ -45,12 +49,26 @@ class StreamCard extends React.Component {
                     </div>
                 </div>
             )
+        }
+
+        if (this.props.selected === userId && this.props.type === 'select') {
+            return(
+                <div className="stream-card-options" style={{width: '337px', marginLeft: '15px'}}>
+                    <div className="row" style={{height: '100%'}}>
+                        <div className="col-12">
+                            <i className="far stream-card-options-icons fa-4x fa-check-circle font-color" style={{paddingRight: '30px', paddingTop: '25px'}}></i>
+                        </div>
+                    </div>
+                </div>
+            )
+
+        }
     }
 
     render() {
         return(
-            <div id={this.props.stream.user_id} className="col stream-card" onMouseOver={this.handleMouseOver} onMouseLeave={this.handleMouseLeave}>
-                {this.streamCardOptions()}
+            <div id={this.props.stream.user_id} className="col stream-card" onClick={this.props.handleClick} onMouseOver={this.handleMouseOver} onMouseLeave={this.handleMouseLeave}>
+                {this.streamCardOptions(this.props.stream.user_id)}
 
                 {this.state.thumbnailLoading ? <div style={{transform: 'scale(0.4) translate(-50%, -50%)', top: '35%', left: '45%'}} className="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div> : null}
                 <img className="stream-card-image" src={this.props.image} alt={this.props.stream.title} onLoad={() => this.setState({thumbnailLoading: false})}/>
