@@ -172,7 +172,7 @@ class Room extends React.Component {
                         <div className="row room-avatar-row justify-content-between">
                             <RoomPeers socket={this.props.socket} admins={this.state.admins}/>
                             <div className="col-4 d-flex flex-row-reverse">
-                                <i className="fas fa-2x fa-cog room-settings-icon font-color"></i>
+                                <i className="fas fa-2x fa-cog room-settings-icon font-color" onClick={() => this.props.history.push('/edit' + this.props.activeRoom)}></i>
                                 <FavouriteBtn fetchUserInformation={this.props.fetchUserInformation} activeRoom={this.props.activeRoom}/>
                                 <button className="primary-btn small-btn-invite" style={{maxWidth: '100px'}} onClick={() => this.props.history.push('/invite-friends')}>Invite</button>
                             </div>

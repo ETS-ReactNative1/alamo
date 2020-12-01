@@ -4,6 +4,7 @@ import { withRouter } from 'react-router-dom';
 
 import AddStreamCard from './AddStreamCard';
 import Admins from './UpdateAdmins';
+import AddStream from './AddStream';
 
 class EditRoom extends React.Component {
     constructor(props) {
@@ -12,7 +13,10 @@ class EditRoom extends React.Component {
         this.state = {
             admin: false,
             admins: [],
-            room: []
+            room: [],
+            selected: '',
+            showSearchBar: false
+
         }
     }
 
@@ -31,6 +35,18 @@ class EditRoom extends React.Component {
         this.getRoomInformation();
     }
 
+    handleClick = (event) => {
+        if (event.currentTarget.id === 'add-stream') {
+            this.setState({showSearchBar: true})
+        } else {
+            this.setState({selected: event.currentTarget.id})
+            if (event.currentTarget.id === this.state.selected) {
+                this.setState({showSearchBar: true})
+                this.setState({selected: ''})
+            }
+        }
+    }
+
     render() {
         return(
             <div className="container">
@@ -45,7 +61,11 @@ class EditRoom extends React.Component {
                         }
 
                         <label htmlFor="username">Stream</label>
-                        <AddStreamCard/>
+                        <AddStream
+                            handleClick={this.handleClick}
+                            selected={this.state.selected}
+                        />
+
 
 
                         <Admins admins={this.state.admins} adminRights={this.state.admin}/>

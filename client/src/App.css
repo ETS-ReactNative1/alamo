@@ -89,6 +89,7 @@ label {
     max-width: 667.5px;
     transform: translateX(28px);
     margin: auto;
+    z-index: 99999;
 }
 
 .back-arrow {

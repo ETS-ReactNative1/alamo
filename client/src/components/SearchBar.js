@@ -15,23 +15,11 @@ class SearchBar extends React.Component {
         }
     }
 
-    searchTwitchStream = (query) => {
-        this.setState({loading: true})
-        axios.get('/twitchapi/streams', {params: {search: query}})
-            .then((response) => {
-                this.setState({streamResults: []})
-                this.setState({streamResults: response.data})
-            })
-            .catch((err) => console.log(err))
-    }
-
     searchTwitchChannel = (query) => {
         this.setState({loading: true})
-        axios.get('/twitchapi/channels', {params: {channel: query}})
+        axios.get('/twitchapi/query-twitch', {params: {channel: query}})
             .then((response) => {
-                console.log(response)
-                this.setState({channelResults: []})
-                this.setState({channelResults: response.data})
+                this.setState({channelResults: response.data.channels, streamResults: response.data.streams, loading: false})
             })
             .catch((err) => console.log(err))
     }
@@ -41,7 +29,6 @@ class SearchBar extends React.Component {
         this.setState({query: query})
         
         if (this.state.query.length > 2) {
-            this.searchTwitchStream(query)
             this.searchTwitchChannel(query)
         }
 

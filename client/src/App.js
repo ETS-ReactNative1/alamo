@@ -14,7 +14,13 @@ import ErrorBoundary from './components/ErrorBoundary';
 import Room from './components/Room';
 import Loading from './components/Loading';
 
-const socket = io();
+const socket = io('http://localhost:8080', {
+    reconnection: true,
+    reconnectionDelay: 3000,
+    reconnectionAttempts: 20,
+    forceNew: true
+
+});
 
 function App(props) {
     const [isAuth, checkAuthentication] = React.useState([])

@@ -69,7 +69,7 @@ const CreateRoom = (props) => {
     }
 
     return(
-        <div>
+        <div className="container margin-bottom-50">
             <h1 className="setup-heading thin">Create Room</h1>
             <form action="post" onSubmit={handleCreateRoom}>
                 <label htmlFor="roomTitle">Room Title</label>
