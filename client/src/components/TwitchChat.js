@@ -3,7 +3,7 @@ import React from 'react';
 const TwitchChat = (props) => {
     const [ show, setShow ] = React.useState(false)
     const [ message, setMessage ] = React.useState('View Chat')
-    const url = `https://www.twitch.tv/embed/${props.twitchChannel}/chat?darkpopout&migration=true&parent=localhost`;
+    const url = `https://www.twitch.tv/embed/${props.twitchChannel}/chat?darkpopout&migration=true&parent=alamo-d19124355.herokuapp.com`;
 
     const showChat = () => {
         setShow(!show) 
