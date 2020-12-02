@@ -1,6 +1,5 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import io from 'socket.io-client'
 import { v4 as uuid } from 'uuid';
 import axios from 'axios';
 
@@ -12,8 +11,8 @@ class CreateRoomBtn extends React.Component {
 
     render() {
         return(
-            <button className="primary-btn navbar-right" onClick={this.redirect}>
-                <i class="fas fa-plus plus-create-btn"></i>
+            <button className="primary-btn d-none d-xl-block" onClick={this.redirect}>
+                <i className="fas fa-plus plus-create-btn"></i>
                 Create
             </button>
         )

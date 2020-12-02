@@ -13,10 +13,9 @@ const ProfileContext = (props) => {
             <div className="row">
                 <div className="col no-padding">
                     <ul className="nav flex-column font-color">
-                        <li className="context-item">Update Status</li>
-                        <li className="context-item" onClick={() => redirect('/update-avatar')}>Change Avatar</li>
+                        <li className="context-item" onClick={() => redirect('/change-avatar')}>Change Avatar</li>
                         <li className="context-item" onClick={() => redirect('/account-settings')}>Account Settings</li>
-                        <LogoutItem/>
+                        <LogoutItem socket={props.socket}/>
                     </ul>
                 </div>
             </div>

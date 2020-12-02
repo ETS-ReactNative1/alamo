@@ -1,5 +1,4 @@
 import React from 'react';
-import io from 'socket.io-client';
 
 import AddFriend from './AddFriend';
 import SearchFriend from './SearchFriend';
@@ -17,8 +16,7 @@ class SidebarFriendsControls extends React.Component {
     }
 
     componentDidMount() {
-        const socket = io.connect('https://alamo-d19124355.herokuapp.com/')
-        socket.on('pending-invitation', (senderId, receiverId) => {
+        this.props.socket.on('pending-invitation', (senderId, receiverId) => {
             if (receiverId === localStorage.getItem('userId')) {
                 this.setState({notification: true, senderId: senderId})
             }
@@ -36,11 +34,14 @@ class SidebarFriendsControls extends React.Component {
 
 
     render() {
-        console.log(this.props.pendingInvitations)
         return(
             <div className="sidebar-friends-control-container">
                 <div className="row">
-                    <AddFriend pendingInvitations={this.props.pendingInvitations} addFriendActive={this.state.addFriend}/>
+                    <AddFriend 
+                        socket={this.props.socket} 
+                        pendingInvitations={this.props.pendingInvitations} 
+                        addFriendActive={this.state.addFriend} 
+                        fetchUserInformation={this.props.fetchUserInformation}/>
                     <SearchFriend searchFriendActive={this.state.searchFriend}/>
                 </div>
                 <div className="row align-items-center">

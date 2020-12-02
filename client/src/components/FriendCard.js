@@ -1,8 +1,7 @@
 import React from 'react';
 import axios from 'axios';
-import io from 'socket.io-client';
 
-const socket = io.connect('https://alamo-d19124355.herokuapp.com/')
+import UserAvatar from './UserAvatar';
 
 class FriendCard extends React.Component {
     constructor(props) {
@@ -14,7 +13,8 @@ class FriendCard extends React.Component {
                 username: '',
                 avatar: ''
             },
-            online: false
+            online: false,
+            status: ''
         }
     }
 
@@ -38,25 +38,48 @@ class FriendCard extends React.Component {
 
     componentDidMount() {
         this.fetchUserInformation()
+        //If users is currently already in client object, show them as online
         if (this.props.userId in this.props.onlineUsers) {
-                return this.setState({online: true})
+                this.setState({online: true})
             }
 
-        socket.on('new-user-online', (userId, clients) => {
+        //Listen for whether user comes online
+        this.props.socket.on('new-user-online', (userId, clients) => {
             if (this.state.user.id === userId) {
-                return this.setState({online: true})
+                this.setState({online: true})
             }
+        })
 
+        this.props.socket.on('offline', (user) => {
+            if (user === this.props.userId)
+                this.props.userOffline(user);
+                this.setState({online: false})
+        })
+
+        //Check the current status of all online status on load
+        this.props.socket.emit('check-status', this.props.userId, (status) => {
+            this.setState({status: status})
+        })
+
+        //Listen for change in the stream that a friend is currently watching
+        this.props.socket.on('update-status', (user, game) => {
+            console.log(game)
+            if (user === this.props.userId && game !== null) {
+                const message = 'Watching ' + game
+                this.setState({status: message})
+            } else if (user === this.props.userId && game === null) {
+                this.setState({status: ''})
+            }
         })
     }
 
 
     render() {
         return(
-            <div id={this.props.userId} data-online={this.state.online} className="row sidebar-friend align-items-center" onContextMenu={this.handleContextClick}>
-                <div className="col-3">
-                    {this.state.online ? <i class="fas fa-circle online"></i> : null }
-                    <img className="user-avatar rounded-circle w-15" src={'/images/avatars/' + this.state.user.avatar + '-avatar.png'} />
+            <div id={this.props.userId} key={this.props.userId} data-online={this.state.online} className="row sidebar-friend align-items-center" onContextMenu={this.handleContextClick}>
+                <div className="col-3 friend-card-avatar">
+                    {this.state.online ? <i className="fas fa-circle online"></i> : null }
+                    <UserAvatar avatar={this.state.user.avatar}/>
                 </div>
                 <div className="col-9">
                     <div className="row">
@@ -66,7 +89,7 @@ class FriendCard extends React.Component {
                     </div>
                     <div className="row">
                         <div className="col">
-                            <h6 className="user-status thin">Watching Valorant...</h6>
+                            <h6 className="user-status overflow-dots thin">{this.state.status}</h6>
                         </div>
                     </div>
                 </div>

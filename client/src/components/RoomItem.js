@@ -3,7 +3,9 @@ import axios from 'axios';
 import { withRouter } from 'react-router-dom';
 
 const RoomItem = (props) => {
-    const [room, setRooms] = React.useState([])
+    const [room, setRooms] = React.useState([]);
+    const [participants, setParticipants] = React.useState(0);
+    const componentMounted = React.useRef();
 
     const redirect = (path) => {
         props.history.push(path);
@@ -13,12 +15,36 @@ const RoomItem = (props) => {
         axios.get('/room', {params: {roomId: props.roomId}})
             .then((response) => {
                 setRooms(response.data)
-                console.log(response.data)
             })
+    }
+    
+    const roomParticipants = () => {
+        props.socket.emit('room-size-query', props.roomId, (size) => {
+            if (Object.keys(size).length > 0) {
+                console.log(Object.keys(size).length, "ROOM SDIZE", props.roomId)
+                setParticipants(Object.keys(size).length)
+                console.log(participants, 'PARTICIPANTS')
+            }
+        })
     }
 
     React.useEffect(() => {
+        roomParticipants();
         getRoomInformation();
+        //Listen for when any user joins or leaves a room that belongs to the client
+        props.socket.on('user-joined-room', (roomId, size) => {
+            if (roomId === props.roomId)
+                setParticipants(Object.keys(size).length)
+        })
+
+        props.socket.on('user-left-room', (roomId, size) => {
+            if (roomId === props.roomId)
+                setParticipants(Object.keys(size).length)
+        })
+
+        props.socket.on('user-disconnected', () => {
+            roomParticipants();
+        })        
     }, [props.roomId])
 
     const handleContextClick = (event) => {
@@ -30,27 +56,36 @@ const RoomItem = (props) => {
 
     const handleClick = (event) => {
         redirect(event.currentTarget.id)
-    }
-
-    const activeChannel = () => {
-        if (window.location.pathname === props.roomId) {
-            return(
-                <i class="fas fa-microphone active-room-icon"></i>
-            )
-        }
+        props.showRoom();
     }
 
     const room_title = room && room.room_title;
+    const activeChannel = () => {
+        if (props.activeRoom === props.roomId) {
+            return(
+                <li onContextMenu={handleContextClick} id={props.roomId} className="nav-item" onClick={(event) => handleClick(event)}>
+                    {(props.activeRoom === props.roomId) ? <i className="fas fa-microphone active-room-icon"></i> : null}
+                    {room_title}
+                    <span className="room-item-size">{participants}/6</span>
+                </li>
+            )
+        } else {
+            return(
+                <a href={props.roomId} onContextMenu={handleContextClick} id={props.roomId} className={participants === 6 ? "nav-item passthrough" : "nav-item"}>
+                    <li>
+                        {room_title}
+                        <span className="room-item-size">{participants}/6</span>
+                    </li>
+                </a>
+            )
+
+        }
+    }
+
 
     return(
         <React.Fragment>
-            <li onContextMenu={handleContextClick} id={props.roomId} onClick={(event) => handleClick(event)} className="nav-item">
-
-                {activeChannel()}
-
-                {room_title}
-
-            </li>
+            {activeChannel()}
         </React.Fragment>
     )
 }

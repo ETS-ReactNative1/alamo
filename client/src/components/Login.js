@@ -16,10 +16,10 @@ class Login extends React.Component {
         //If user is already logged in, redirect to home
         axios.get('/auth/check')
             .then((response) => {
-                if (response.data)
+                if (response.data.auth)
                     this.redirect('/')
                 else
-                    return this.setState({showLogin: true})
+                    this.setState({showLogin: true})
             })
     }
 
@@ -33,7 +33,7 @@ class Login extends React.Component {
         let password = event.target.password.value;
         let userData = {email, password}
 
-        axios.post('/auth/register_login', userData)
+        axios.post('/auth/login', userData)
             .then((response) => {
                 if (response.status === 200) {
                     window.location.assign('/')
@@ -43,7 +43,7 @@ class Login extends React.Component {
     }
 
     loginForm = () => {
-        if (this.state.showLogin)
+         if (this.state.showLogin)
             return(
                 <div className="login-box">
                     <h1 className="login-logo centered margin-bottom">alamo</h1>
@@ -51,7 +51,7 @@ class Login extends React.Component {
                     <form className="login-form" action="POST" onSubmit={this.handleSubmit}>
                         <input className="login-input" type="text" name="email" placeholder="Email Address"/>
                         <input className="login-input" type="password" name="password" placeholder="Password"/>
-                        <button className="primary-btn login-button" type="submit">login</button>
+                        <button className="primary-btn login-button" type="submit">Login</button>
                     </form>
                     {this.state.errorMessage.length > 0 ? 
                         <div className="login-error-box">
@@ -61,8 +61,9 @@ class Login extends React.Component {
                     }
                     <p className="sign-up-para">No account? <a className="sign-up-button" href="/sign-up">Sign Up</a></p>
                 </div>
-            )
+           )
     }
+
 
     render() {
         return(

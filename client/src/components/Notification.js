@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
-import io from 'socket.io-client';
+
+import InviteAlert from './InviteAlert';
 
 class Notification extends React.Component {
     constructor(props) {
@@ -8,6 +9,11 @@ class Notification extends React.Component {
 
         this.state = {
             show: false,
+            showInvite: false,
+            inviteeId: '',
+            inviterId: '',
+            inviteRoomId: '',
+            inviteStream: '',
             notification: null,
             pendingInvitation: ''
         }
@@ -22,9 +28,7 @@ class Notification extends React.Component {
 
     componentWillMount() {
 
-        const socket = io.connect('https://alamo-d19124355.herokuapp.com/')
-
-        socket.on('new-user-online', (userId) => {
+        this.props.socket.on('new-user-online', (userId) => {
             setTimeout(() => {
                 if (userId != this.props.userId) {
                     axios.get('/user', {params: {userId: userId}})
@@ -42,7 +46,17 @@ class Notification extends React.Component {
             }, 500)
         })
 
-        socket.on('pending-invitation', (senderId, receiverId) => {
+        this.props.socket.on('inc-room-invite', (invitee, inviter, roomId) => {
+            this.setState({showInvite: false}, () => {
+                this.setState({showInvite: true, inviteeId: invitee, inviterId: inviter, inviteRoomId: roomId});
+            })
+
+            setTimeout(() => {
+                this.setState({showInvite: false})
+            }, 1000 * 30)
+        })
+
+        this.props.socket.on('pending-invitation', (senderId, receiverId) => {
             if (receiverId === localStorage.getItem('userId')) {
 
                 axios.get('/user', {params: {userId: senderId}})
@@ -55,7 +69,7 @@ class Notification extends React.Component {
             }
         })
 
-        socket.on('/accept-friend-invite', (senderId, receiverId) => {
+        this.props.socket.on('/accept-friend-invite', (senderId, receiverId) => {
             console.log('accepted friends request socket io', receiverId)
             if (receiverId === localStorage.getItem('userId')) {
 
@@ -70,16 +84,23 @@ class Notification extends React.Component {
         
     }
 
+    declineVote = () => {
+        this.setState({showInvite: false})
+    }
+
     render() {
         return(
-            <div update={this.state.pendingInvitation} className={(this.state.show) ? "toast show" : "toast"} role="alert" aria-live="assertive" aria-atomic="true">
+            <React.Fragment>
+                {this.state.showInvite ? <InviteAlert inviteeId={this.state.inviteeId} inviterId={this.state.inviterId} roomId={this.state.inviteRoomId} declineVote={this.declineVote}/> : null}
+                <div update={this.state.pendingInvitation} className={(this.state.show) ? "toast show" : "toast"} role="alert" aria-live="assertive" aria-atomic="true">
                     <div className="toast-body bold">
                         <button type="button" className="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                         </button>
                         <h6 className="toast-message">{this.state.notification}</h6>
                     </div>
-            </div>
+                </div>
+            </React.Fragment>
         )
     }
 }

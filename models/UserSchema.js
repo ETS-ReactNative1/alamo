@@ -2,9 +2,9 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
-    _id: Schema.ObjectId,
     email: String,
     password: String,
+    username: { type: String, lowercase: true },
     user_metadata: {
         username: String,
         avatar: String
@@ -13,7 +13,10 @@ const userSchema = new Schema({
     sent_invitations: Array,
     friends: Array,
     rooms: {type: [String]},
-    email_verified: Boolean,
+    email_verified: {type: Boolean, default: false},
+    account_setup: {type: Boolean, default: false},
+    resetPasswordToken: {type: String, required: false},
+    resetPasswordExpires: {type: Date, required: false}
 }, {collection: 'users'})
 
 const User = mongoose.model('User', userSchema);

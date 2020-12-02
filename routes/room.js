@@ -20,9 +20,12 @@ router.post('/create-room', (req, res) => {
     const roomId = req.body.roomId
     const userId = req.body.userId
     const roomTitle = req.body.roomTitle
+    const streamId = req.body.streamId
+
+    console.log(roomTitle, streamId, "!!!!!!!!!!!!!!!!!!!!!!!!!!!")
 
     //Store new room in db
-    Room.create({roomId: roomId, room_title: roomTitle, stream_channel: 'ESL_CSGO'})
+    Room.create({roomId: roomId, room_title: roomTitle, stream: streamId})
     .then(response => {
         Room.updateOne({roomId: roomId}, {$push: {admins: userId}}, (err, object) => {
             if (!err)
@@ -31,5 +34,18 @@ router.post('/create-room', (req, res) => {
     })
     .catch(error => console.error(error));
 });
+
+//Get room information
+router.post('/change-stream', (req, res) => {
+    const roomId = req.body.roomId;
+    const channel = req.body.channel;
+    console.log(roomId, channel)
+    Room.updateOne({roomId: roomId}, {stream: channel})
+    .then(response => {
+        res.status(200).json(response)
+    })
+    .catch(error => console.error(error));
+})
+
 
 module.exports = router;

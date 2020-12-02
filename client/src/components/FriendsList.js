@@ -21,6 +21,11 @@ class FriendsList extends React.Component  {
         }
     }
 
+    userOffline = (user) => {
+        console.log('REMOVE USER FROM ONLINE FRIENDS', user)
+        
+    }
+
     componentDidUpdate(prevProps) {
         if (this.props.onlineUsers != prevProps.onlineUsers)
             this.numberOfFriends()
@@ -33,19 +38,15 @@ class FriendsList extends React.Component  {
     numberOfFriends = () => {
         let count = 0;
         Object.keys(this.props.onlineUsers).map((user) => {
-
             if (this.props.friends.includes(user, 0)) {
                 count += 1
             }
-
             this.setState({no: count})
-
         })
     }
 
     render() {
         const friends = this.props.friends;
-        let count = 0;
         return(
             <React.Fragment>
                 <h3 className="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 thin">Friends</h3>
@@ -57,7 +58,7 @@ class FriendsList extends React.Component  {
                 {friends.map((friend) => {
                     if ((friend in this.props.onlineUsers)) {
                         return(
-                            <FriendCard onlineUsers={this.props.onlineUsers} handleContextMenu={this.props.handleContextMenu} userId={friend}/>
+                            <FriendCard socket={this.props.socket} userOffline={this.userOffline} key={friend} onlineUsers={this.props.onlineUsers} handleContextMenu={this.props.handleContextMenu} userId={friend}/>
                         )
                     }
                 })}
@@ -67,7 +68,7 @@ class FriendsList extends React.Component  {
                 {friends.map((friend) => {
                     if (!(friend in this.props.onlineUsers))
                         return(
-                            <FriendCard onlineUsers={this.props.onlineUsers} handleContextMenu={this.props.handleContextMenu} userId={friend}/>
+                            <FriendCard socket={this.props.socket} key={friend} onlineUsers={this.props.onlineUsers} handleContextMenu={this.props.handleContextMenu} userId={friend}/>
                         )
                 })}
 

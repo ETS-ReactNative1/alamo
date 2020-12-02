@@ -17,19 +17,19 @@ class ContextMenu extends React.Component {
 
     profileMenu = (show, x, y) => {
         return (
-            <ProfileContext show={show} x={x} y={y} />
+            <ProfileContext socket={this.props.socket} show={show} x={x} y={y} />
         )
     }
 
     roomMenu = (show, id,  x, y) => {
         return (
-            <RoomContext show={show} id={id} x={x} y={y} fetchUserInformation={this.props.fetchUserInformation} />
+            <RoomContext show={show} socket={this.props.socket} activeRoom={this.props.activeRoom} id={id} x={x} y={y} fetchUserInformation={this.props.fetchUserInformation} />
         )
     }
 
     friendMenu = (show, id,  x, y, online) => {
         return (
-            <FriendContext show={show} id={id} x={x} y={y} online={online} fetchUserInformation={this.props.fetchUserInformation} />
+            <FriendContext socket={this.props.socket} activeRoom={this.props.activeRoom} show={show} id={id} x={x} y={y} online={online} fetchUserInformation={this.props.fetchUserInformation} />
         )
     }
 
@@ -47,7 +47,6 @@ class ContextMenu extends React.Component {
     }
 
     render() {
-        console.log(this.props.status)
         return(
             <React.Fragment>
                 {this.contextMenu()}

@@ -1,19 +1,22 @@
 import React from 'react';
 import axios from 'axios';
 import { useAuth0 } from '@auth0/auth0-react';
-import { Route, Switch } from 'react-router-dom';
-import io from 'socket.io-client';
+import { Route, Switch, withRouter } from 'react-router-dom';
 
-import ProfileSetup from './ProfileSetup';
 import ContextMenu from './ContextMenu';
 import Sidebar from './Sidebar';
 import NavigationBar from './NavigationBar';
 import Notification from './Notification';
 import Room from './Room';
+import EditRoom from './EditRoom';
 import CreateRoom from './CreateRoom';
+import RoomRTC from './RoomRTC';
+import ChangeAvatar from './ChangeAvatar';
 import AccountSettings from './AccountSettings';
-
-const socket = io.connect('https://alamo-d19124355.herokuapp.com/')
+import InviteFriends from './InviteFriends';
+import MainWrapper from './MainWrapper';
+import RoomShowcase from './RoomShowcase';
+import PopularStreams from './PopularStreams';
 
 class Dashboard extends React.Component {
     constructor(props) {
@@ -21,6 +24,10 @@ class Dashboard extends React.Component {
 
         this.state = {
             user: [],
+            admins: ["5fbd007cd13e171ac9d8f331"],
+            show: false,
+            activeRoom: null,
+            menuOpen: true,
             contextMenu: {
                 type: '',
                 id: '',
@@ -28,7 +35,8 @@ class Dashboard extends React.Component {
                 y: '',
                 online: ''
             },
-            onlineUsers: {}
+            onlineUsers: {},
+            matches: window.matchMedia("(min-width: 1200px)").matches 
         }
     }
 
@@ -38,97 +46,174 @@ class Dashboard extends React.Component {
             .then((response) => {
                 this.setState({user: response.data})
             })
-            .then(() => {
-                //Store userId (user primary key) on client side for ease of access throughout application
-                localStorage.setItem('userId', this.state.user._id)
-                localStorage.setItem('account_setup', this.state.user.account_setup)
-                this.props.changeOnlineStatus()
-            })
     }
 
     componentDidMount() {
-        window.addEventListener("beforeunload", function(event) { 
-            socket.emit('user-offline', localStorage.getItem('userId'))
+        if(window.location.pathname.substring(1, 5) === 'room') this.setState({activeRoom: window.location.pathname, show: true})
+        
+        this.unlisten = this.props.history.listen((location, action) => {
+            if (window.location.pathname === this.state.activeRoom) this.setState({show: true})
+            else this.setState({show: false})
         });
 
-        console.log(this.props.isAuth)
-
-        if (this.props.auth) {
-            socket.emit('online', localStorage.getItem('userId'), (response) => {
-                this.setState({onlineUsers: response})
-            });
-
-            socket.on('new-user-online', (userId, clients) => {
-                this.setState({onlineUsers: clients})
-            })
-
-            socket.on('user-offline-update', (clients) => {
-                this.setState({onlineUsers: clients})
-            })
-        }
-
-        //If friend invite has been declined, update user
-        socket.on('decline-friend-invite', (receiverId) => {
-            if (receiverId === localStorage.getItem('userId')) {
-                console.log('declined invite')
-                this.fetchUserInformation();
-            }
-        })
-        
-        //If friend invite has been accepted, update both accepter and acceptee users
-        socket.on('accept-friend-invite', (senderId, receiverId) => {
-            if (receiverId === localStorage.getItem('userId') || senderId === localStorage.getItem('userId')) {
-                this.fetchUserInformation();
-            }
-        })
-
-        //If user has sent an invite to become friends, update user to reflect pending invite
-        socket.on('pending-invitation', (senderId, receiverId) => {
-            if (receiverId === localStorage.getItem('userId')) {
-                this.fetchUserInformation();
-            }
-        })
+        const handler = e => this.setState({matches: e.matches});
+        window.matchMedia("(min-width: 1200px)").addListener(handler);
 
         this.fetchUserInformation();
 
+        if (this.props.auth) {
+            this.props.socket.on('new-user-online', (userId, users) => {
+                this.setState({onlineUsers: users})
+            })
 
+            this.props.socket.on('user-offline-update', (users) => {
+                this.setState({onlineUsers: users})
+            })
+        }
+
+        this.props.socket.on('friend-event', (type) => {
+            console.log('FRIEND EVENT', type)
+            if (type === 'accept') this.fetchUserInformation();
+            if (type === 'invite') this.fetchUserInformation();
+        })
     }
 
+    leaveRoom = () => {
+        this.setState({...this.state, activeRoom: null, show: false}) 
+        this.props.history.push('/');
+    }
 
     //Handle Context Menu Click
     handleContextMenu = (id, type, x, y, onlineStatus) => {
-        console.log(onlineStatus, 'ONLINE???')
         this.setState({contextMenu: {type: type, id: id, x: x, y: y, online: onlineStatus}})
     }
 
     clearContextMenu = () => {
-        this.setState({contextMenu: {status: false, x: '-400px', y: '-400px'}})
+        this.setState({openMenu: false, contextMenu: {status: false, x: '-400px', y: '-400px'}})
+    }
+
+    showRoom = () => {
+        this.setState({showRoom: true});
+    }
+
+    openMenu = () => {
+        this.setState({openMenu: true})
     }
 
     render() {
-        const rooms = this.state.user && this.state.user.rooms;
-        const account_setup = localStorage.getItem('account_setup');
-        console.log(rooms)
+        const rooms = this.props.user && this.props.user.rooms;
         return (
-        <React.Fragment>
-            {account_setup ?
-                <div className="container-fluid" onClick={this.clearContextMenu}>
+            <React.Fragment>
+                <div className="container-fluid dashboard" onClick={this.clearContextMenu}>
                     <div className="row">
-                        <ContextMenu status={this.state.contextMenu} fetchUserInformation={this.fetchUserInformation} />
-                        <Sidebar user={this.state.user} handleContextMenu={this.handleContextMenu} onlineUsers={this.state.onlineUsers}/>
-                        <main className="col px-4">
-                            <NavigationBar/>
-                            <Notification userId={this.state.user._id}/>
-                            <Route path="/create-room" render={(props) => (<CreateRoom fetchUserInformation={this.fetchUserInformation}/>)}/>
-                            <Route path="/room/" render={(props) => <Room rooms={this.state.user.rooms} fetchUserInformation={this.fetchUserInformation}/>}/>
-                            <Route path="/account-settings" render={(props) => (<AccountSettings userInformation={this.state.user}/>)}/>
+
+                        {this.state.activeRoom !== null ? 
+                            <RoomRTC 
+                                socket={this.props.socket} 
+                                activeRoom={this.state.activeRoom} 
+                                showRoom={this.showRoom} 
+                                admins={this.state.admins} 
+                                leaveRoom={this.leaveRoom}
+                            /> : null}
+
+                        <ContextMenu 
+                            activeRoom={this.state.activeRoom}
+                            socket={this.props.socket} 
+                            status={this.state.contextMenu} 
+                            fetchUserInformation={this.fetchUserInformation} 
+                        />
+
+                        <Sidebar 
+                            socket={this.props.socket} 
+                            showRoom={this.showRoom} 
+                            activeRoom={this.state.activeRoom} 
+                            matches={this.state.matches}
+                            openMenu={this.state.openMenu}
+                            changeRoom={this.changeRoom} 
+                            user={this.state.user} 
+                            handleContextMenu={this.handleContextMenu} 
+                            onlineUsers={this.state.onlineUsers} 
+                            friendsControlsActive={this.friendsControlsActive}
+                            fetchUserInformation={this.fetchUserInformation}
+                        />
+
+                        <main className="col main-container">
+                            <NavigationBar 
+                                matches={this.state.matches}
+                                openMenu={this.openMenu}
+                                socket={this.props.socket}
+                                activeRoom={this.state.activeRoom}
+                            />
+
+                            <Notification 
+                                socket={this.props.socket} 
+                                userId={this.state.user._id}
+                            />
+                            <Route path="/create-room" render={(props) => (
+                                <CreateRoom 
+                                    socket={this.props.socket} 
+                                    fetchUserInformation={this.fetchUserInformation}
+                                    friends={this.state.user.friends} 
+                                    onlineUsers={this.state.onlineUsers}
+                                    activeRoom={this.state.activeRoom}
+                                />
+                            )}/>
+
+                            {this.state.activeRoom !== null ? 
+                                <Room 
+                                    socket={this.props.socket} 
+                                    show={this.state.show} 
+                                    activeRoom={this.state.activeRoom} 
+                                    admins={this.props.admins} 
+                                    matches={this.state.matches}
+                                    rooms={this.props.user.rooms}
+                                    fetchUserInformation={this.fetchUserInformation}
+                                /> : null}
+                            <Route path="/account-settings" render={(props) => (
+                                <AccountSettings userInformation={this.state.user}/>
+                            )}/>
+
+                            <Route path="/invite-friends" render={(props) => (
+                                <InviteFriends 
+                                    socket={this.props.socket} 
+                                    friends={this.state.user.friends} 
+                                    onlineUsers={this.state.onlineUsers}
+                                    activeRoom={this.state.activeRoom}
+                                />
+                            )}/>
+
+                            <Route path="/change-avatar" render={(props) => (
+                                <ChangeAvatar 
+                                    fetchUserInformation={this.fetchUserInformation}
+                                />
+                            )}/>
+
+                            <Route path="/edit" render={(props) => (
+                                <EditRoom
+                                    activeRoom={this.state.activeRoom}
+                                    admins={this.state.admins}
+                                />
+                            )}/>
+
+                            <Route path="/" render={(props) => (
+                                <MainWrapper activeRoom={this.state.activeRoom}>
+                                    {this.props.user.rooms ? 
+                                        <RoomShowcase 
+                                            activeRoom={this.state.activeRoom}
+                                            socket={this.props.socket} 
+                                            rooms={this.props.user.rooms}
+                                        />
+                                    : null}
+                                    <PopularStreams admins={this.state.admins}/>
+                                </MainWrapper>
+                            )}/>
+
                         </main>
                     </div>
                 </div>
-                : <ProfileSetup /> }
-        </React.Fragment>
+            </React.Fragment>
         );
     }
 }
 
-export default Dashboard;
+export default withRouter(Dashboard);

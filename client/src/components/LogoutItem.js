@@ -1,17 +1,14 @@
 import React from 'react';
 import axios from 'axios';
-import io from 'socket.io-client';
 
 
-const LogoutItem = () => {
-    const socket = io.connect('https://alamo-d19124355.herokuapp.com/')
-
+const LogoutItem = (props) => {
     const logout = () => {
         console.log('logout')
         axios.get('/auth/logout')
             .then((response) => {
                 if (response.status === 200)
-                    socket.emit('user-offline', localStorage.getItem('userId'))
+                    props.socket.emit('user-offline', localStorage.getItem('userId'))
                     window.location.reload();
             })
     }

@@ -16,9 +16,10 @@ const HoverCard = (props) => {
 
     console.log(props.userId)
     console.log(props.position, 'this is position')
+    console.log(props.x, props.y)
 
     return(
-        <div onMouseOver={props.handleMouseOver} className={(props.position === 'top') ? "container hover-card hover-card-top" : "container hover-card hover-card-bottom"}>
+        <div onMouseOver={props.handleMouseOver} className="container hover-card" style={{top: props.y, left: props.x}}>
             <div id={props.userId} className="row sidebar-friend align-items-center">
                 <div className="col-3">
                     {props.online ? <i class="fas fa-circle online"></i> : null }

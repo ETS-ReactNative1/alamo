@@ -23,7 +23,6 @@ const checkFriendStatus = require('./routes/checkFriendStatus');
 
 const twitchApi = require('./routes/twitchApi');
 
-
 const app = express();
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
@@ -32,29 +31,24 @@ const clients = {}
 const disconnectedClients = {}
 const rooms = {}
 
-io.on('connection', (socket) => {
 
+io.on('connection', (socket) => {
     //Add user to list of connected clients and broadcast that user is online
     socket.on('online', (userId, callback) => {
         if (!(userId in clients)) {
-            clients[userId] = {socketId: socket.id}
+            clients[userId] = {socketId: socket.id, status: ''}
             io.sockets.emit('new-user-online', userId, clients);
-
-            //If a user is has recently disconnected and is waiting to be purged, remove them
-            if (userId in disconnectedClients)
-                delete disconnectedClients[userId]
-
         } else {
             //Update socket id but do not broadcast new user online
             clients[userId] = {socketId: socket.id }
-
-            if (userId in disconnectedClients)
-                delete disconnectedClients[userId]
-
-            io.sockets.emit('new-user-online', userId, clients);
         }
 
-        console.log('List of connected Clients', clients)
+        //If a user is has recently disconnected and is waiting to be purged, remove them
+        if (userId in disconnectedClients)
+            delete disconnectedClients[userId]
+
+        //Emit updated connected clients to users 
+        io.sockets.emit('new-user-online', userId, clients);
 
         //Send back list of active clients when user logs on
         callback(clients)
@@ -66,30 +60,32 @@ io.on('connection', (socket) => {
             if (disconnectedUser in clients)
                 delete clients[disconnectedUser]
         })
-        console.log('Purge Complete') 
         io.sockets.emit('user-offline-update', clients);
-
     }
 
     socket.on('user-offline', (userId) => {
-        console.log('user offline', userId)
         disconnectedClients[userId] = {}
-        console.log('Purge clients', disconnectedClients)
+        //Allow for 5 seconds before client is purged and made offline
         setTimeout(() => {
             purgeDisconnectedClients();
-        }, 1000 * 30)
+        }, 1000 * 5)
     })
+
 
     socket.on('leave-room', (roomId, userId) => {
         //On disconnect remove peer from list of connected peers
+        console.log(roomId, userId, 'has left this room')
         let updateRoomPeers;
         updateRoomPeers = rooms[roomId];
         updateRoomPeers = updateRoomPeers.filter(item => item !== userId)
         rooms[roomId] = updateRoomPeers;
 
-        console.log(roomId, userId, 'has left this room')
         //Send notitification of user left room, use to trigger audio que
         socket.to(roomId).broadcast.emit('user-disconnected', userId, rooms[roomId])
+
+        //Broadcast to anyone that may have this room favourited that a user has joined and update room size
+        socket.broadcast.emit('user-left-room', roomId, rooms[roomId])
+        socket.emit('user-left-room', roomId, rooms[roomId])
 
         //Leave room
         socket.leave(roomId)
@@ -101,7 +97,6 @@ io.on('connection', (socket) => {
         //Join new room
         socket.join(roomId)
 
-        console.log(userId, 'has joined ', roomId)
 
         //If room is newly created or empty, add first peer
         if (typeof rooms[roomId] == 'undefined') {
@@ -116,15 +111,16 @@ io.on('connection', (socket) => {
             }
         }
 
-        //Output current users connected to room
         console.log(rooms)
+        //Broadcast to anyone that may have this room favourited that a user has joined and update room size
+        socket.broadcast.emit('user-joined-room', roomId, rooms[roomId])
+        socket.emit('user-joined-room', roomId, rooms[roomId])
 
         //Need to send a direct message to the client of peers list, emit does not seem to work
         socket.emit('client-connected', userId, rooms[roomId]);
 
         //Broadcast to other users in room, that a new user has connected
         socket.to(roomId).broadcast.emit('user-connected', userId, rooms[roomId])
-
 
         socket.on('disconnect', () => {
             //On disconnect remove peer from list of connected peers
@@ -138,6 +134,75 @@ io.on('connection', (socket) => {
         })
     })
 
+    socket.on('request-peers', (roomId, callback) => {
+        callback(rooms[roomId])
+    })
+
+    //Check friends status on load, all active clients status are tracked in client object
+    socket.on('check-status', (user, callback) => {
+        if (typeof clients[user] !== 'undefined')
+            callback(clients[user].status)
+    })
+
+    //Listen for users watching streams and broadcast to their friends
+    socket.on('now-watching', (user, game, callback) => {
+        clients[user].status = 'Watching ' + game;
+        socket.broadcast.emit('update-status', user, game)
+        socket.emit('update-status', user, game)
+        callback()
+    })
+
+    socket.on('room-invite', (inviter, invitee, roomId) => {
+        console.log('room invite', inviter, invitee, roomId)
+        console.log(clients[invitee], 'INVITE CLIENTS ')
+        console.log(clients, 'ALL CLIENTS')
+        if (typeof clients[invitee] !== 'undefined')
+            io.to(clients[invitee].socketId).emit('inc-room-invite', invitee, inviter, roomId)
+    })
+
+    //Listening for Users automatically querying room size on load/refresh
+    socket.on('room-size-query', (roomId, callback) => {
+        if (typeof rooms[roomId] != 'undefined')
+            callback(rooms[roomId])
+        else
+            callback(0)
+    })
+
+    //Listening for Users automatically querying room size on load/refresh
+    socket.on('room-query', (roomId, callback) => {
+        if (typeof rooms[roomId] != 'undefined')
+            callback(rooms[roomId])
+        else
+            callback(0)
+    })
+
+    socket.on('voice-active', (roomId, userId) => {
+        socket.to(roomId).broadcast.emit('user-speaking', userId)
+    });
+
+    socket.on('voice-inactive', (roomId, userId) => {
+        socket.to(roomId).broadcast.emit('user-stopped-speaking', userId)
+    });
+
+    socket.on('start-vote', (roomId, userId, stream) => {
+        const peers = Object.keys(io.sockets.adapter.rooms[roomId].sockets).length
+        console.log(peers, 'users in room')
+        io.in(roomId).emit('vote', userId, stream, peers);
+    })
+
+    socket.on('vote-actions', (roomId, userId, vote) => {
+        io.in(roomId).emit('vote-poll', userId, vote)        
+    })
+
+    socket.on('finish-vote', (roomId, result) =>{
+        io.in(roomId).emit('end-vote', result)
+    })
+
+    socket.on('change-stream', (roomId, stream) => {
+        console.log('CHANGE STREAM', roomId, stream)
+        io.in(roomId).emit('update-stream', stream);
+    })
+
 
     socket.on('add-friend', (senderId, receiverId) => {
         console.log(senderId, 'would like to add', receiverId, 'as a friend')
@@ -145,14 +210,11 @@ io.on('connection', (socket) => {
     })
 
     socket.on('friend-event', (type, senderId, receiverId) => {
-        if (type === 'decline') {
-            socket.broadcast.emit('decline-friend-invite', receiverId);
-        }
+        if (type === 'accept' && typeof clients[receiverId].socketId != 'undefined')
+            io.to(clients[receiverId].socketId).emit('friend-event', type);
 
-        if (type === 'accept') {
-            socket.broadcast.emit('accept-friend-invite', senderId, receiverId)
-        }
-        
+        if (type === 'invite' && typeof clients[receiverId].socketId != 'undefined')
+            io.to(clients[receiverId].socketId).emit('friend-event', type);
     })
 
 })
@@ -180,15 +242,6 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
 
-
-//Routes
-app.use('/user', user);
-app.use('/room', room);
-app.use('/check-friend-status', checkFriendStatus);
-
-//Twitch api access token
-app.use('/twitchapi', twitchApi);
-
 let client_id = process.env.TWITCH_CLIENT_ID;
 let client_secret = process.env.TWITCH_CLIENT_SECRET;
 let twitchUrl = `https://id.twitch.tv/oauth2/token?client_id=${client_id}&client_secret=${client_secret}&grant_type=client_credentials`
@@ -215,9 +268,7 @@ db.once('open', function() {
 
 app.use(session({
     secret: 'thisisasecret',
-    cookie: {
-        maxAge: 9000000
-    },
+    cookie: { maxAge: 24 * 60 * 60 * 1000 },
     saveUninitialized: true,
     resave: true,
     store: new MongoStore({ mongooseConnection: mongoose.connection })
@@ -228,13 +279,23 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use('/auth', auth);
 
+//Routes
+const isAuthenticated = (req, res, next) => {
+    if (req.isAuthenticated()) {
+        console.log('is auth')
+        return next();
+    }
+    else {
+        return res.status(401).json({status: 'User not Authorize'})
+    }
+};
+
+app.use('/user', isAuthenticated, user);
+app.use('/room', isAuthenticated, room);
+app.use('/check-friend-status', isAuthenticated, checkFriendStatus);
+app.use('/twitchapi', isAuthenticated, twitchApi);
 
 
-//MongoClient.connect(url, { useUnifiedTopology: true })
-//    .then(client => {
-//        const db = client.db('alamo-db');
-//        app.locals.db = db;
-//});
 
 const whitelist = ['http://localhost:3000', 'http://localhost:8080', 'https://alamo-d19124355.herokuapp.com/']
 const corsOptions = {

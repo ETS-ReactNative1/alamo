@@ -12,7 +12,6 @@ class SearchFriend extends React.Component {
         }
     }
 
-
     handleFriendSearch = (event) => {
         console.log('search user')
         event.preventDefault();
@@ -28,7 +27,6 @@ class SearchFriend extends React.Component {
                     this.setState({searchResults: [], userNotFound: 'No Friend Found.'})
                 } else {
                     this.setState({searchResults: [response.data], userNotFound: ''})
-                    console.log(response)
                 }
             })
             .catch(err => {
@@ -48,7 +46,7 @@ class SearchFriend extends React.Component {
                 })}
                 <h6 id="friend-error-message">{this.state.userNotFound}</h6>
                 <form action="post" onSubmit={this.handleFriendSearch}>
-                    <input id="friend-control-input" placeholder="Username" name="username" autoFocus required minlength="3" />
+                    <input id="friend-control-input" placeholder="Username" name="username" autoFocus required minLength="3" />
                 </form>
             </div>
         )
