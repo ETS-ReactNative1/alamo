@@ -15,7 +15,8 @@ class RoomRTC extends React.Component {
             peers: [],
             roomTitle: null,
             speakingPeers: [],
-            miniRTC: false
+            miniRTC: false,
+            miniRTCPlacement: {x: null, y: null}
         }
     }
 
@@ -164,9 +165,31 @@ class RoomRTC extends React.Component {
         this.props.showRoom();
     }
 
+    handleTouchMove = (event) => {
+        const rect = event.target.getBoundingClientRect();
+        const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
+        const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
+        console.log(vw, vh)
+        const x_pos = event.targetTouches[0].clientX - rect.width
+        const y_pos = event.targetTouches[0].clientY - rect.height
+        if (x_pos <= (vw-rect.width) && y_pos <= (vh-rect.height) && x_pos >= (0 - rect.width) && y_pos >= (0 - rect.height)) {
+            console.log(x_pos, y_pos)
+            this.setState({miniRTCPlacement : {x: x_pos, y: y_pos}})
+        }
+
+    }
+
     render() {
         return(
-            <div id={this.props.activeRoom} onClick={this.handleMiniRTCClick} className={this.state.miniRTC ? "container web-rtc mini-rtc-active d-block" : "container web-rtc d-none"} >
+            <div 
+                id={this.props.activeRoom} 
+                className={this.state.miniRTC ? "container web-rtc mini-rtc-active d-block" : "container web-rtc d-none"} 
+                style={{left: this.state.miniRTCPlacement.x, top: this.state.miniRTCPlacement.y}}
+                onClick={this.handleMiniRTCClick} 
+                onTouchStart={this.handleTouchStart}
+                onTouchMove={this.handleTouchMove}
+                onTouchEnd={this.handleTouchEnd}
+            >
                 <div className="row padding-top align-items-center">
                     <div className="col-9">
                         <h5>{this.state.roomTitle} <span className="rtc-room-size thin">{this.state.peers.length} / 6 </span></h5>
