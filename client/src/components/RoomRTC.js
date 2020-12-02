@@ -92,8 +92,10 @@ class RoomRTC extends React.Component {
         this.fetchRoomInformation();
 
         this.peer = new Peer(clientId, {
-            host: '/',
-            port: '8081'
+            host: 'https://alamo-peerjs.herokuapp.com',
+            secure: true,
+            host: 'alamo-peerjs.herokuapp.com',
+            port: 443
         })
 
         navigator.mediaDevices.getUserMedia({
