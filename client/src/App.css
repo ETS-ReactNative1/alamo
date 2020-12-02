@@ -131,8 +131,8 @@ label {
 }
 
 .channel-results-col {
-    max-width: 289 !important;
-    min-width: 288 !important;
+    max-width: 289px;
+    min-width: 288px;
 }
 
 .live {
@@ -197,13 +197,13 @@ label {
 }
 
 .channel-results-col-img {
-    max-width: 289px !important;
-    min-width: 288px !important;
+    max-width: 289px;
+    min-width: 288px;
 }
 
 .channel-results-col-content {
-    max-width: 370px !important;
-    min-width: 370px !important;
+    max-width: 370px;
+    min-width: 370px;
 }
 
 .channel-font {
@@ -1294,6 +1294,7 @@ iframe {
 
 .hide-main {
     position: absolute;
+    display: none;
     top: -5000px;
     left: -5000px;
     overflow: hidden;
@@ -1567,7 +1568,7 @@ iframe {
 
 }
 
-@media only screen and (max-width: 1140px) {
+@media only screen and (max-width: 1200px) {
     .search-results-container {
         max-width: 100%;
     }
@@ -1582,10 +1583,11 @@ iframe {
         margin: 50px 0 0 0;
         padding: 0;
     }
+
     .twitch-chat-row {
         max-width: 100%;
         margin: 0;
-        height: 50px;
+        height: 650px;
     }
 
     .show-chat {
@@ -1718,6 +1720,46 @@ iframe {
 }
 
 @media only screen and (max-width: 540px) {
+    .vote-container {
+        transform: scale(0.8);
+        right: -25px;
+        top: calc(100% - 550px);
+    }
+
+    .invite-container {
+        transform: scale(0.8);
+        right: -25px;
+        top: calc(100% - 500px);
+    }
+
+    .stream-results-card {
+        height: 125px;
+    }
+
+    .channel-result-title {
+        font-size: 1em;
+    }
+
+    .channel-results-img {
+        min-width: 100px;
+        max-width: 50%;
+    }
+
+    .channel-results-col-img {
+        max-width: 50%;
+        min-width: 100px;
+    }
+
+    .channel-results-card {
+        height: 250px;
+    }
+
+    .channel-results-col-content {
+        min-width: auto;
+        height: 160px;
+
+    }
+
     .main-wrapper {
         width: 100%;
     }
@@ -1730,6 +1772,13 @@ iframe {
         width: 50px;
         height: 50px;
     }
+
+    .twitch-chat-row {
+        max-width: 100%;
+        margin: 0;
+        height: 50px;
+    }
+
     
     .admin-icon {
         transform: scale(0.65) translateX(-75%);

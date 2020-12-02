@@ -84,7 +84,11 @@ class ProfileSetup extends React.Component {
             <div className="container" style={{paddingBottom: '50px'}}>
               <div className="row">
                   <div className="col">
-                      <h1 className="setup-heading thin">Change Avatar</h1>
+                      <div className="room-headings">
+                            <i className="fas back-arrow font-color fa-2x fa-arrow-left" onClick={() => this.props.history.goBack()}></i>
+                            <h1 className="room-title">Change Avatar</h1>
+                      </div>
+
 
                       <form action="post" onSubmit={this.handleSubmit}>
                             <label hclassName="profile-setup-label" tmlFor="avatar">Avatar</label>

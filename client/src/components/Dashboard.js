@@ -37,7 +37,7 @@ class Dashboard extends React.Component {
                 online: ''
             },
             onlineUsers: {},
-            matches: window.matchMedia("(min-width: 1140px)").matches 
+            matches: window.matchMedia("(min-width: 1200px)").matches 
         }
     }
 
@@ -58,7 +58,7 @@ class Dashboard extends React.Component {
         });
 
         const handler = e => this.setState({matches: e.matches});
-        window.matchMedia("(min-width: 1140px)").addListener(handler);
+        window.matchMedia("(min-width: 1200px)").addListener(handler);
 
         this.fetchUserInformation();
 

@@ -148,7 +148,11 @@ class AccountSettings extends React.Component {
           <div className="container">
               <div className="row margin-bottom-50">
                   <div className="col">
-                      <h1 className="setup-heading thin">Account Settings</h1>
+                      <div className="room-headings">
+                            <i className="fas back-arrow font-color fa-2x fa-arrow-left" onClick={() => this.props.history.goBack()}></i>
+                            <h1 className="room-title">Account Settings</h1>
+                      </div>
+
 
                       <label htmlFor="username">Username</label>
                       <input name="username" autoFocus required minlength="3" placeholder={this.state.username} disabled/>

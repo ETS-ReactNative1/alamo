@@ -2,7 +2,7 @@ import React from 'react';
 
 const TwitchChat = (props) => {
     const [ show, setShow ] = React.useState(false)
-    const [ message, setMessage ] = React.useState('View')
+    const [ message, setMessage ] = React.useState('View Chat')
     const url = `https://www.twitch.tv/embed/${props.twitchChannel}/chat?darkpopout&migration=true&parent=localhost`;
     console.log(url)
 
@@ -20,7 +20,7 @@ const TwitchChat = (props) => {
             </div>
             <div className="row">
                 <div className="col-12">
-                    <div className="view-more" onClick={() => showChat()} style={{borderRadius: '0 0 5px 5px', backgroundColor: '#18181B', color: '#dedee3'}}>{message}</div>
+                    <div className="view-more d-md-none d-sm-none d-xs-block" onClick={() => showChat()} style={{borderRadius: '0 0 5px 5px', backgroundColor: '#18181B', color: '#dedee3'}}>{message}</div>
                 </div>
             </div>
         </div>

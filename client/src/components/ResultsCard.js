@@ -13,8 +13,8 @@ class ResultsCard extends React.Component {
     render() {
         const image = this.props.stream.thumbnail_url.replace('{width}', '120').replace('{height}', '67')
         return(
-            <div className="container-fluid stream-results-card">
-                <div className="row align-items-center">
+            <div className="container-fluid d-flex stream-results-card">
+                <div className="row align-items-center" style={{width: '100%'}}>
                     <div className="col-5">
                         <img className="stream-results-img" src={image} alt="" />
                     </div>

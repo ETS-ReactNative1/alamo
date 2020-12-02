@@ -14,7 +14,7 @@ class ChannelResults extends React.Component {
         console.log(this.props.channels)
         return(
             <div className="container-fluid channel-results-card d-flex align-items-center">
-                <div className="row d-flex align-items-center">
+                <div className="row d-flex align-items-center" style={{height: '100%'}}>
                     <div className="col-5 channel-results-col-img">
                         <img className="channel-results-img rounded-circle" src={this.props.channels.thumbnail_url} alt="" />
                     </div>
@@ -27,7 +27,7 @@ class ChannelResults extends React.Component {
                             </div>
                         </div>
                         <div className="row align-items-center">
-                            <div className="col-8">
+                            <div className="col-5">
                                 {this.props.channels.is_live ? <div className="live">LIVE</div> : <div className="thin">Offline</div>}
                             </div>
                             <div className="col">

@@ -24,9 +24,10 @@ const InviteFriends = (props) => {
         return(
             <div className="container-fluid invite-friends-container">
                 <div className="row">
-                    <div classNamme="col">
-                        <h3 class="more-stream-heading thin d-block">Invite Friends</h3>
-                    </div>
+                    <div className="room-headings">
+                            <i className="fas back-arrow font-color fa-2x fa-arrow-left" onClick={() => this.props.history.goBack()}></i>
+                            <h1 className="room-title">Invite Friends</h1>
+                      </div>
                 </div>
                 {props.friends.map((friend) => {
                     if ((friend in props.onlineUsers)) {
@@ -35,7 +36,7 @@ const InviteFriends = (props) => {
                                 <div className="col">
                                     <InviteCard socket={props.socket} key={'invite-'+friend} userId={friend} onlineUsers={props.onlineUsers}/>
                                 </div>
-                                <div className="col-2">
+                                <div className="col-4">
                                     {(invite.includes(friend, 0)) ? 
                                         <button id={friend} type="button" className="primary-btn small-btn-invite passthrough" style={{paddingLeft: '16px'}}>
                                             Invited
