@@ -28,7 +28,7 @@ class Dashboard extends React.Component {
             admins: ["5fbd007cd13e171ac9d8f331"],
             show: false,
             activeRoom: null,
-            menuOpen: false,
+            menuOpen: true,
             contextMenu: {
                 type: '',
                 id: '',
@@ -36,7 +36,8 @@ class Dashboard extends React.Component {
                 y: '',
                 online: ''
             },
-            onlineUsers: {}
+            onlineUsers: {},
+            matches: window.matchMedia("(min-width: 1140px)").matches 
         }
     }
 
@@ -55,6 +56,9 @@ class Dashboard extends React.Component {
             if (window.location.pathname === this.state.activeRoom) this.setState({show: true})
             else this.setState({show: false})
         });
+
+        const handler = e => this.setState({matches: e.matches});
+        window.matchMedia("(min-width: 1140px)").addListener(handler);
 
         this.fetchUserInformation();
 
@@ -124,6 +128,7 @@ class Dashboard extends React.Component {
                             socket={this.props.socket} 
                             showRoom={this.showRoom} 
                             activeRoom={this.state.activeRoom} 
+                            matches={this.state.matches}
                             openMenu={this.state.openMenu}
                             changeRoom={this.changeRoom} 
                             user={this.state.user} 
@@ -160,6 +165,7 @@ class Dashboard extends React.Component {
                                     show={this.state.show} 
                                     activeRoom={this.state.activeRoom} 
                                     admins={this.props.admins} 
+                                    matches={this.state.matches}
                                     rooms={this.props.user.rooms}
                                     fetchUserInformation={this.fetchUserInformation}
                                 /> : null}

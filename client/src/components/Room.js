@@ -177,14 +177,15 @@ class Room extends React.Component {
                             <RoomPeers socket={this.props.socket} admins={this.state.admins}/>
                             <div className="col-4 d-flex flex-row-reverse">
                                 <i className="fas fa-2x fa-cog room-settings-icon font-color" onClick={() => this.props.history.push('/edit' + this.props.activeRoom)}></i>
-                                <FavouriteBtn fetchUserInformation={this.props.fetchUserInformation} activeRoom={this.props.activeRoom}/>
+                                <FavouriteBtn matches={this.props.matches} fetchUserInformation={this.props.fetchUserInformation} activeRoom={this.props.activeRoom}/>
                                 <button className="primary-btn small-btn-invite" style={{maxWidth: '100px'}} onClick={() => this.props.history.push('/invite-friends')}>Invite</button>
                             </div>
                         </div>
 
+                        {!this.props.matches ? <TwitchChat mobile={true} twitchChannel={this.state.stream.user_name}/> : null}
                         {this.state.stream.game_id ? <MoreStreams admins={this.state.admins} gameId={this.state.stream.game_id} changeStream={this.changeStream} vote={this.vote}/> : null}
                     </div>
-                    <TwitchChat twitchChannel={this.state.stream.user_name}/>
+                    {this.props.matches ? <TwitchChat twitchChannel={this.state.stream.user_name}/> : null}
                 </div>
             </React.Fragment>
         )

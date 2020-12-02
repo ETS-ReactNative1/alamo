@@ -9,7 +9,7 @@ class Sidebar extends React.Component {
     constructor(props) {
         super(props)
 
-        this.state = {x_pos: '-299px', show: false}
+        this.state = {x_pos: '0px', show: false}
     }
 
     returnHome = () => {
@@ -78,7 +78,8 @@ class Sidebar extends React.Component {
                     onTouchEnd={this.handleTouchEnd}
                 ></div>
                 <nav className="col-md-2 d-md-block sidebar" 
-                    style={this.props.openMenu ? {transform: 'translateX(0)'} : {transform: `translateX(${this.state.x_pos})`}}
+                    style={this.props.openMenu ? {transform: 'translateX(0px)'} : !this.props.matches ? {transform: 'translateX(-299px)'} : this.state.show ? {transform: `translateX(${this.state.x_pos})`} : {transform: 'translateX(0px)'}}
+                    onClick={(event) => event.stopPropagation()}
                 >
 
                     <div className="sidebar-sticky">
