@@ -6,18 +6,26 @@ import MobileSidebarBtn from './MobileSidebarBtn';
 import CreateRoomBtn from './CreateRoomBtn';
 
 const NavigationBar = (props) => {
+    const [burger, setBurger] = React.useState(false)
     const handleOpenMenu = (event) => {
         event.stopPropagation();
         props.openMenu();
     }
+
+    const hideBurger = (status) => {
+        setBurger(status)
+    }
     return(
         <nav className="navbar">
-            <div className="burger-icon" onClick={(event) => handleOpenMenu(event)}>
-                <div className="burger"></div>
-                <div className="burger"></div>
-                <div className="burger"></div>
-            </div>
-            <SearchBar socket={props.socket} activeRoom={props.activeRoom}/>
+            {!burger ? 
+                <div className="burger-icon" onClick={(event) => handleOpenMenu(event)}>
+                    <div className="burger"></div>
+                    <div className="burger"></div>
+                    <div className="burger"></div>
+                </div>
+                : null
+            }
+            <SearchBar socket={props.socket} activeRoom={props.activeRoom} searchActive={(status) => hideBurger(status)} matches={props.matches}/>
             <CreateRoomBtn/>
         </nav>
     )

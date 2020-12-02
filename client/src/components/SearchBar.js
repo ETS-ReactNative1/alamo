@@ -10,6 +10,7 @@ class SearchBar extends React.Component {
         this.state = {
             query: '',
             loading: false,
+            fullWidth: false,
             streamResults: [],
             channelResults: []
         }
@@ -32,6 +33,11 @@ class SearchBar extends React.Component {
             this.searchTwitchChannel(query)
         }
 
+        if (!this.props.matches) {
+            this.setState({fullWidth: true})
+            this.props.searchActive(true)
+        }
+
         if (query.includes('twitch.tv/', 0)) {
             if (query.includes('https://', 0)) {
                 const removeHTTPS = query.substring(query.indexOf('/')+2)
@@ -50,12 +56,13 @@ class SearchBar extends React.Component {
 
     clear = () => {
         this.searchInput.current.value = '';
-        this.setState({query: '', streamResults: [], channelResults: []})
+        this.setState({fullWidth: false, query: '', streamResults: [], channelResults: []})
+        this.props.searchActive(false);
     }
 
     render() {
         return(
-            <div className="main-search-box">
+            <div className={this.state.fullWidth ? "main-search-box full-width-search" : "main-search-box" }>
                 <input 
                     ref={this.searchInput}
                     className={this.state.query.length > 2 ? "main-search-input rm-bottom-border" : "main-search-input"} 

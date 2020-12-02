@@ -103,6 +103,13 @@ label {
     transform: translateX(28px);
     margin: auto;
     z-index: 99999;
+    transition: all 0.3s linear;
+}
+
+.full-width-search {
+    width: 100%;
+    max-width: 100%;
+    transform: translateX(0px);
 }
 
 .back-arrow {
@@ -1280,6 +1287,7 @@ iframe {
     left: -5000px;
     height: calc(100% - 100px);
     padding-bottom: 50px;
+    overflow: hidden;
     opacity: 0;
     z-index: -999;
 }
@@ -1288,6 +1296,7 @@ iframe {
     position: absolute;
     top: -5000px;
     left: -5000px;
+    overflow: hidden;
     opacity: 0;
 }
 
@@ -1559,6 +1568,10 @@ iframe {
 }
 
 @media only screen and (max-width: 1140px) {
+    .search-results-container {
+        max-width: 100%;
+    }
+
     .room-settings-icon {
         width: 20px;
         margin-left: 6px;
@@ -1628,6 +1641,11 @@ iframe {
         width: 75%;
         transform: translateX(0px);
     }
+
+    .full-width-search {
+        width: 100%;
+    }
+
     .main-container {
         padding: 0;
         width: 100%;
@@ -1718,6 +1736,10 @@ iframe {
     }
 
     .add-room-card {
+        height: 215px;
+    }
+
+    .add-stream-card {
         height: 215px;
     }
 

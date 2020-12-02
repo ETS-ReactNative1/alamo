@@ -140,6 +140,7 @@ class Dashboard extends React.Component {
 
                         <main className="col main-container">
                             <NavigationBar 
+                                matches={this.state.matches}
                                 openMenu={this.openMenu}
                                 socket={this.props.socket}
                                 activeRoom={this.state.activeRoom}
