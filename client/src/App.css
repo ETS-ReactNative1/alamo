@@ -1327,6 +1327,10 @@ iframe {
     margin-right: 24px;
 }
 
+.show-chat {
+    height: 650px !important;
+}
+
 .twitch-login-toast {
     position: absolute;
     height: 135px;
@@ -1591,9 +1595,6 @@ iframe {
         height: 650px;
     }
 
-    .show-chat {
-        height: 650px;
-    }
 
     .twitch-iframe {
         position: absolute;
