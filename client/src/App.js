@@ -14,7 +14,7 @@ import ErrorBoundary from './components/ErrorBoundary';
 import Room from './components/Room';
 import Loading from './components/Loading';
 
-const socket = io('http://localhost:8080', {
+const socket = io('https://alamo-d19124355.herokuapp.com/', {
     reconnection: true,
     reconnectionDelay: 3000,
     reconnectionAttempts: 20,

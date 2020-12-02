@@ -41,19 +41,6 @@ class RoomRTC extends React.Component {
         this.peer.destroy();
     }
 
-    updateRoomChange = (userId) => {
-
-        this.peer = new Peer(localStorage.getItem('userId'), {
-            host: 'https://alamo-peerjs.herokuapp.com',
-            secure: true,
-            host: 'alamo-peerjs.herokuapp.com',
-            port: 443
-        })
-
-        //Join new room
-        socket.emit('join-room', window.location.pathname, localStorage.getItem('userId'))
-    }
-
     componentDidUpdate(prevProps) {
         if (this.props.location.pathname !== prevProps.location.pathname) {
             if (this.props.location.pathname.substring(1, 5) !== 'room') {
@@ -65,8 +52,6 @@ class RoomRTC extends React.Component {
         }
     }
 
-<<<<<<< HEAD
-=======
     updatePeersInRoom = async (peers) => {
         const updatePeers = new Promise((resolve, reject) => {
             //Create Ref of updatePeersList
@@ -101,7 +86,6 @@ class RoomRTC extends React.Component {
                 this.setState({roomTitle: response.data.room_title, admins: response.data.admins, channel: response.data.stream_channel})
             })
     }
->>>>>>> main
 
     componentDidMount() {
 
