@@ -1110,6 +1110,7 @@ a {
     z-index: -99999;
     opacity: 0;
     cursor: pointer;
+    touch-action: none;
 }
 
 .mini-rtc-active {
