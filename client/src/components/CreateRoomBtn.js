@@ -11,7 +11,7 @@ class CreateRoomBtn extends React.Component {
 
     render() {
         return(
-            <button className="primary-btn" onClick={this.redirect}>
+            <button className="primary-btn d-none d-lg-block d-xl-block" onClick={this.redirect}>
                 <i className="fas fa-plus plus-create-btn"></i>
                 Create
             </button>

@@ -167,7 +167,11 @@ class Room extends React.Component {
                 {this.state.vote ? <Vote yesUsers={this.state.yesUsers} noUsers={this.state.noUsers} yesVotes={this.state.yesVotes} noVotes={this.state.noVotes} usersInRoom={this.state.usersInRoom} votesNeeded={this.state.votesNeeded} voterId={this.state.voterId} votingActions={this.votingActions} stream={this.state.voterChannel}/> : null}
                 <div className={this.props.show ? "room-container show-room d-flex" : "room-container d-flex"}>
                     <div className="container-fluid">
-                        <h1 className="room-title">{this.state.roomTitle}</h1>
+                        <div className="room-headings">
+                            {(window.location.pathname.substring(1, 5) === 'room') ? <i className="fas back-arrow font-color fa-2x fa-arrow-left" onClick={() => this.props.history.push('/')}></i>  : null} 
+                            {(window.location.pathname.substring(1, 7) === 'invite') ? <i className="fas back-arrow font-color fa-2x fa-arrow-left" onClick={() => this.props.history.push(this.props.activeRoom)}></i> : null}
+                            <h1 className="room-title">{this.state.roomTitle}</h1>
+                        </div>
                         <TwitchPlayer twitchChannel={this.state.stream.user_name}/>
                         <div className="row room-avatar-row justify-content-between">
                             <RoomPeers socket={this.props.socket} admins={this.state.admins}/>

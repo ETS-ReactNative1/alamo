@@ -28,6 +28,7 @@ class Dashboard extends React.Component {
             admins: ["5fbd007cd13e171ac9d8f331"],
             show: false,
             activeRoom: null,
+            menuOpen: false,
             contextMenu: {
                 type: '',
                 id: '',
@@ -85,15 +86,15 @@ class Dashboard extends React.Component {
     }
 
     clearContextMenu = () => {
-        this.setState({contextMenu: {status: false, x: '-400px', y: '-400px'}})
+        this.setState({openMenu: false, contextMenu: {status: false, x: '-400px', y: '-400px'}})
     }
 
     showRoom = () => {
         this.setState({showRoom: true});
     }
 
-    roomFavourited = () => {
-
+    openMenu = () => {
+        this.setState({openMenu: true})
     }
 
     render() {
@@ -123,6 +124,7 @@ class Dashboard extends React.Component {
                             socket={this.props.socket} 
                             showRoom={this.showRoom} 
                             activeRoom={this.state.activeRoom} 
+                            openMenu={this.state.openMenu}
                             changeRoom={this.changeRoom} 
                             user={this.state.user} 
                             handleContextMenu={this.handleContextMenu} 
@@ -131,8 +133,9 @@ class Dashboard extends React.Component {
                             fetchUserInformation={this.fetchUserInformation}
                         />
 
-                        <main className="col px-4">
+                        <main className="col main-container">
                             <NavigationBar 
+                                openMenu={this.openMenu}
                                 socket={this.props.socket}
                                 activeRoom={this.state.activeRoom}
                             />

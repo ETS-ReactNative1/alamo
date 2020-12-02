@@ -28,7 +28,7 @@ class MoreStreams extends React.Component {
                 </div>
 
                 {(this.state.showStreams) ? 
-                    <div className="row">
+                    <div className="row more-streams-row">
                             {this.state.streams.map((stream, index) => {
                                 let image = stream.thumbnail_url.replace('{width}', '347').replace('{height}', '195')
                                 return(

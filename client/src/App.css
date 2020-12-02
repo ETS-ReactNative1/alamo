@@ -16,6 +16,19 @@ h1, h2, h3, h4, h5, h6, p, label {
     opacity:0.6 !important; 
 }
 
+.burger-icon {
+    margin-top: 9px;
+    cursor: pointer;
+    display: none;
+}
+
+.burger {
+    width: 35px;
+    height: 3px;
+    background-color: #F2E7FE !important;
+    margin: 10px 0;
+}
+
 img[src=''] {
   display: none;
 }
@@ -93,10 +106,7 @@ label {
 }
 
 .back-arrow {
-    position: absolute;
-    top: 50%;
-    left: 15px;
-    transform: translateY(-50%); 
+    display: inline;
 }
 
 .rm-bottom-border {
@@ -717,6 +727,7 @@ a {
     width: 100%;
     height: 75px;
     margin: 0 0 25px 0;
+    z-index: 9999;
 }
 
 .navbar-right {
@@ -783,7 +794,32 @@ a {
     background-color: #101012 !important;
     border-right: 1px solid rgba(242, 231, 254, 0.2);
     scrollbar-color: white #080808;
-    scrollbar-width: thin
+    scrollbar-width: thin;
+    transition: all 0.1s linear;
+
+}
+
+.sidebar-trigger {
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: transparent;
+    width: 20px;
+    height: 100vh;
+    z-index: 999999999999 !important;
+}
+
+.sidebar-close-trigger {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: calc(100% - 260px);
+    background-color: transparent;
+    opacity: 0.5;
+    overflow: auto;
+
+    height: 100vh;
+    z-index: 999999999999 !important;
 }
 
 .sidebar-sticky {
@@ -943,10 +979,10 @@ a {
 }
 
 .sidebar-friends-control-container {
-    position: fixed;
+    position: absolute;
     max-width: 300px;
     left: 0;
-    bottom: 0px;
+    bottom: 0;
     background-color: #080808;
     height: 50px;
     width: 100%;
@@ -1065,11 +1101,13 @@ a {
     bottom: 50px;
     left: 0px;
     z-index: -99999;
+    opacity: 0;
     cursor: pointer;
 }
 
 .mini-rtc-active {
-    z-index: 99 !important;
+    z-index: 9999 !important;
+    opacity: 1;
 }
 
 .rtc-room-size {
@@ -1258,12 +1296,16 @@ iframe {
     left: 0;
     opacity: 1;
     z-index: 999;
-    pointer-event: none;
+}
+
+.room-headings {
+    position: relative;
+    margin-bottom: 25px
 }
 
 .room-title {
-    padding: 0;
-    margin: 0 0 25px 0;
+    display: inline;
+    padding: 25px;
     font-weight: 200;
 }
 
@@ -1315,8 +1357,16 @@ iframe {
 }
 
 .more-streams-container {
+    position: relative;
     margin: 50px 0 0 0;
     padding: 0;
+    z-index: 0;
+}
+
+.popular-streams-container {
+    position: relative;
+    margin: 50px 0 0 0;
+    z-index: -1;
 }
 
 .more-stream-heading {
@@ -1334,6 +1384,7 @@ iframe {
     padding-left: 0;
     margin: 7.5px;
     text-align: left;
+    z-index: 0;
 }
 
 .stream-card-contents {
@@ -1487,6 +1538,7 @@ iframe {
         display: block;
     }
 
+
     .login-box, .signup-box {
         width: 100%;
         min-height: 100%;
@@ -1505,11 +1557,86 @@ iframe {
 
 }
 
-@media only screen and (max-width: 840px) {
+@media only screen and (max-width: 960px) {
+    .web-rtc {
+        height: 90px;
+        background-color: rgba(5, 5, 5, 0.95);
+        position: fixed;
+        min-width: 299px;
+        max-width: 299px;
+        font-size: 50% !important;
+        bottom: 25px;
+        left: 25px;
+        border-radius: 7px;
+        cursor: pointer;
+    }
     .home {
         padding: 0;
         background-size: 60%;
         background-position: 50% 80%;
+    }
+
+    .burger-icon {
+        display: block;
+    }
+
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: -5px;
+        background-color: #080808;
+        z-index: 999999999;
+        transform: translateX(-297px);
+    }
+
+    .sidebar-friends-control-container {
+        position: fixed;
+        bottom: auto;
+    }
+
+    .sidebar-icon {
+        left: 5px;
+        top: 20px;
+    }
+
+    .main-search-box {
+        width: 75%;
+        transform: translateX(0px);
+    }
+    .main-container {
+        padding: 0;
+        width: 100%;
+    }
+
+    .room-container {
+        padding: 0;
+        display: block !important;
+    }
+
+    .room-avatar-row {
+        padding-left: 25px;
+    }
+    .more-streams-row {
+        justify-content: space-between;
+    }
+
+    .twitch-chat-row {
+        width: 100%;
+    }
+
+    .more-stream-heading {
+        font-size: 1.4em;
+    }
+
+    .stream-card {
+        min-width: 48.5%;
+        max-width: 48.5%;
+        margin: 7.5px 0 7.5px 0;
+        padding: 0;
+    }
+
+    .stream-card-image {
+        width: 100%;
     }
 
     .banner-primary {
@@ -1535,13 +1662,65 @@ iframe {
         margin: 0;
         text-align: center;
     }
-
-    .primary-btn, .secondary-btn, .logo-main, .register-btn {
-        transform: scale(0.7);
+    
+    .primary-btn, .secondary-btn, .logo-main, .register-btn, .muted-btn {
+        transform: scale(1);
     }
 }
 
 @media only screen and (max-width: 540px) {
+    .main-wrapper {
+        width: 100%;
+    }
+
+    .room-avatar-col {
+        width: 50px !important;
+    }
+
+    .room-avatar {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .admin-icon {
+        transform: scale(0.65) translateX(-75%);
+    }
+
+    .add-room-card {
+        height: 215px;
+    }
+
+    .room-card-button button {
+        max-width: 55%;
+        min-width: 55%;
+    }
+
+    .web-rtc {
+        transform: scale(0.8);
+        left: -10px;
+        bottom: 10px;
+    }
+
+    .room-card {
+        height: 215px;
+        min-width: 200px;
+        max-width: 200px;
+    }
+
+    .stream-avatar {
+        width: 25px;
+        height: 25px;
+    }
+
+    .stream-card-user {
+        margin-left: 25px;
+    }
+
+    .stream-card-options-icons {
+        transform: scale(0.7) translate(-50%, -50%);
+        left: 50%;
+    }
+
     .banner-primary {
         font-size: 2em;
     }
