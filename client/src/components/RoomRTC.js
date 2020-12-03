@@ -5,6 +5,8 @@ import Peer from 'peerjs';
 import axios from 'axios';
 import hark from 'hark';
 
+import MicrophoneActivation from './MicrophoneActivation';
+
 const clientId = localStorage.getItem('userId');
 
 class RoomRTC extends React.Component {
@@ -16,7 +18,8 @@ class RoomRTC extends React.Component {
             roomTitle: null,
             speakingPeers: [],
             miniRTC: false,
-            miniRTCPlacement: {x: null, y: null}
+            miniRTCPlacement: {x: null, y: null},
+            microphoneEnabled: true
         }
     }
 
@@ -73,9 +76,7 @@ class RoomRTC extends React.Component {
     closeCall = (event) => {
         event.stopPropagation();
         this.props.socket.emit('leave-room', this.props.activeRoom, localStorage.getItem('userId'))
-        this.props.socket.emit('now-watching', localStorage.getItem('userId'), null, () => {
-
-        })
+        this.props.socket.emit('now-watching', localStorage.getItem('userId'), null, () => {})
         this.peer.disconnect();
         this.setState({miniRTC: false});
         this.props.leaveRoom();
@@ -97,9 +98,16 @@ class RoomRTC extends React.Component {
             port: '8081'
         })
 
+        this.microphoneReminder = setTimeout(() => {
+            this.setState({microphoneEnabled: false})
+        }, 2000)
+
         navigator.mediaDevices.getUserMedia({
             audio: true
         }).then(stream => {
+
+            this.setState({microphoneEnabled: true})
+            clearTimeout(this.microphoneReminder)
 
             this.props.socket.on('client-connected', (userId, updatedPeersList) => {
                 this.updatePeersInRoom(updatedPeersList)
@@ -179,32 +187,36 @@ class RoomRTC extends React.Component {
 
     render() {
         return(
-            <div 
-                id={this.props.activeRoom} 
-                className={this.state.miniRTC ? "container web-rtc mini-rtc-active d-block" : "container web-rtc d-none"} 
-                style={{left: this.state.miniRTCPlacement.x, top: this.state.miniRTCPlacement.y}}
-                onClick={this.handleMiniRTCClick} 
-                onTouchStart={this.handleTouchStart}
-                onTouchMove={this.handleTouchMove}
-                onTouchEnd={this.handleTouchEnd}
-            >
-                <div className="row padding-top align-items-center">
-                    <div className="col-9">
-                        <h5>{this.state.roomTitle} <span className="rtc-room-size thin">{this.state.peers.length} / 6 </span></h5>
-                        <h6 className="thin">Watching Counter-Strike...</h6>
-                        {this.state.peers.map((userId) => {
-                            return(
-                                <div data-userid={userId}>
-                                    <audio id={userId} key={'audio'+userId} ref={this[`${userId}_ref`]} controls volume="true" autoPlay/>
-                                </div>
-                            )
-                        })}
-                    </div>
-                    <div className="col-3" style={{borderLeft: '1px solid white'}}>
-                        <i className="hangup-room fas fa-3x font-color fa-phone-slash" onClick={this.closeCall}></i>
+            <React.Fragment>
+                {!this.state.microphoneEnabled ? <MicrophoneActivation/> : null }
+                <div 
+                    id={this.props.activeRoom} 
+                    className={this.state.miniRTC ? "container web-rtc mini-rtc-active d-block" : "container web-rtc d-none"} 
+                    style={{left: this.state.miniRTCPlacement.x, top: this.state.miniRTCPlacement.y}}
+                    onClick={this.handleMiniRTCClick} 
+                    onTouchStart={this.handleTouchStart}
+                    onTouchMove={this.handleTouchMove}
+                    onTouchEnd={this.handleTouchEnd}
+                >
+
+                    <div className="row padding-top align-items-center">
+                        <div className="col-9">
+                            <h5>{this.state.roomTitle} <span className="rtc-room-size thin">{this.state.peers.length} / 6 </span></h5>
+                            <h6 className="thin">Watching Counter-Strike...</h6>
+                            {this.state.peers.map((userId) => {
+                                return(
+                                    <div data-userid={userId}>
+                                        <audio id={userId} key={'audio'+userId} ref={this[`${userId}_ref`]} controls volume="true" autoPlay/>
+                                    </div>
+                                )
+                            })}
+                        </div>
+                        <div className="col-3" style={{borderLeft: '1px solid white'}}>
+                            <i className="hangup-room fas fa-3x font-color fa-phone-slash" onClick={this.closeCall}></i>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </React.Fragment>
         )
     }
 }

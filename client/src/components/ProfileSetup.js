@@ -53,7 +53,7 @@ class ProfileSetup extends React.Component {
                           {this.state.avatars.map((avatar) => {
                             let srcPath = `/images/avatars/${avatar}-avatar.png`
                             return(
-                                <img key={avatar} onClick={this.updateAvatar} className={(this.state.avatarSelected === avatar) ? "avatar-image-selection avatar-selected rounded-circle" : "avatar-image-selectedion rounded-circle"} src={srcPath} alt={avatar} id={avatar} />
+                                <img key={avatar} onClick={this.updateAvatar} className={(this.state.avatarSelected === avatar) ? "avatar-image-selection avatar-selected rounded-circle" : "avatar-image-selection rounded-circle"} src={srcPath} alt={avatar} id={avatar} />
                             )
                           })}
                           <button type="submit" className="primary-btn setup-btn block">Save</button>
