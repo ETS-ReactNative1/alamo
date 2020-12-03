@@ -77,7 +77,6 @@ class InviteCard extends React.Component {
                 </div>
                 <div className="col-auto">
                     <h3 className="username bold">{this.state.user.username}</h3>
-                    <h6 className="user-status overflow-dots status-invite thin">{this.state.status}</h6>
                 </div>
             </div>
         )
