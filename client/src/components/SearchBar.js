@@ -12,6 +12,7 @@ class SearchBar extends React.Component {
             loading: false,
             fullWidth: false,
             streamResults: [],
+            matches: window.matchMedia("(min-width: 1200px)").matches,
             channelResults: []
         }
     }
@@ -25,6 +26,12 @@ class SearchBar extends React.Component {
             .catch((err) => console.log(err))
     }
 
+    componentDidMount() {
+        const handler = e => this.setState({matches: e.matches, fullWidth: false});
+        window.matchMedia("(min-width: 1200px)").addListener(handler);
+        console.log(this.state.matches)
+    }
+
     handleInputChange = (event) => {
         const query = event.target.value
         this.setState({query: query})
@@ -33,7 +40,13 @@ class SearchBar extends React.Component {
             this.searchTwitchChannel(query)
         }
 
-        if (!this.props.matches) {
+        if (this.state.query === 0) {
+            console.log('close width')
+            this.setState({fullWidth: false})
+            this.props.searchActive(false)
+        }
+
+        if (!this.state.matches) {
             this.setState({fullWidth: true})
             this.props.searchActive(true)
         }

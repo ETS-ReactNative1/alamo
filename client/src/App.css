@@ -22,6 +22,17 @@ h1, h2, h3, h4, h5, h6, p, label {
     display: none;
 }
 
+.sidebar-create-button {
+    position: absolute;
+    top: 27px;
+    right: -5px;
+    display: none;
+}
+
+.room-column {
+    position: relative;
+}
+
 .burger {
     width: 35px;
     height: 3px;
@@ -1620,6 +1631,10 @@ iframe {
 
     .burger-icon {
         display: block;
+    }
+
+    .sidebar-create-button {
+        display: inline;
     }
 
     .sidebar {

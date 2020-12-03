@@ -17,10 +17,11 @@ class Sidebar extends React.Component {
     }
 
     handleTouchStart = (touchStartEvent) => {
-        console.log(touchStartEvent)
+        touchStartEvent.preventDefault();
     }
 
     handleTouchMove = (event) => {
+        event.preventDefault();
         console.log(event.targetTouches[0].clientX - 294)
         let pos = (event.targetTouches[0].clientX - 294).toString() + 'px'
         if (event.targetTouches[0].clientX - 294 <= -195) {
@@ -44,10 +45,8 @@ class Sidebar extends React.Component {
     handleTouchEnd = (event) => {
         const last_pos = this.state.x_pos.substring(0, this.state.x_pos.length - 2)
         if (parseFloat(last_pos) < -195) {
-            console.log('less than, close')
             this.setState({x_pos: '-299px'})
         } else {
-            console.log('open')
             this.setState({x_pos: '0px'})
         }
     }
