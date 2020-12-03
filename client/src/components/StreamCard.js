@@ -53,7 +53,7 @@ class StreamCard extends React.Component {
 
         if (this.props.selected === userId && this.props.type === 'select') {
             return(
-                <div className="stream-card-options" style={{width: '100%', padding: '0'}}>
+                <div className="stream-card-options" style={{width: '100%', padding: '0', marginRight: '15px'}}>
                     <div className="row" style={{height: '100%'}}>
                         <div className="col-12" style={{padding: '0', right: '20px'}}>
                             <i className="far stream-card-options-icons fa-4x fa-check-circle font-color"></i>

@@ -71,21 +71,13 @@ class InviteCard extends React.Component {
     render() {
         return(
             <div id={this.props.userId} key={this.props.userId} data-online={this.state.online} className="row sidebar-friend align-items-center">
-                <div className="col-3 friend-card-avatar">
+                <div className="col-4 friend-card-avatar">
                     {this.state.online ? <i className="fas fa-circle online"></i> : null }
                     <img className="user-avatar rounded-circle w-15" src={this.state.user.avatar} />
                 </div>
-                <div className="col-9">
-                    <div className="row">
-                        <div className="col">
-                            <h3 className="username bold">{this.state.user.username}</h3>
-                        </div>
-                    </div>
-                    <div className="row">
-                        <div className="col">
-                            <h6 className="user-status overflow-dots thin">{this.state.status}</h6>
-                        </div>
-                    </div>
+                <div className="col-auto">
+                    <h3 className="username bold">{this.state.user.username}</h3>
+                    <h6 className="user-status overflow-dots thin">{this.state.status}</h6>
                 </div>
             </div>
         )

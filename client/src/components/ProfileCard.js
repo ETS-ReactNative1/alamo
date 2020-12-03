@@ -6,10 +6,20 @@ import UserAvatar from './UserAvatar';
 const ProfileCard = (props) => {
     const [ status, setStatus ] = React.useState('')
     const handleContextClick = (event) => {
-        event.preventDefault();
-        const x_pos = event.pageX.toString() + 'px';
-        const y_pos = event.pageY.toString() + 'px';
-        props.handleContextMenu(props.userId, 'profile', x_pos, y_pos)
+        if (event.type === 'touchstart') {
+            event.stopPropagation();
+            const x_pos = event.touches[0].pageX.toString() + 'px';
+            const y_pos = event.touches[0].pageY.toString() + 'px';
+            const online = event.currentTarget.getAttribute('data-online');
+            props.handleContextMenu(event.currentTarget.id, 'profile', x_pos, y_pos)
+        } else {
+            event.preventDefault();
+            const x_pos = event.pageX.toString() + 'px';
+            const y_pos = event.pageY.toString() + 'px';
+            const online = event.currentTarget.getAttribute('data-online');
+            props.handleContextMenu(event.currentTarget.id, 'profile', x_pos, y_pos)
+
+        }
     }
 
     React.useEffect(() => {
@@ -26,7 +36,7 @@ const ProfileCard = (props) => {
 
 
     return(
-        <div id={props.userId} className="row sidebar-profile align-items-center" onContextMenu={handleContextClick}>
+        <div id={props.userId} className="row sidebar-profile align-items-center" onContextMenu={(event) => handleContextClick(event)} onTouchStart={(event) => handleContextClick(event)} onClick={(event) => event.stopPropagation()}> 
             <div className="col-3">
                 <UserAvatar avatar={props.avatar}/>
             </div>

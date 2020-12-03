@@ -7,7 +7,10 @@ const TwitchChat = (props) => {
 
     const showChat = () => {
         setShow(!show) 
-        setMessage('Hide Chat')
+        if (show)
+            setMessage('Hide Chat')
+        else 
+            setMessage('View Chat')
     }
     if (props.mobile) {
         return(

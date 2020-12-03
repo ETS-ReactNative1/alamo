@@ -42,7 +42,7 @@ const FavouriteBtn = (props) => {
             )        
         } else {
             return(
-                <button className="primary-btn small-btn favourite" onClick={removeFromFavourites} style={{marginLeft: '14px', marginRight: '14px', minWidth: '40px'}}>
+                <button className="primary-btn small-btn" onClick={removeFromFavourites} style={{marginLeft: '14px', marginRight: '14px', minWidth: '40px'}}>
                     <i className="fas fa-check favourite-icon"></i>
                 </button>
             )        
@@ -52,7 +52,7 @@ const FavouriteBtn = (props) => {
     } else {
         if (props.matches) {
             return(
-                <button className="muted-btn" onClick={addToFavourties}>
+                <button className="muted-btn favourite" onClick={addToFavourties}>
                     Favourite
                     <i className="fas fa-heart favourite-icon"></i>
                 </button>

@@ -22,7 +22,7 @@ const RoomContext = (props) => {
     }
 
     return(
-        <div className="container context-menu" style={{display: props.show, top: props.y, left: props.x}}>
+        <div className="container context-menu" style={{display: props.show, top: props.y, left: props.x}} onClick={(event) => event.stopPropagation()}>
             <div className="row">
                 <div className="col no-padding">
                     <ul className="nav flex-column font-color">

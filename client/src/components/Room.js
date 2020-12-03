@@ -39,12 +39,11 @@ class Room extends React.Component {
     fetchStream = (streamId) => {
         axios.get('/twitchapi/streams', {params : {user_id: streamId}})
             .then((response) => {
-                this.setState({stream: response.data[0]})
-                console.log(response)
-                //Emit to server, than user is currently watching this game
-                this.props.socket.emit('now-watching', localStorage.getItem('userId'), response.data[0].game_name, () => {
-
-                })
+                    if (response.data.length > 0) {
+                        this.setState({stream: response.data[0]})
+                        //Emit to server, than user is currently watching this game
+                        this.props.socket.emit('now-watching', localStorage.getItem('userId'), response.data[0].game_name, () => {})
+                    }
             })
     }
 
@@ -165,7 +164,7 @@ class Room extends React.Component {
         return(
             <React.Fragment>
                 {this.state.vote ? <Vote yesUsers={this.state.yesUsers} noUsers={this.state.noUsers} yesVotes={this.state.yesVotes} noVotes={this.state.noVotes} usersInRoom={this.state.usersInRoom} votesNeeded={this.state.votesNeeded} voterId={this.state.voterId} votingActions={this.votingActions} stream={this.state.voterChannel}/> : null}
-                <div className={this.props.show ? "room-container show-room d-flex" : "room-container d-flex"}>
+                <div className={this.props.show ? "room-container show-room d-flex" : "room-container d-flex"} style={ !this.state.show ? {pointerEvents: 'auto'} : {pointerEvents: 'none'} }>
                     <div className="container-fluid">
                         <div className="room-headings">
                             {(window.location.pathname.substring(1, 5) === 'room') ? <i className="fas back-arrow font-color fa-2x fa-arrow-left" onClick={() => this.props.history.push('/')}></i>  : null} 

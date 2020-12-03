@@ -22,6 +22,20 @@ h1, h2, h3, h4, h5, h6, p, label {
     display: none;
 }
 
+.sidebar-create-button {
+    position: absolute;
+    top: 29px;
+    right: 0px;
+    border-radius: 20px !important;
+    height: 40px !important;
+    min-width: 100px !important;
+    display: none;
+}
+
+.room-column {
+    position: relative;
+}
+
 .burger {
     width: 35px;
     height: 3px;
@@ -622,6 +636,10 @@ a {
     padding-left: 14px;
 }
 
+.favourite {
+    max-width: 141px;
+}
+
 .favourite-icon {
     padding: 0 8px 0 8px;
 }
@@ -637,6 +655,7 @@ a {
 
 .invite-friends-container {
     width: 100%;
+    margin-bottom: 50px;
 }
 
 .small-btn {
@@ -805,7 +824,6 @@ a {
     transition: all 0.1s linear;
 
 }
-
 .sidebar-trigger {
     position: fixed;
     top: 0;
@@ -852,7 +870,7 @@ a {
     min-width: 337px;
     width: auto;
     display: inline-block;
-    min-height: 257px;
+    height: 267px;
     border: 3px dashed rgba(242, 231, 254, 0.2);
     text-align: center;
     padding: 35px;
@@ -877,7 +895,7 @@ a {
 .stream-border {
     border-right: 3px solid rgba(242, 231, 254, 0.2) !important;
     transform: translateX(-30px);
-    min-height: 257px;
+    height: 257px;
 }
 
 .add-room-card {
@@ -986,7 +1004,7 @@ a {
 }
 
 .sidebar-friends-control-container {
-    position: absolute;
+    position: fixed;
     max-width: 300px;
     left: 0;
     bottom: 0;
@@ -1290,6 +1308,7 @@ iframe {
     padding-bottom: 50px;
     overflow: hidden;
     opacity: 0;
+    pointer-events: none;
     z-index: -999;
 }
 
@@ -1308,11 +1327,12 @@ iframe {
     left: 0;
     opacity: 1;
     z-index: 999;
+    pointer-events: auto;
 }
 
 .room-headings {
     position: relative;
-    margin-bottom: 25px
+    margin-bottom: 50px
 }
 
 .room-title {
@@ -1325,6 +1345,10 @@ iframe {
     height: 100%;
     max-width: 350px;
     margin-right: 24px;
+}
+
+.show-chat {
+    height: 650px !important;
 }
 
 .twitch-login-toast {
@@ -1379,6 +1403,10 @@ iframe {
     position: relative;
     margin: 50px 0 0 0;
     z-index: -1;
+}
+
+.add-streams-heading-popular {
+    padding-left: 75px;
 }
 
 .more-stream-heading {
@@ -1591,9 +1619,6 @@ iframe {
         height: 650px;
     }
 
-    .show-chat {
-        height: 650px;
-    }
 
     .twitch-iframe {
         position: absolute;
@@ -1619,6 +1644,10 @@ iframe {
 
     .burger-icon {
         display: block;
+    }
+
+    .sidebar-create-button {
+        display: inline;
     }
 
     .sidebar {
@@ -1681,8 +1710,25 @@ iframe {
         padding: 0;
     }
 
+    .add-stream-card {
+        min-width: 48.5%;
+        max-width: 48.5%;
+        margin: 7.5px 0 7.5px 0;
+        height: 325px;
+        padding: 10px 0 0 0;
+    }
+
+    .stream-border {
+        height: 325px;
+        transform: translateX(-15px);
+    }
+
     .stream-card-image {
         width: 100%;
+    }
+
+    .add-streams-heading-popular {
+        padding-left: 0;
     }
 
     .banner-primary {
@@ -1720,7 +1766,42 @@ iframe {
     }
 }
 
+@media only screen and (max-width: 990px) {
+    .add-stream-card {
+        height: 260px;
+    }
+
+    .stream-border {
+        height: 260px;
+        transform: translateX(-15px);
+    }
+
+}
+@media only screen and (max-width: 777px) {
+    .add-stream-card {
+        height: 210px;
+    }
+
+    .stream-border {
+        height: 210px;
+        transform: translateX(-15px);
+    }
+
+}
 @media only screen and (max-width: 540px) {
+    .room-title {
+        font-size: 2em;
+    }
+    .add-stream-card {
+        width: 100%;
+        height: 160px;
+    }
+
+    .stream-border {
+        height: 210px;
+        transform: translateX(-15px);
+    }
+
     .vote-container {
         transform: scale(0.8);
         right: -25px;
@@ -1779,17 +1860,12 @@ iframe {
         margin: 0;
         height: 50px;
     }
-
     
     .admin-icon {
         transform: scale(0.65) translateX(-75%);
     }
 
     .add-room-card {
-        height: 215px;
-    }
-
-    .add-stream-card {
         height: 215px;
     }
 

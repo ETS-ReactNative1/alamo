@@ -17,10 +17,11 @@ class Sidebar extends React.Component {
     }
 
     handleTouchStart = (touchStartEvent) => {
-        console.log(touchStartEvent)
+        touchStartEvent.preventDefault();
     }
 
     handleTouchMove = (event) => {
+        event.preventDefault();
         console.log(event.targetTouches[0].clientX - 294)
         let pos = (event.targetTouches[0].clientX - 294).toString() + 'px'
         if (event.targetTouches[0].clientX - 294 <= -195) {
@@ -44,14 +45,16 @@ class Sidebar extends React.Component {
     handleTouchEnd = (event) => {
         const last_pos = this.state.x_pos.substring(0, this.state.x_pos.length - 2)
         if (parseFloat(last_pos) < -195) {
-            console.log('less than, close')
             this.setState({x_pos: '-299px'})
         } else {
-            console.log('open')
             this.setState({x_pos: '0px'})
         }
     }
 
+    handleClick = (event) => {
+        event.stopPropagation();
+        this.props.closeContextMenu();
+    }
 
     render() {
         const userId =  this.props.user._id;
@@ -60,7 +63,6 @@ class Sidebar extends React.Component {
         const pendingInvitation = this.props.user.pending_invitations;
         const friends = this.props.user.friends;
         const rooms = this.props.user.rooms;
-        console.log(this.props.openMenu)
 
         return(
             <React.Fragment>
@@ -79,7 +81,7 @@ class Sidebar extends React.Component {
                 ></div>
                 <nav className="col-md-2 d-md-block sidebar" 
                     style={this.props.openMenu ? {transform: 'translateX(0px)'} : !this.props.matches ? {transform: 'translateX(-299px)'} : this.state.show ? {transform: `translateX(${this.state.x_pos})`} : {transform: 'translateX(0px)'}}
-                    onClick={(event) => event.stopPropagation()}
+                    onClick={this.handleClick}
                 >
 
                     <div className="sidebar-sticky">
@@ -105,6 +107,7 @@ class Sidebar extends React.Component {
                                 showRoom={this.props.showRoom} 
                                 changeRoom={this.props.changeRoom} 
                                 rooms={rooms} 
+                                closeMenu={this.props.closeMenu}
                                 handleContextMenu={this.props.handleContextMenu} 
                             /> : null}
 
@@ -116,15 +119,18 @@ class Sidebar extends React.Component {
                                 handleContextMenu={this.props.handleContextMenu}
                             /> : null }
 
-                        { pendingInvitation ? 
-                            <SidebarFriendsControls 
-                                socket={this.props.socket} 
-                                pendingInvitations={pendingInvitation} 
-                                fetchUserInformation={this.props.fetchUserInformation}
-                            /> : null }
-
                     </div>
                 </nav>
+
+                    { pendingInvitation ? 
+                        <SidebarFriendsControls 
+                            matches={this.props.matches}
+                            show={this.props.openMenu}
+                            socket={this.props.socket} 
+                            pendingInvitations={pendingInvitation} 
+                            fetchUserInformation={this.props.fetchUserInformation}
+                        /> : null }
+
             </React.Fragment>
         )
     }

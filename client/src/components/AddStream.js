@@ -33,7 +33,7 @@ class AddStream extends React.Component {
                         {this.state.searchBarStatus ? <h3 className="more-stream-heading thin d-block">Add Stream</h3> : null }
                     </div>
                     <div className="col">
-                        {!this.state.searchBarStatus ? <h3 className="more-stream-heading thin d-block" style={{paddingLeft: '75px'}}>Some Popular Streams</h3> : null }
+                        {!this.state.searchBarStatus ? <h3 className="more-stream-heading add-streams-heading-popular thin d-block">Some Popular Streams</h3> : null }
                     </div>
                 </div>
 

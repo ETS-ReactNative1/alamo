@@ -81,7 +81,7 @@ const CreateRoom = (props) => {
                 />
                 <label htmlFor="roomTitle"></label>
                 <InviteFriends 
-                    createRoom={true}
+                    inline={true}
                     friendsToInvite={(friend) => friendsToInvite(friend)}
                     socket={props.socket} 
                     friends={props.friends} 

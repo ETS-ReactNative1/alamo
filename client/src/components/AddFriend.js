@@ -101,9 +101,13 @@ class AddFriend extends React.Component {
             });
     }
 
+    handleClick = () => {
+        console.log('clicked')
+    }
+
     render() {
         return (
-            <div className={(this.props.addFriendActive) ? "col-12 friends-input-controls add-friends-active" : "col-12 friends-input-controls"} >
+            <div className={(this.props.addFriendActive) ? "col-12 friends-input-controls add-friends-active" : "col-12 friends-input-controls"} onClick={(event) => event.stopPropagation()} >
 
                 {this.state.pendingInvitations.length > 0 ? <label id="friend-control-heading" htmlFor="username">Pending Invitations</label> : null}
 
@@ -134,7 +138,7 @@ class AddFriend extends React.Component {
                     )
                 })}
                 <h6 id="friend-error-message">{this.state.userNotFound}</h6>
-                <form action="post" onSubmit={this.handleUserSearch}>
+                <form action="post" onSubmit={this.handleUserSearch} onClick={this.handleClick}>
                     <input 
                         id="friend-control-input" 
                         placeholder="Username" 

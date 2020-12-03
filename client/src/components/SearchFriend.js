@@ -36,7 +36,7 @@ class SearchFriend extends React.Component {
 
     render() {
         return (
-            <div className={(this.props.searchFriendActive) ? "col-12 friends-input-controls search-friends-active" : "col-12 friends-input-controls"} >
+            <div className={(this.props.searchFriendActive) ? "col-12 friends-input-controls search-friends-active" : "col-12 friends-input-controls"} onClick={(event) => event.stopPropagation()}>
                 <label id="friend-control-heading" htmlFor="username">Search Friend</label>
                 {this.state.searchResults.map((friend) => {
                     console.log(friend)
