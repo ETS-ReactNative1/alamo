@@ -74,17 +74,20 @@ class SearchBar extends React.Component {
 
     render() {
         return(
-            <div className={this.state.fullWidth ? "main-search-box full-width-search" : "main-search-box" }>
-                <input 
-                    ref={this.searchInput}
-                    className={this.state.query.length > 2 ? "main-search-input rm-bottom-border" : "main-search-input"} 
-                    type="search-query" 
-                    placeholder="Find Stream or paste Twitch url" 
-                    onInput={this.handleInputChange}
-                />
-                {this.state.query.length > 2 ? <i className="fas fa-1x font-color search-bar-close fa-times" onClick={this.clear}></i> : null}
-                {this.state.query.length > 2 ? <SearchResults activeRoom={this.props.activeRoom} socket={this.props.socket} loading={this.state.loading} loaded={this.loaded} channels={this.state.channelResults} streamResults={this.state.streamResults}/> : null}
-            </div>
+            <React.Fragment>
+                <div className={this.state.fullWidth ? "main-search-box full-width-search" : "main-search-box" }>
+                    <input 
+                        ref={this.searchInput}
+                        className={this.state.query.length > 2 ? "main-search-input rm-bottom-border" : "main-search-input"} 
+                        type="search-query" 
+                        placeholder="Find Stream or paste Twitch url" 
+                        onInput={this.handleInputChange}
+                    />
+                    {this.state.query.length > 2 ? <i className="fas fa-1x font-color search-bar-close fa-times" onClick={this.clear}></i> : null}
+                    {this.state.query.length > 2 ? <SearchResults activeRoom={this.props.activeRoom} socket={this.props.socket} loading={this.state.loading} loaded={this.loaded} channels={this.state.channelResults} streamResults={this.state.streamResults}/> : null}
+                </div>
+                {this.state.query.length > 0 ? <div className="search-box-trigger" onClick={() => this.clear()}></div> : null }
+            </React.Fragment>
         )
     }
 };

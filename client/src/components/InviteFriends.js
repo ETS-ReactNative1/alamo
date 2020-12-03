@@ -38,7 +38,7 @@ const InviteFriends = (props) => {
                                 <div className="col">
                                     <InviteCard socket={props.socket} key={'invite-'+friend} userId={friend} onlineUsers={props.onlineUsers}/>
                                 </div>
-                                <div className="col-2">
+                                <div className="col-2" style={{right: '60px'}}>
                                     {(invite.includes(friend, 0)) ? 
                                         <button id={friend} type="button" className="primary-btn small-btn-invite passthrough" style={{paddingLeft: '16px'}}>
                                             Invited

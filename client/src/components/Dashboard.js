@@ -154,6 +154,10 @@ class Dashboard extends React.Component {
                         />
 
                         <main className="col main-container">
+                            {this.state.openMenu ?
+                                <div className="sidebar-click-trigger" onClick={() => this.setState({...this.state, openMenu: false})}></div>
+                            : null }
+
                             <NavigationBar 
                                 closeSearch={this.state.closeSearch}
                                 matches={this.state.matches}

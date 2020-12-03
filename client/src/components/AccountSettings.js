@@ -174,7 +174,8 @@ class AccountSettings extends React.Component {
                       {this.handleDeleteAccount()}
                       {this.state.deleteAccount ? null : <button className="primary-btn block" style={{backgroundColor: 'DarkRed'}} onClick={() => this.setState({deleteAccount: true})}>Delete</button> }
 
-                      <button className="secondary-btn margin-top setup-btn" onClick={this.handleCancelRoom}>Cancel</button>
+                      <label htmlFor="username"></label>
+                      <button className="secondary-btn margin-top margin-bottom setup-btn" onClick={this.handleCancelRoom}>Cancel</button>
                   </div>
               </div>
           </div>
