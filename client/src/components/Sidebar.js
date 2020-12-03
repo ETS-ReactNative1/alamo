@@ -51,6 +51,10 @@ class Sidebar extends React.Component {
         }
     }
 
+    handleClick = (event) => {
+        event.stopPropagation();
+        this.props.closeContextMenu();
+    }
 
     render() {
         const userId =  this.props.user._id;
@@ -78,7 +82,7 @@ class Sidebar extends React.Component {
                 ></div>
                 <nav className="col-md-2 d-md-block sidebar" 
                     style={this.props.openMenu ? {transform: 'translateX(0px)'} : !this.props.matches ? {transform: 'translateX(-299px)'} : this.state.show ? {transform: `translateX(${this.state.x_pos})`} : {transform: 'translateX(0px)'}}
-                    onClick={(event) => event.stopPropagation()}
+                    onClick={this.handleClick}
                 >
 
                     <div className="sidebar-sticky">
@@ -104,6 +108,7 @@ class Sidebar extends React.Component {
                                 showRoom={this.props.showRoom} 
                                 changeRoom={this.props.changeRoom} 
                                 rooms={rooms} 
+                                closeMenu={this.props.closeMenu}
                                 handleContextMenu={this.props.handleContextMenu} 
                             /> : null}
 
@@ -115,15 +120,18 @@ class Sidebar extends React.Component {
                                 handleContextMenu={this.props.handleContextMenu}
                             /> : null }
 
-                        { pendingInvitation ? 
-                            <SidebarFriendsControls 
-                                socket={this.props.socket} 
-                                pendingInvitations={pendingInvitation} 
-                                fetchUserInformation={this.props.fetchUserInformation}
-                            /> : null }
-
                     </div>
                 </nav>
+
+                    { pendingInvitation ? 
+                        <SidebarFriendsControls 
+                            matches={this.props.matches}
+                            show={this.props.openMenu}
+                            socket={this.props.socket} 
+                            pendingInvitations={pendingInvitation} 
+                            fetchUserInformation={this.props.fetchUserInformation}
+                        /> : null }
+
             </React.Fragment>
         )
     }

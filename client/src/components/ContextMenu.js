@@ -29,7 +29,7 @@ class ContextMenu extends React.Component {
 
     friendMenu = (show, id,  x, y, online) => {
         return (
-            <FriendContext socket={this.props.socket} activeRoom={this.props.activeRoom} show={show} id={id} x={x} y={y} online={online} fetchUserInformation={this.props.fetchUserInformation} />
+            <FriendContext socket={this.props.socket} closeContextMenu={this.props.closeContextMenu} activeRoom={this.props.activeRoom} show={show} id={id} x={x} y={y} online={online} fetchUserInformation={this.props.fetchUserInformation} />
         )
     }
 

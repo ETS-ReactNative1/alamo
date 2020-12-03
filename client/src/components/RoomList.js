@@ -5,6 +5,7 @@ import { withRouter } from 'react-router-dom';
 const RoomList = (props) => {
     const redirect = (path) => {
         props.history.push('/create-room');
+        props.closeMenu();
     }
 
     const initRooms = () => {
@@ -17,7 +18,7 @@ const RoomList = (props) => {
     return(
         <ul className="nav flex-column room-column">
             <h3 className="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 thin">Rooms</h3>
-            <button className="primary-btn sidebar-create-button" onClick={() => props.history.push('/create-room')}>Create</button>
+            <button className="primary-btn sidebar-create-button" onClick={() => redirect('/create-room')}>Create</button>
 
             {initRooms()}
 

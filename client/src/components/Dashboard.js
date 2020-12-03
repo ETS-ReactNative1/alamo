@@ -93,12 +93,22 @@ class Dashboard extends React.Component {
         this.setState({openMenu: false, contextMenu: {status: false, x: '-400px', y: '-400px'}})
     }
 
+    closeContextMenu = () => {
+        this.setState({contextMenu: {status: false, x: '-400px', y: '-400px'}})
+    }
+
     showRoom = () => {
         this.setState({showRoom: true});
     }
 
     openMenu = () => {
         this.setState({openMenu: true})
+
+    }
+
+    closeMenu = () => {
+        console.log('close menu!!!!!!!!!!')
+        this.setState({openMenu: false})
     }
 
     render() {
@@ -121,6 +131,7 @@ class Dashboard extends React.Component {
                             activeRoom={this.state.activeRoom}
                             socket={this.props.socket} 
                             status={this.state.contextMenu} 
+                            closeContextMenu={this.closeContextMenu}
                             fetchUserInformation={this.fetchUserInformation} 
                         />
 
@@ -130,9 +141,12 @@ class Dashboard extends React.Component {
                             activeRoom={this.state.activeRoom} 
                             matches={this.state.matches}
                             openMenu={this.state.openMenu}
+                            closeMenu={this.closeMenu}
                             changeRoom={this.changeRoom} 
                             user={this.state.user} 
                             handleContextMenu={this.handleContextMenu} 
+                            clearContextMenu={this.clearContextMenu}
+                            closeContextMenu={this.closeContextMenu}
                             onlineUsers={this.state.onlineUsers} 
                             friendsControlsActive={this.friendsControlsActive}
                             fetchUserInformation={this.fetchUserInformation}

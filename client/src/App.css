@@ -24,8 +24,11 @@ h1, h2, h3, h4, h5, h6, p, label {
 
 .sidebar-create-button {
     position: absolute;
-    top: 27px;
-    right: -5px;
+    top: 29px;
+    right: 0px;
+    border-radius: 20px !important;
+    height: 40px !important;
+    min-width: 100px !important;
     display: none;
 }
 
@@ -817,7 +820,6 @@ a {
     transition: all 0.1s linear;
 
 }
-
 .sidebar-trigger {
     position: fixed;
     top: 0;
@@ -998,7 +1000,7 @@ a {
 }
 
 .sidebar-friends-control-container {
-    position: absolute;
+    position: fixed;
     max-width: 300px;
     left: 0;
     bottom: 0;

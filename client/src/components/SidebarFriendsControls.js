@@ -24,18 +24,20 @@ class SidebarFriendsControls extends React.Component {
 
     }
 
-    handleAddFriend = () => {
+    handleAddFriend = (event) => {
+        event.stopPropagation();
         this.setState({addFriend: !this.state.addFriend, searchFriend: false})
     }
 
-    handleSearchFriend = () => {
+    handleSearchFriend = (event) => {
+        event.stopPropagation();
         this.setState({searchFriend: !this.state.searchFriend, addFriend: false})
     }
 
 
     render() {
         return(
-            <div className="sidebar-friends-control-container">
+            <div className="sidebar-friends-control-container" style={this.props.show ? {transform: 'translate(0px)', position: 'fixed', bottom: '0', zIndex: '99999999999999999999999', maxWidth: '295px', borderRight: '0'} : this.props.matches ? {transform: 'translate(0px)'} : this.props.matches ? {maxWidth: '300px'} : {transform: 'translateX(-299px)'}}>
                 <div className="row">
                     <AddFriend 
                         socket={this.props.socket} 
@@ -49,7 +51,7 @@ class SidebarFriendsControls extends React.Component {
                         <i className={(this.props.pendingInvitations.length > 0) ? "fas fa-circle pending-notification" : 'hide'}></i>
                         <i className="fas fa-1x font-color centered sidebar-friend-control-icon fa-user-plus"></i>
                     </div>
-                    <div className="col-6 sidebar-friend-control-col" style={{maxWidth: '150px'}} onClick={this.handleSearchFriend}>
+                    <div className="col-6 sidebar-friend-control-col" onClick={this.handleSearchFriend} style={this.props.show ? {maxWidth: '150px', borderRight: '0px'} : {maxWidth: '150px'}}>
                         <i style={{left: 'calc(50% - 10px)'}} className="fas fa-1x font-color centered sidebar-friend-control-icon fa-search"></i>
                     </div>
                 </div>
