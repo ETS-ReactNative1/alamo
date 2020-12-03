@@ -1,5 +1,5 @@
 import React from 'react';
-import { Redirect } from 'react-router-dom';
+import { withRouter, Redirect } from 'react-router-dom';
 
 import InviteCard from './InviteCard';
 
@@ -22,21 +22,23 @@ const InviteFriends = (props) => {
     }
     else {
         return(
-            <div className="container-fluid invite-friends-container">
+            <div className="container-fluid invite-friends-container" style={props.inline ? {padding: '0'} : {padding: '35px'}}>
                 <div className="row">
                     <div className="room-headings">
-                            <i className="fas back-arrow font-color fa-2x fa-arrow-left" onClick={() => this.props.history.goBack()}></i>
+                        {!props.inline ? 
+                            <i className="fas back-arrow font-color fa-2x fa-arrow-left" onClick={() => props.history.goBack()}></i>
+                        : null }
                             <h1 className="room-title">Invite Friends</h1>
                       </div>
                 </div>
                 {props.friends.map((friend) => {
                     if ((friend in props.onlineUsers)) {
                         return(
-                            <div className="row justify-content-between align-items-center">
+                            <div className="row align-items-center">
                                 <div className="col">
                                     <InviteCard socket={props.socket} key={'invite-'+friend} userId={friend} onlineUsers={props.onlineUsers}/>
                                 </div>
-                                <div className="col-4">
+                                <div className="col-2">
                                     {(invite.includes(friend, 0)) ? 
                                         <button id={friend} type="button" className="primary-btn small-btn-invite passthrough" style={{paddingLeft: '16px'}}>
                                             Invited
@@ -58,4 +60,4 @@ const InviteFriends = (props) => {
 
 };
 
-export default InviteFriends;
+export default withRouter(InviteFriends);

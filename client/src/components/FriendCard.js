@@ -93,7 +93,7 @@ class FriendCard extends React.Component {
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>        
         )
     }
 }

@@ -39,12 +39,11 @@ class Room extends React.Component {
     fetchStream = (streamId) => {
         axios.get('/twitchapi/streams', {params : {user_id: streamId}})
             .then((response) => {
-                this.setState({stream: response.data[0]})
-                console.log(response)
-                //Emit to server, than user is currently watching this game
-                this.props.socket.emit('now-watching', localStorage.getItem('userId'), response.data[0].game_name, () => {
-
-                })
+                    if (response.data.length > 0) {
+                        this.setState({stream: response.data[0]})
+                        //Emit to server, than user is currently watching this game
+                        this.props.socket.emit('now-watching', localStorage.getItem('userId'), response.data[0].game_name, () => {})
+                    }
             })
     }
 

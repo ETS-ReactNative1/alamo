@@ -52,10 +52,9 @@ class EditRoom extends React.Component {
             <div className="container">
                 <div className="row">
                     <div className="col">
-                        <h1 className="setup-heading thin">Edit Room</h1>
                         <div className="room-headings">
                             <i className="fas back-arrow font-color fa-2x fa-arrow-left" onClick={() => this.props.history.goBack()}></i>
-                            <h1 className="room-title">Change Avatar</h1>
+                            <h1 className="room-title">Edit Room</h1>
                         </div>
 
                         {this.state.admin ? 
