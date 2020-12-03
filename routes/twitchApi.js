@@ -90,7 +90,15 @@ router.get('/streams', (req, res) => {
 
     axios.get('https://api.twitch.tv/helix/streams', {params: params, headers: headers})
         .then((response) => {
-            res.json(response.data.data) 
+            if (response.data.data.length === 0) {
+                //If stream is offline or undefine, get most popular stream on platfrom
+                axios.get('https://api.twitch.tv/helix/streams', {params: {}, headers: headers})
+                    .then((backup) => {
+                        res.status(200).json(backup.data.data) 
+                    })
+            } else {
+                res.status(200).json(response.data.data) 
+            }
         })
         .catch((err) => console.log(err))
 })
