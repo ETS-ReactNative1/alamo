@@ -18,7 +18,7 @@ class MainWrapper extends React.Component {
 
     render() {
         return(
-            <div className={this.state.show ? "main-wrapper" : "main-wrapper hide-main"}>
+            <div id="main-wrapper" className={this.state.show ? "main-wrapper" : "main-wrapper hide-main"} style={ this.props.openMenu ? {pointerEvents: 'none'} : {pointerEvents: 'auto'} }>
                 {this.props.children}
             </div>
         )

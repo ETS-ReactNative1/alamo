@@ -28,6 +28,7 @@ class Dashboard extends React.Component {
             show: false,
             activeRoom: null,
             menuOpen: true,
+            closeSearch: false,
             contextMenu: {
                 type: '',
                 id: '',
@@ -89,7 +90,7 @@ class Dashboard extends React.Component {
     }
 
     clearContextMenu = () => {
-        this.setState({openMenu: false, contextMenu: {status: false, x: '-400px', y: '-400px'}})
+        this.setState({openMenu: false, closeSearch: true, contextMenu: {status: false, x: '-400px', y: '-400px'}})
     }
 
     closeContextMenu = () => {
@@ -153,6 +154,7 @@ class Dashboard extends React.Component {
 
                         <main className="col main-container">
                             <NavigationBar 
+                                closeSearch={this.state.closeSearch}
                                 matches={this.state.matches}
                                 openMenu={this.openMenu}
                                 socket={this.props.socket}
@@ -177,6 +179,7 @@ class Dashboard extends React.Component {
                                 <Room 
                                     socket={this.props.socket} 
                                     show={this.state.show} 
+                                    openMenu={this.state.openMenu}
                                     activeRoom={this.state.activeRoom} 
                                     admins={this.props.admins} 
                                     matches={this.state.matches}
@@ -210,7 +213,7 @@ class Dashboard extends React.Component {
                             )}/>
 
                             <Route path="/" render={(props) => (
-                                <MainWrapper activeRoom={this.state.activeRoom}>
+                                <MainWrapper activeRoom={this.state.activeRoom} openMenu={this.state.openMenu}>
                                     {this.props.user.rooms ? 
                                         <RoomShowcase 
                                             activeRoom={this.state.activeRoom}

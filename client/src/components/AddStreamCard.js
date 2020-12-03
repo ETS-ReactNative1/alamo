@@ -46,7 +46,7 @@ class AddStreamCard extends React.Component {
                                 if (index <= this.state.searchResults) {
                                     let image = stream.thumbnail_url.replace('{width}', '347').replace('{height}', '195')
                                     return(
-                                        <StreamCard type={'select'} key={index} handleClick={this.props.handleClick} selected={this.props.selected} gameId={this.props.gameId} admins={this.props.admins} stream={stream} image={image} changeStream={this.props.changeStream} vote={this.props.vote}/>
+                                        <StreamCard type={'select'} small={true} key={index} handleClick={this.props.handleClick} selected={this.props.selected} gameId={this.props.gameId} admins={this.props.admins} stream={stream} image={image} changeStream={this.props.changeStream} vote={this.props.vote}/>
                                     )
                                 }
                             })}

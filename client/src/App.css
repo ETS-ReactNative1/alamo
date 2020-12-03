@@ -110,6 +110,10 @@ label {
     padding-top: 15px;
 }
 
+.margin-right {
+    margin-right: 10px !important;
+}
+
 .main-search-box {
     position: relative;
     width: 50%;
@@ -136,12 +140,17 @@ label {
 
 .channel-results-card {
     position: relative;
-    height: 250px;
+    height: 33%;
     width: 100%;
-    padding: 5px;
+    height: auto;
+    padding: 15px;
     margin-bottom: 8px;
     color: #212529 !important;
     background-color: rgba(243, 231, 254, 0.9) !important;
+}
+
+.channel-results-card img {
+    object-fit: contain;
 }
 
 .channel-results-col {
@@ -150,6 +159,9 @@ label {
 }
 
 .live {
+    position: absolute;
+    top: -5px;
+    right: 15px;
     background-color: red;
     color: white;
     width: 34px;
@@ -174,17 +186,8 @@ label {
     padding-left: 5px;
 }
 
-.channel-results-img {
-    display:block;
-    margin:auto;
-    text-align: center;
-    max-width: 70%;
-    min-width: 173px;
-    height: auto;
-}
-
 .stream-results-card {
-    height: 150px;
+    height: auto;
     width: 100%;
     padding: 5px;
     margin-bottom: 8px;
@@ -1402,7 +1405,7 @@ iframe {
 .popular-streams-container {
     position: relative;
     margin: 50px 0 0 0;
-    z-index: -1;
+    z-index: 0;
 }
 
 .add-streams-heading-popular {
@@ -1704,8 +1707,8 @@ iframe {
     }
 
     .stream-card {
-        min-width: 48.5%;
-        max-width: 48.5%;
+        min-width: 32%;
+        max-width: 32%;
         margin: 7.5px 0 7.5px 0;
         padding: 0;
     }
@@ -1788,6 +1791,23 @@ iframe {
     }
 
 }
+@media only screen and (max-width: 573px) {
+    .channel-results-card img {
+        padding: 0 !important;
+        margin-bottom: 5px;
+        width: 25% !important;
+    }
+}
+
+@media only screen and (max-width: 573px) {
+    .channel-results-card img {
+        padding: 0 !important;
+        margin-bottom: 5px;
+        width: 25% !important;
+    }
+
+}
+
 @media only screen and (max-width: 540px) {
     .room-title {
         font-size: 2em;
@@ -1801,6 +1821,14 @@ iframe {
         height: 210px;
         transform: translateX(-15px);
     }
+    
+    .stream-card {
+        min-width: 48.5%;
+        max-width: 48.5%;
+        margin: 7.5px 0 7.5px 0;
+        padding: 0;
+    }
+
 
     .vote-container {
         transform: scale(0.8);
@@ -1822,25 +1850,6 @@ iframe {
         font-size: 1em;
     }
 
-    .channel-results-img {
-        min-width: 100px;
-        max-width: 50%;
-    }
-
-    .channel-results-col-img {
-        max-width: 50%;
-        min-width: 100px;
-    }
-
-    .channel-results-card {
-        height: 250px;
-    }
-
-    .channel-results-col-content {
-        min-width: auto;
-        height: 160px;
-
-    }
 
     .main-wrapper {
         width: 100%;
