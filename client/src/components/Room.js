@@ -164,7 +164,7 @@ class Room extends React.Component {
         return(
             <React.Fragment>
                 {this.state.vote ? <Vote yesUsers={this.state.yesUsers} noUsers={this.state.noUsers} yesVotes={this.state.yesVotes} noVotes={this.state.noVotes} usersInRoom={this.state.usersInRoom} votesNeeded={this.state.votesNeeded} voterId={this.state.voterId} votingActions={this.votingActions} stream={this.state.voterChannel}/> : null}
-                <div className={this.props.show ? "room-container show-room d-flex" : "room-container d-flex"} style={ !this.state.show ? {pointerEvents: 'auto'} : {pointerEvents: 'none'} }>
+                <div className={this.props.show ? "room-container show-room d-flex" : "room-container d-flex"} style={ this.props.openMenu ? {pointerEvents: 'none'} : {pointerEvents: 'auto'} }>
                     <div className="container-fluid">
                         <div className="room-headings">
                             {(window.location.pathname.substring(1, 5) === 'room') ? <i className="fas back-arrow font-color fa-2x fa-arrow-left" onClick={() => this.props.history.push('/')}></i>  : null} 

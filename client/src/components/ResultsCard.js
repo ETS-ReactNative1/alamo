@@ -15,7 +15,7 @@ class ResultsCard extends React.Component {
         return(
             <div className="container-fluid d-flex stream-results-card">
                 <div className="row align-items-center" style={{width: '100%'}}>
-                    <div className="col-5">
+                    <div className="col-6">
                         <img className="stream-results-img" src={image} alt="" />
                     </div>
                     <div className="col">

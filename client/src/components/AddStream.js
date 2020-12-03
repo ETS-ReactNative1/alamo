@@ -49,7 +49,7 @@ class AddStream extends React.Component {
                                 let image = stream.thumbnail_url.replace('{width}', '347').replace('{height}', '195')
                                 if (index <= 7) {
                                     return(
-                                        <StreamCard key={index} gameId={this.props.gameId} handleClick={this.props.handleClick} selected={this.props.selected} admins={this.props.admins} stream={stream} image={image} changeStream={this.props.changeStream} type={'select'} vote={this.props.vote}/>
+                                        <StreamCard key={index} small={true} gameId={this.props.gameId} handleClick={this.props.handleClick} selected={this.props.selected} admins={this.props.admins} stream={stream} image={image} changeStream={this.props.changeStream} type={'select'} vote={this.props.vote}/>
                                     )                                
                                 }
                             })}

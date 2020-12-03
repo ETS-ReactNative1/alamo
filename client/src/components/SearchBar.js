@@ -12,7 +12,7 @@ class SearchBar extends React.Component {
             loading: false,
             fullWidth: false,
             streamResults: [],
-            matches: window.matchMedia("(min-width: 1200px)").matches,
+            matches: window.matchMedia("(min-width: 720px)").matches,
             channelResults: []
         }
     }
@@ -28,8 +28,7 @@ class SearchBar extends React.Component {
 
     componentDidMount() {
         const handler = e => this.setState({matches: e.matches, fullWidth: false});
-        window.matchMedia("(min-width: 1200px)").addListener(handler);
-        console.log(this.state.matches)
+        window.matchMedia("(min-width: 720px)").addListener(handler);
     }
 
     handleInputChange = (event) => {

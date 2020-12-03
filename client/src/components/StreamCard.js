@@ -67,7 +67,7 @@ class StreamCard extends React.Component {
 
     render() {
         return(
-            <div id={this.props.stream.user_id} className="col stream-card" onClick={this.props.handleClick} onMouseOver={this.handleMouseOver} onMouseLeave={this.handleMouseLeave}>
+            <div id={this.props.stream.user_id} className={this.props.small ? "col stream-card margin-right" : "col stream-card" } onClick={this.props.handleClick} onMouseOver={this.handleMouseOver} onMouseLeave={this.handleMouseLeave}>
                 {this.streamCardOptions(this.props.stream.user_id)}
 
                 {this.state.thumbnailLoading ? <div style={{transform: 'scale(0.4) translate(-50%, -50%)', top: '35%', left: '45%'}} className="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div> : null}
