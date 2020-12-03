@@ -63,7 +63,6 @@ class Sidebar extends React.Component {
         const pendingInvitation = this.props.user.pending_invitations;
         const friends = this.props.user.friends;
         const rooms = this.props.user.rooms;
-        console.log(this.props.openMenu)
 
         return(
             <React.Fragment>
