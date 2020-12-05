@@ -27,15 +27,16 @@ class SearchResults extends React.Component {
     }
 
     vote = (event) => {
-        const channel = event.currentTarget.id;
+        const channelId = event.currentTarget.id;
+        const channel = event.currentTarget.getAttribute('data-username')
         const gameId = event.currentTarget.getAttribute('data-gameid');
         const thumbnail = event.currentTarget.getAttribute('data-image');
-        const avatar = event.currentTarget.getAttribute('data-channel-image');
+        const avatar = event.currentTarget.getAttribute('data-avatar');
         const title = event.currentTarget.getAttribute('data-stream-title');
-        const stream = {gameId : gameId, channel: channel, thumbnail: thumbnail, avatar: avatar, title: title};
+        const stream = {gameId : gameId, channelId: channelId, channel: channel, thumbnail: thumbnail, avatar: avatar, title: title};
+        console.log(stream)
 
-        if (!this.state.vote) 
-            this.props.socket.emit('start-vote', this.props.activeRoom, localStorage.getItem('userId'), stream)
+        this.props.socket.emit('start-vote', this.props.activeRoom, localStorage.getItem('userId'), stream)
 
         if (this.state.vote)
             alert('Vote already in progress')
@@ -70,7 +71,7 @@ class SearchResults extends React.Component {
                 {this.props.channels.length > 0 && this.state.channelIndex < 4 ? <div onClick={this.viewMore} className="view-more font-color thin">View More Channels</div> : null}
 
                 {this.props.streamResults.map((stream) => {
-                    const image = stream.thumbnail_url.replace('{width}', '120').replace('{height}', '67')
+                    let image = stream.thumbnail_url.replace('{width}', '347').replace('{height}', '195')
                     return(
                         <ResultsCard 
                             createRoomFromStream={this.props.createRoomFromStream}

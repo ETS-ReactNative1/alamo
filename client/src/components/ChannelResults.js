@@ -17,7 +17,8 @@ class ChannelResults extends React.Component {
 
         axios.get('/twitchapi/streams', {params: {user_id: this.props.channels.id}})
             .then((response) => {
-                const image = response.data[0].thumbnail_url.replace('{width}', '120').replace('{height}', '67')
+                console.log(this.props.channels.id, response)
+                let image = response.data[0].thumbnail_url.replace('{width}', '347').replace('{height}', '195')
                 this.setState({stream: response.data[0], thumbnailImage: image})
             })
             .catch((error) => console.log(error))
@@ -39,20 +40,25 @@ class ChannelResults extends React.Component {
                         onClick={this.props.changeStream} 
                         className={this.props.channels.is_live ? "fas fa-2x results-icons primary-color fa-tv" : "fas fa-2x results-cions disabled fa-tv"} 
                         title="Change Stream"
-                        data-gameid={this.props.channels.id}
-                        data-image={this.props.channels.thumbnail_url}
-                        data-channel-image={this.props.channels.thumbnail_url}
-                        data-stream-title={this.props.channels.title}
+                        data-gameid={this.state.stream.game_id} 
+                        data-channel={this.state.stream.user_name} 
+                        data-userid={this.state.stream.user_id} 
+                        data-image={this.state.thumbnailImage} 
+                        data-stream-title={this.state.stream.title} 
+                        data-username={this.state.stream.user_name} 
                     ></i>
                     <i 
                         id={this.props.channels.id} 
                         onClick={this.props.vote}
                         className={this.props.channels.is_live ? "fas fa-2x results-icons vote-icon primary-color fa-poll" : "fas fa-2x results-icons vote-icon disabled fa-poll"} 
                         title="Vote"
-                        data-gameid={this.props.channels.id}
-                        data-image={this.props.channels.thumbnail_url}
-                        data-channel-image={this.props.channels.thumbnail_url}
-                        data-stream-title={this.props.channels.title}
+                        data-gameid={this.state.stream.game_id} 
+                        data-channel={this.state.stream.user_name} 
+                        data-userid={this.state.stream.user_id} 
+                        data-image={this.state.thumbnailImage} 
+                        data-stream-title={this.state.stream.title} 
+                        data-username={this.state.stream.user_name} 
+                        data-avatar={this.props.channels.thumbnail_url}
                     ></i>
                 </React.Fragment>
             )
@@ -74,6 +80,7 @@ class ChannelResults extends React.Component {
     }
 
     render() {
+        console.log(this.props.channels)
         return(
             <div className="container-fluid channel-results-card">
                 <div className="row d-flex align-items-center" style={{height: '100%'}}>

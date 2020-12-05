@@ -1,8 +1,6 @@
 import React from 'react';
 import axios from 'axios';
 
-import HoverCard from './HoverCard';
-
 class RoomUser extends React.Component {
     constructor(props) {
         super(props)
@@ -12,7 +10,6 @@ class RoomUser extends React.Component {
             username: '',
             avatar: '',
             friendStatus: null,
-            showCard: false,
             position: '',
             x: '',
             y: ''
@@ -41,15 +38,6 @@ class RoomUser extends React.Component {
         this.fetchUserInformation();
     }
 
-    handleClick = (event) => {
-        //Change position of hover card if window height is reduced
-        if ((window.innerHeight - event.clientY) < 300) {
-            this.setState({showCard: !this.state.showCard, position: 'bottom', x: event.clientX, y: event.clientY})
-        } else {
-            this.setState({showCard: !this.state.showCard, position: 'top', x: event.clientX, y: event.clientY})
-        }
-    }
-
     render() {
         return(
             <div data-userid={this.props.userId} className="col-1 room-avatar-col">
@@ -59,8 +47,6 @@ class RoomUser extends React.Component {
                 {this.props.admins.includes(this.props.userId, 0) ? <i className="admin-icon fas fa-crown"></i> : null}
 
                 <img onClick={this.handleClick} className={this.props.speakingPeers.includes(this.props.userId, 0) ? "room-avatar rounded-circle w-15 speaking" : "room-avatar rounded-circle w-15"} src={this.state.avatar} onLoad={() => this.setState({loading: false})} />
-
-                { this.state.showCard ? <HoverCard position={this.state.position} x={this.state.x} y={this.state.y} userId={this.props.userId} username={this.state.username} avatar={this.state.avatar} online={true} friendStatus={this.state.friendStatus}/> : null}
             </div>
         )
     }

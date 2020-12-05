@@ -146,10 +146,12 @@ io.on('connection', (socket) => {
 
     //Listen for users watching streams and broadcast to their friends
     socket.on('now-watching', (user, game, callback) => {
-        clients[user].status = 'Watching ' + game;
-        socket.broadcast.emit('update-status', user, game)
-        socket.emit('update-status', user, game)
-        callback()
+        if (typeof clients[user] != 'undefined') {
+            clients[user].status = 'Watching ' + game;
+            socket.broadcast.emit('update-status', user, game)
+            socket.emit('update-status', user, game)
+            callback()
+        }
     })
 
     socket.on('room-invite', (inviter, invitee, roomId) => {
