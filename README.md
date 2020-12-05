@@ -25,7 +25,20 @@ Alamos Third Party API integration is
 Twitch provide a 
 
 ### Twitch Authentication
+Twitch provides its access tokens with an expiration. As a result, authencation for twitches API is set on a `setTimeout` and recursively calls itself to ensure alamo has a valid access token at all time.
 
+        authTwitch = () => {
+            axios.post(twitchUrl)
+                .then((response) => {
+                    let access_token = response.data.access_token;
+                    app.locals.client_id = client_id;
+                    app.locals.access_token = access_token;
+                    setTimeout(() => {
+                        authTwitch();    
+                    }, (response.data.expires_in - 100))
+                })
+                .catch((err) => console.log(err))
+        }
 
 # User
 ## File Uploading

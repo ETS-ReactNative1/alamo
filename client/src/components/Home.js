@@ -6,6 +6,8 @@ class Home extends Component {
     render() {
         return (
             <div className="container-fluid home">
+                <img className="tr-home-wave" src="/images/home/tr-home-wave-3.svg" alt="Alamo" />
+                <img className="br-home-wave" src="/images/home/br-home-wave-1.svg" alt="Alamo" />
                 <nav className="navbar justify-content-between">
                     <a href="/" className="logo-main">alamo</a>
                     <LoginButton></LoginButton>

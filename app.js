@@ -246,13 +246,20 @@ let client_id = process.env.TWITCH_CLIENT_ID;
 let client_secret = process.env.TWITCH_CLIENT_SECRET;
 let twitchUrl = `https://id.twitch.tv/oauth2/token?client_id=${client_id}&client_secret=${client_secret}&grant_type=client_credentials`
 
-axios.post(twitchUrl)
-    .then((response) => {
-        let access_token = response.data.access_token;
-        app.locals.client_id = client_id;
-        app.locals.access_token = access_token;
-    })
-    .catch((err) => console.log(err))
+authTwitch = () => {
+    axios.post(twitchUrl)
+        .then((response) => {
+            let access_token = response.data.access_token;
+            app.locals.client_id = client_id;
+            app.locals.access_token = access_token;
+            setTimeout(() => {
+                authTwitch();    
+            }, (response.data.expires_in - 100))
+        })
+        .catch((err) => console.log(err))
+}
+
+authTwitch();
 
 //MongoDB Connection
 const url = process.env.MONGO_DB_URL
@@ -266,8 +273,9 @@ db.once('open', function() {
   // we're connected!
 });
 
+const SESSION_SECRET = process.env.SESSION_SECRET;
 app.use(session({
-    secret: 'thisisasecret',
+    secret: SESSION_SECRET,
     cookie: { maxAge: 24 * 60 * 60 * 1000 },
     saveUninitialized: true,
     resave: true,
