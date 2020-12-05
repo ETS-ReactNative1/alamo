@@ -8,8 +8,8 @@ const RoomContext = (props) => {
     }
 
     const handleDeleteRoom = () => {
-        const payload = {userId: localStorage.getItem('userId'), roomId: props.id}
-        axios.post('/user/remove-room', payload)
+        const payload = {data : {userId: localStorage.getItem('userId'), roomId: props.id}}
+        axios.delete('/user/room', payload)
             .then((response) => {
                 props.fetchUserInformation()
             })

@@ -22,8 +22,6 @@ router.post('/create-room', (req, res) => {
     const roomTitle = req.body.roomTitle
     const streamId = req.body.streamId
 
-    console.log(roomTitle, streamId, "!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-
     //Store new room in db
     Room.create({roomId: roomId, room_title: roomTitle, stream: streamId})
     .then(response => {

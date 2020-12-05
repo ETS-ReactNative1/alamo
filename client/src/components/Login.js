@@ -37,7 +37,9 @@ class Login extends React.Component {
             .then((response) => {
                 if (response.status === 200) {
                     window.location.assign('/')
-                } 
+               } else if (response.status === 400) {
+
+               }
             })
             .catch((err) => this.setState({errorMessage: 'Incorrect email or password.'}))
     }
@@ -60,6 +62,8 @@ class Login extends React.Component {
                         null
                     }
                     <p className="sign-up-para">No account? <a className="sign-up-button" href="/sign-up">Sign Up</a></p>
+
+                    {this.state.errorMessage.length > 0 ? <p className="sign-up-para" style={{bottom: '65px'}}>Forgot Password? <a className="sign-up-button" href="/reset-password">Reset</a></p> : null}
                 </div>
            )
     }

@@ -40,7 +40,7 @@ router.post('/complete-profile', (req, res) => {
         .then(response => {
             if (response == null) {
                 User.updateOne({email: req.body.email}, {$set: {username: req.body.username.toLowerCase(), account_setup: true, user_metadata: {username: req.body.username, avatar: req.body.avatar}}})
-                .then(response => res.status(200).json({status: 'sucess'}))
+                .then(response => res.status(200).json({status: 'success'}))
                 .catch(error => console.error(error));
             } else {
                 res.status(301).send('Username not available')
@@ -64,10 +64,6 @@ router.delete('/room', (req, res) => {
     const roomId = req.body.roomId
     const userId = req.body.userId
 
-    console.log(req.params)
-
-    console.log(roomId, userId, "DELETE FROM ROOM")
-
     User.updateOne({_id: userId}, {$pull: {rooms: roomId}})
         .then((response) => {
             res.status(200).json({status: 'User removed from room'})
@@ -75,23 +71,9 @@ router.delete('/room', (req, res) => {
         .catch((err) => console.log(err))
 
 })
-
-router.post('/remove-room', (req, res) => {
-    const roomId = req.body.roomId
-    const userId = req.body.userId
-
-    User.updateOne({_id: userId}, {$pull: {rooms: roomId}})
-        .then((response) => {
-            res.status(200).json({status: 'User removed from room'})
-        })
-        .catch((err) => console.log(err))
-})
-
 
 
 router.post('/add-friend', (req, res) => {
-    console.log(req.body.senderId, 'would like to add ', req.body.receiverId, 'as a friend')
-
     //Find recipent and add sender Id into pending invites array
     User.updateOne({_id: ObjectId(req.body.receiverId)}, {$push: {pending_invitations: req.body.senderId}})
     .then(response => {
@@ -105,14 +87,12 @@ router.post('/add-friend', (req, res) => {
 })
 
 router.post('/change-avatar', (req, res) => {
-    console.log(req.body.userId, req.body.avatar, 'CHANGE AVATAR')
     User.updateOne({_id: ObjectId(req.body.userId)}, {'user_metadata.avatar': req.body.avatar})
         .then((response) => res.status(200).json({status: 'success'}))
         .catch(error => console.error(error));
 })
 
 router.post('/decline-friend', (req, res) => {
-    console.log(req.body.receiverId, req.body.senderId)
     User.updateOne({_id: ObjectId(req.body.senderId)}, {$pull: {sent_invitations: req.body.receiverId}})
         .catch(error => console.error(error));
     User.updateOne({_id: ObjectId(req.body.receiverId)}, {$pull: {pending_invitations: req.body.senderId}})
@@ -163,6 +143,5 @@ router.post('/change-email', (req, res) => {
             }   
         })
 });
-
 
 module.exports = router;

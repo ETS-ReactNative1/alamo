@@ -8,12 +8,23 @@ html {
 }
 
 h1, h2, h3, h4, h5, h6, p, label {
-    color: #F2E7FE !important;
+    color: #F2E7FE;
+}
+
+.p-color {
+    color: #2F2F2F !important;
 }
 
 .disabled {
     pointer-events: none !important;
     opacity:0.6 !important; 
+}
+
+.absolute-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .microphone-message {
@@ -327,7 +338,8 @@ label {
 
 .login-box {
     width: 450px;
-    height: 550px;
+    min-height: 600px;
+    height: auto;
     padding: 24px;
     background-color: white;
     position: absolute;
@@ -347,11 +359,40 @@ label {
     transform: translate(-50%, -50%);
 }
 
+.reset-password-box {
+    width: 450px;
+    height: 655px;
+    padding: 24px;
+    background-color: white;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.forgot-password-box {
+    width: 450px;
+    min-height: 425px;
+    height: auto;
+    padding: 24px;
+    background-color: white;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.forgot-password-success {
+    margin-top: 25px;
+    padding: 15px;
+    text-align: center;
+}
+
 .login-error-box {
     background-color: darkred;
     position: absolute;
     left: 50%;
-    bottom: 150px;
+    bottom: 168px;
     transform: translateX(-50%);
     height: 40px;
     width: 70%;
@@ -417,7 +458,7 @@ label {
 
 .login-button {
     width: 100% !important;
-    margin-top: 50px;
+    margin-top: 30px;
 }
 
 .login-details-para {
@@ -437,6 +478,12 @@ label {
     text-align: center;
     left: 50%;
     transform: translateX(-50%);
+    color: #2F2F2F !important;
+}
+
+.password-para {
+    width: 100%;
+    text-align: center;
     color: #2F2F2F !important;
 }
 
@@ -2011,6 +2058,7 @@ iframe {
   transform: translate(-50%, -50%);
   width: 7.375rem;
   text-align: center;
+  z-index: 9;
 }
 
 .dots > div {
