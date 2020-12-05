@@ -38,6 +38,7 @@ class Dashboard extends React.Component {
                 online: ''
             },
             onlineUsers: {},
+            createRoomStream: {},
             matches: window.matchMedia("(min-width: 1200px)").matches 
         }
     }
@@ -51,8 +52,10 @@ class Dashboard extends React.Component {
     }
 
     componentDidMount() {
+        //When a user joins a room, set active room to that pathname
         if(window.location.pathname.substring(1, 5) === 'room') this.setState({activeRoom: window.location.pathname, show: true})
         
+        //Listen to show room on url change to room
         this.unlisten = this.props.history.listen((location, action) => {
             if (window.location.pathname === this.state.activeRoom) this.setState({show: true})
             else this.setState({show: false})
@@ -108,8 +111,25 @@ class Dashboard extends React.Component {
     }
 
     closeMenu = () => {
-        console.log('close menu!!!!!!!!!!')
         this.setState({openMenu: false})
+    }
+
+    createRoomFromStream = (event) => {
+        let userId = event.currentTarget.getAttribute('data-userid');
+        let gameId = event.currentTarget.getAttribute('data-gameid');
+        let channel = event.currentTarget.getAttribute('data-channel');
+        let thumbnail = event.currentTarget.getAttribute('data-image');
+        let channelImage = event.currentTarget.getAttribute('data-channel-image');
+        let title = event.currentTarget.getAttribute('data-stream-title');
+        let username = event.currentTarget.getAttribute('data-username');
+        let stream = {user_id: userId, gameId: gameId, channel: channel, thumbnail: thumbnail, channelImage: channelImage, title: title, user_name: username};
+        this.setState({createRoomStream: stream}, () => {
+            this.props.history.push('/create-room');
+        });
+    }
+
+    clearRoomStream = () => {
+        this.setState({...this.state, createRoomStream: {}})
     }
 
     render() {
@@ -177,6 +197,8 @@ class Dashboard extends React.Component {
                                     friends={this.state.user.friends} 
                                     onlineUsers={this.state.onlineUsers}
                                     activeRoom={this.state.activeRoom}
+                                    createRoomStream={this.state.createRoomStream}
+                                    clearRoomStream={this.clearRoomStream}
                                 />
                             )}/>
 
@@ -226,7 +248,11 @@ class Dashboard extends React.Component {
                                             rooms={this.props.user.rooms}
                                         />
                                     : null}
-                                    <PopularStreams admins={this.state.admins}/>
+                                    <PopularStreams 
+                                        activeRoom={this.state.activeRoom} 
+                                        createRoomFromStream={this.createRoomFromStream}
+                                        admins={this.state.admins}
+                                    />
                                 </MainWrapper>
                             )}/>
 
