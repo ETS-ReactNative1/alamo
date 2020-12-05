@@ -27,19 +27,19 @@ Twitch provide a
 ### Twitch Authentication
 
 
+# User
 ## File Uploading
 File uploading is handled using [Cloudinary](https://cloudinary.com). As file uploading is not necessarily a key feature of alamo, besides allowing users to upload their own custom avatar image, outsourcing file handling to a cloud hosting service made sense. All uploads are performed on the clients side using Cloudinary's API and upon a successful upload, a url is then stored in the users metadata object. Cloudinary allows for custom presets to be configured, meaning all images uploaded are resized to a fixed width and height of `128x128px`. Similiarly, files uploaded are checked for appropriate file formats and a max file size of `5MB`, thanks to [react-image-upload](https://www.npmjs.com/package/react-images-uploading).
+
+## Password Reset
+Password resets and forgotten passwords are handled using a token based system. In the event a user forget the accounts password, users can reset it. On reset request, a email is sent to the user along with a timestamped UUID V1 token. This token is store in the users document in MongoDB. When a user follows the url to reset password, the token is checked to see if valid. A token is only valid if it is the most recent token created and is less than an hour old. The new passport is checked to ensure its level of security is appropriate (must container uppercase letter & number), and then passed through `PassportJS`, where it is hashed, salted and updated in the datebase. All emails for password reset are handled using `Nodemailer`.
+
 
 ## Technical Design
 Alamo is built upon the popular MERN stack - MongoDB, Express, React and Node.js. 
 
 ## Web RTC
 Alamo's WebRTC is faciliated using [[PeerJS](https://peerjs.com/) and [socket.io](https://socket.io/). Both libraries provide fantastic documentation and stream line WebRTC signalling and peer-to-peer communications. 
-
-# User
-
-## Password Reset
-Password resets and forgotten passwords are handled using a token based system. In the event a user forget the accounts password, users can reset it. On reset request, a email is sent to the user along with a timestamped UUID V1 token. This token is store in the users document in MongoDB. When a user follows the url to reset password, the token is checked to see if valid. A token is only valid if it is the most recent token created and is less than an hour old. The new passport is checked to ensure its level of security is appropriate (must container uppercase letter & number), and then passed through `PassportJS`, where it is hashed, salted and updated in the datebase. All emails for password reset are handled using `Nodemailer`.
 
 ## WebRTC Signalling
 The first challenge to acheive WebRTC was to configure and implement a web signalling protocol. All WebRTC signalling is handled using socket.io's websocket library.

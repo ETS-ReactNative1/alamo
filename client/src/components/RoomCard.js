@@ -36,13 +36,17 @@ const RoomCard = (props) => {
 
         //Listen for when any user joins or leaves a room that belongs to the client
         props.socket.on('user-joined-room', (roomId, size) => {
-            if (roomId === props.roomId)
+            if (roomId === props.roomId) {
+                setUser(size)
                 setParticipants(Object.keys(size).length)
+            }
         })
 
         props.socket.on('user-left-room', (roomId, size) => {
-            if (roomId === props.roomId)
+            if (roomId === props.roomId) {
+                setUser(size)
                 setParticipants(Object.keys(size).length)
+            }
         })
 
         props.socket.on('user-disconnected', () => {
