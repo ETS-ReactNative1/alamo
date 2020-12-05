@@ -56,7 +56,14 @@ class SearchResults extends React.Component {
                             //Limit this to max 5 channels
                             if (index <= this.state.channelIndex && index <= 4)
                                 return(
-                                    <ChannelResults activeRoom={this.props.activeRoom} channels={channel} changeStream={this.changeStream} vote={this.vote}/>
+                                    <ChannelResults 
+                                        activeRoom={this.props.activeRoom} 
+                                        createRoomFromStream={this.props.createRoomFromStream}
+                                        channels={channel} 
+                                        changeStream={this.changeStream} 
+                                        vote={this.vote}
+                                        clear={this.props.clear}
+                                    />
                                 )
                         }) 
                 : null}

@@ -117,7 +117,8 @@ class Dashboard extends React.Component {
     }
 
     createRoomFromStream = (event) => {
-        let userId = event.currentTarget.getAttribute('data-userid');
+        console.log(event)
+        let userId = event.target.getAttribute('data-userid');
         let gameId = event.currentTarget.getAttribute('data-gameid');
         let channel = event.currentTarget.getAttribute('data-channel');
         let thumbnail = event.currentTarget.getAttribute('data-image');

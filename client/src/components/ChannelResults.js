@@ -1,13 +1,33 @@
 import React from 'react';
+import axios from 'axios';
 
 class ChannelResults extends React.Component {
     constructor(props) {
         super(props);
+
+        this.state = {
+            stream: {},
+            thumbnailImage: ''
+        }
     }
 
     componentDidMount() {
         if (this.props.stream)
             this.props.loaded();
+
+        axios.get('/twitchapi/streams', {params: {user_id: this.props.channels.id}})
+            .then((response) => {
+                const image = response.data[0].thumbnail_url.replace('{width}', '120').replace('{height}', '67')
+                this.setState({stream: response.data[0], thumbnailImage: image})
+            })
+            .catch((error) => console.log(error))
+
+    }
+
+    createRoomFromStreamHandler = (event) => {
+        console.log(event.currentTarget.getAttribute('data-gameid'))
+        this.props.createRoomFromStream(event);
+        this.props.clear();
     }
 
     cardOptions = () => {
@@ -35,6 +55,20 @@ class ChannelResults extends React.Component {
                         data-stream-title={this.props.channels.title}
                     ></i>
                 </React.Fragment>
+            )
+        } else {
+            return(
+                <i 
+                    className="fas fa-2x results-icons primary-color fa-plus-square"
+                    style={{paddingRight: '25px'}}
+                    data-gameid={this.state.stream.game_id} 
+                    data-channel={this.state.stream.user_name} 
+                    data-userid={this.state.stream.user_id} 
+                    data-image={this.state.thumbnailImage} 
+                    data-stream-title={this.state.stream.title} 
+                    data-username={this.state.stream.user_name} 
+                    title="Change Stream" id={this.state.stream.user_id} 
+                    onClick={(event) => this.createRoomFromStreamHandler(event)}></i>
             )
         }     
     }
