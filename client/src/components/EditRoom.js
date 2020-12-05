@@ -49,7 +49,7 @@ class EditRoom extends React.Component {
 
     render() {
         return(
-            <div className="container">
+            <div className="container-fluid px-4">
                 <div className="row">
                     <div className="col">
                         <div className="room-headings">
@@ -65,6 +65,7 @@ class EditRoom extends React.Component {
 
                         <label htmlFor="username">Stream</label>
                         <AddStream
+                            createRoomStream={this.props.createRoomStream}
                             handleClick={this.handleClick}
                             selected={this.state.selected}
                         />

@@ -43,8 +43,7 @@ class AddStream extends React.Component {
                         {Object.keys(this.props.createRoomStream).length > 0 ? 
                             <React.Fragment>
                                 <i 
-                                    className="fas fa-2x fa-times-circle font-color" 
-                                    style={{position: 'absolute', left: '5px', zIndex: '99'}}
+                                    className="fas fa-2x remove-selected-stream-icon fa-times-circle font-color" 
                                     onClick={this.props.clearRoomStream}
                                 ></i>
                                 <StreamCard 
