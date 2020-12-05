@@ -125,6 +125,7 @@ class Dashboard extends React.Component {
         let title = event.currentTarget.getAttribute('data-stream-title');
         let username = event.currentTarget.getAttribute('data-username');
         let stream = {user_id: userId, gameId: gameId, channel: channel, thumbnail: thumbnail, channelImage: channelImage, title: title, user_name: username};
+        console.log('CREATE ROOM STREAM', stream)
         this.setState({createRoomStream: stream}, () => {
             this.props.history.push('/create-room');
         });
@@ -183,6 +184,7 @@ class Dashboard extends React.Component {
                             <NavigationBar 
                                 closeSearch={this.state.closeSearch}
                                 matches={this.state.matches}
+                                createRoomFromStream={this.createRoomFromStream}
                                 openMenu={this.openMenu}
                                 socket={this.props.socket}
                                 activeRoom={this.state.activeRoom}

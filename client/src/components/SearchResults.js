@@ -63,8 +63,15 @@ class SearchResults extends React.Component {
                 {this.props.channels.length > 0 && this.state.channelIndex < 4 ? <div onClick={this.viewMore} className="view-more font-color thin">View More Channels</div> : null}
 
                 {this.props.streamResults.map((stream) => {
+                    const image = stream.thumbnail_url.replace('{width}', '120').replace('{height}', '67')
                     return(
-                        <ResultsCard loaded={this.props.loaded} stream={stream}/>
+                        <ResultsCard 
+                            createRoomFromStream={this.props.createRoomFromStream}
+                            loaded={this.props.loaded}
+                            stream={stream}
+                            image={image}
+                            clear={this.props.clear}
+                        />
                     )
                 })}
             </div>

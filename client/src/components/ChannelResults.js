@@ -10,8 +10,36 @@ class ChannelResults extends React.Component {
             this.props.loaded();
     }
 
+    cardOptions = () => {
+        if (this.props.activeRoom !== null) {
+            return(
+                <React.Fragment>
+                    <i 
+                        id={this.props.channels.id} 
+                        onClick={this.props.changeStream} 
+                        className={this.props.channels.is_live ? "fas fa-2x results-icons primary-color fa-tv" : "fas fa-2x results-cions disabled fa-tv"} 
+                        title="Change Stream"
+                        data-gameid={this.props.channels.id}
+                        data-image={this.props.channels.thumbnail_url}
+                        data-channel-image={this.props.channels.thumbnail_url}
+                        data-stream-title={this.props.channels.title}
+                    ></i>
+                    <i 
+                        id={this.props.channels.id} 
+                        onClick={this.props.vote}
+                        className={this.props.channels.is_live ? "fas fa-2x results-icons vote-icon primary-color fa-poll" : "fas fa-2x results-icons vote-icon disabled fa-poll"} 
+                        title="Vote"
+                        data-gameid={this.props.channels.id}
+                        data-image={this.props.channels.thumbnail_url}
+                        data-channel-image={this.props.channels.thumbnail_url}
+                        data-stream-title={this.props.channels.title}
+                    ></i>
+                </React.Fragment>
+            )
+        }     
+    }
+
     render() {
-        console.log(this.props.channels)
         return(
             <div className="container-fluid channel-results-card">
                 <div className="row d-flex align-items-center" style={{height: '100%'}}>
@@ -29,26 +57,7 @@ class ChannelResults extends React.Component {
                         </div>
                         <div className="row align-items-center">
                             <div className="col">
-                                <i 
-                                    id={this.props.channels.id} 
-                                    onClick={this.props.changeStream} 
-                                    className={this.props.channels.is_live ? "fas fa-2x results-icons primary-color fa-tv" : "fas fa-2x results-cions disabled fa-tv"} 
-                                    title="Change Stream"
-                                    data-gameid={this.props.channels.id}
-                                    data-image={this.props.channels.thumbnail_url}
-                                    data-channel-image={this.props.channels.thumbnail_url}
-                                    data-stream-title={this.props.channels.title}
-                                ></i>
-                                <i 
-                                    id={this.props.channels.id} 
-                                    onClick={this.props.vote}
-                                    className={this.props.channels.is_live ? "fas fa-2x results-icons vote-icon primary-color fa-poll" : "fas fa-2x results-icons vote-icon disabled fa-poll"} 
-                                    title="Vote"
-                                    data-gameid={this.props.channels.id}
-                                    data-image={this.props.channels.thumbnail_url}
-                                    data-channel-image={this.props.channels.thumbnail_url}
-                                    data-stream-title={this.props.channels.title}
-                                ></i>
+                                {this.cardOptions()}
                             </div>
                         </div>
                     </div>
