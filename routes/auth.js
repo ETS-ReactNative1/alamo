@@ -79,7 +79,6 @@ router.post("/change-password", (req, res, next) => {
     }) (req, res, next);
 });
 
-
 router.post('/request-password-reset-token', (req, res) => {
     const email = req.body.email
     const v1options = {
@@ -118,10 +117,18 @@ router.get('/check-token/:token', (req, res) => {
     const current = Date.now();
     const anHourAgo = 60 * 60 * 1000;
 
-    if (tokenExpiration > (current - anHourAgo))
-        res.status(200).json({status: 'isValid'})
-    else
+    if (tokenExpiration > (current - anHourAgo)) {
+        User.findOne({resetPasswordToken: token},)
+            .then((user) => {
+                if (user != null)
+                    res.status(200).json({status: 'isValid', user: user})
+                else
+                    res.status(401).json({status: 'notValid'})
+            })
+    }
+    else {
         res.status(401).json({status: 'notValid'})
+    }
 })
 
 

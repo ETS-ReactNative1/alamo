@@ -16,7 +16,10 @@ class ForgotPassword extends React.Component {
             password: '',
             confirmationPassword: '',
             errorMessage: '',
+            passMatch: '',
+            isValidPassword: false,
             isValidToken: false,
+            user: {}
         }
     }
 
@@ -24,41 +27,38 @@ class ForgotPassword extends React.Component {
         const token = window.location.pathname.substring(7);
         axios.get(`/auth/check-token/${token}`)
             .then((response) => {
-                this.setState({isValidToken: true, isLoading: false})
+                this.setState({isValidToken: true, isLoading: false, user: response.data.user})
             })
-            .catch((err) => console.log(err))
+            .catch((err) => this.setState({isValidToken: false, isLoading: false}))
     }
 
     handleSubmit = (event) => {
-
-       event.preventDefault();
-       if (this.state.password === this.state.confirmationPassword) {
+        this.setState({isLoading: true})
+        event.preventDefault();
+        if (this.state.password === this.state.confirmationPassword) {
             this.setState({passMatch: ''})
-       } else {
+        } else {
             return this.setState({passMatch: 'Passwords do not match'})
-       } 
+        } 
 
-        if (this.state.isValid) {
-            console.log('post form')
-            let email = this.state.email
+        if (this.state.isValidPassword) {
+            let email = this.state.user.email;
             let password = this.state.password;
             let userData = {email, password}
 
-            console.log(userData)
-
-            axios.post('/auth/signup', userData)
+            axios.post('/auth/change-password', userData)
                 .then((response) => {
                     if (response.status === 200) {
-                        window.location.assign('/')
+                        window.location.href="/"
                     } 
                 })
                 .catch((err) => this.setState({errorMessage: 'User already exists'}))
         } else return this.setState({errorMessage: 'Invalid Password'}) 
-    }
+        }
 
 
     handlePasswordChange = (data) => {
-        this.setState({password: data.value, isValid: data.isValid})
+        this.setState({password: data.value, isValidPassword: data.isValid})
     }
 
     handleConfirmationPasswordChange = (event) => {
@@ -104,8 +104,8 @@ class ForgotPassword extends React.Component {
                         <button className="primary-btn login-button" type="submit">Reset Password</button>
                     </form>
 
-                    {(this.state.errorMessage.length > 0) ? 
-                        <div className="signup-error-box">
+                    {(this.state.errorMessage.length > 0 || this.state.passMatch.length > 0) ? 
+                        <div className="signup-error-box" style={{bottom: '153px'}}>
                             <h6 className="login-error-message">{this.state.errorMessage}{this.state.passMatch}</h6>
                         </div> :
                         null

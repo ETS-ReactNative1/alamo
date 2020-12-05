@@ -35,7 +35,7 @@ class ForgotPassword extends React.Component {
             return(
                 <div>
                     <div className="forgot-password-success">
-                        <h3 className="bold primary-color">Success</h3>
+                        <h3 className="bold primary-color">Password Reset Sent</h3>
                         <p className="p-color">Please check your email.</p>
                     </div>
                     <i className="fas fa-3x absolute-center primary-color fa-check-circle"></i>
