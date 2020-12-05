@@ -30,6 +30,7 @@ class Dashboard extends React.Component {
             activeRoom: null,
             menuOpen: true,
             closeSearch: false,
+            cardType: 'create',
             contextMenu: {
                 type: '',
                 id: '',
@@ -53,8 +54,9 @@ class Dashboard extends React.Component {
 
     componentDidMount() {
         //When a user joins a room, set active room to that pathname
-        if(window.location.pathname.substring(1, 5) === 'room') this.setState({activeRoom: window.location.pathname, show: true})
-        
+        if(window.location.pathname.substring(1, 5) === 'room') {
+            this.setState({activeRoom: window.location.pathname, cardType: 'room', show: true})
+        }        
         //Listen to show room on url change to room
         this.unlisten = this.props.history.listen((location, action) => {
             if (window.location.pathname === this.state.activeRoom) this.setState({show: true})
@@ -84,7 +86,7 @@ class Dashboard extends React.Component {
     }
 
     leaveRoom = () => {
-        this.setState({...this.state, activeRoom: null, show: false}) 
+        this.setState({...this.state, activeRoom: null, cardType: 'create', show: false}) 
         this.props.history.push('/');
     }
 
@@ -251,6 +253,7 @@ class Dashboard extends React.Component {
                                     : null}
                                     <PopularStreams 
                                         activeRoom={this.state.activeRoom} 
+                                        cardType={this.state.cardType}
                                         createRoomFromStream={this.createRoomFromStream}
                                         admins={this.state.admins}
                                     />
