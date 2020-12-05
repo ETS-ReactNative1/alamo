@@ -26,6 +26,7 @@ class AddStream extends React.Component {
     }
 
     render() {
+        console.log(this.props.createRoomStream)
         return(
             <div className="container-fluid room-showcase-container margin-top">
                 <div className="row">
@@ -39,7 +40,27 @@ class AddStream extends React.Component {
 
                 {(this.state.showStreams) ? 
                     <div className="row room-showcase-row" style={this.state.searchBarStatus ? {overflow: 'hidden'} : null}>
-                            <AddStreamCard searchBarStatus={this.searchBarStatus} handleClick={this.props.handleClick} selected={this.props.selected}/>
+                        {Object.keys(this.props.createRoomStream).length > 0 ? 
+                            <React.Fragment>
+                                <i 
+                                    className="fas fa-2x remove-selected-stream-icon fa-times-circle font-color" 
+                                    onClick={this.props.clearRoomStream}
+                                ></i>
+                                <StreamCard 
+                                    small={true} 
+                                    gameId={this.props.createRoomStream.gameId} 
+                                    handleClick={this.props.handleClick} 
+                                    selected={this.props.selected} 
+                                    admins={this.props.admins} 
+                                    stream={this.props.createRoomStream} 
+                                    image={this.props.createRoomStream.thumbnail} 
+                                    changeStream={this.props.changeStream} 
+                                    type={'select'} 
+                                    vote={this.props.vote}
+                                    />
+                            </React.Fragment>
+                            :
+                            <AddStreamCard searchBarStatus={this.searchBarStatus} handleClick={this.props.handleClick} selected={this.props.selected}/> }
 
                             <div className="col stream-border" style={{maxWidth: '2px'}}>
                                 <h3 className="more-stream-heading thin d-block"></h3>
@@ -49,7 +70,19 @@ class AddStream extends React.Component {
                                 let image = stream.thumbnail_url.replace('{width}', '347').replace('{height}', '195')
                                 if (index <= 7) {
                                     return(
-                                        <StreamCard key={index} small={true} gameId={this.props.gameId} handleClick={this.props.handleClick} selected={this.props.selected} admins={this.props.admins} stream={stream} image={image} changeStream={this.props.changeStream} type={'select'} vote={this.props.vote}/>
+                                        <StreamCard 
+                                            key={index} 
+                                            small={true} 
+                                            gameId={this.props.gameId} 
+                                            handleClick={this.props.handleClick} 
+                                            selected={this.props.selected} 
+                                            admins={this.props.admins} 
+                                            stream={stream} 
+                                            image={image} 
+                                            changeStream={this.props.changeStream} 
+                                            type={'select'} 
+                                            vote={this.props.vote}
+                                        />
                                     )                                
                                 }
                             })}

@@ -35,7 +35,7 @@ class SearchBar extends React.Component {
         const query = event.target.value
         this.setState({query: query})
         
-        if (this.state.query.length > 2) {
+        if (this.state.query.length >= 2) {
             this.searchTwitchChannel(query)
         }
 
@@ -84,7 +84,18 @@ class SearchBar extends React.Component {
                         onInput={this.handleInputChange}
                     />
                     {this.state.query.length > 2 ? <i className="fas fa-1x font-color search-bar-close fa-times" onClick={this.clear}></i> : null}
-                    {this.state.query.length > 2 ? <SearchResults activeRoom={this.props.activeRoom} socket={this.props.socket} loading={this.state.loading} loaded={this.loaded} channels={this.state.channelResults} streamResults={this.state.streamResults}/> : null}
+                    {this.state.query.length > 2 ? 
+                        <SearchResults 
+                            activeRoom={this.props.activeRoom} 
+                            socket={this.props.socket} 
+                            loading={this.state.loading} 
+                            loaded={this.loaded} 
+                            channels={this.state.channelResults} 
+                            streamResults={this.state.streamResults}
+                            createRoomFromStream={this.props.createRoomFromStream}
+                            clear={this.clear}
+                        /> 
+                        : null}
                 </div>
                 {this.state.query.length > 0 ? <div className="search-box-trigger" onClick={() => this.clear()}></div> : null }
             </React.Fragment>

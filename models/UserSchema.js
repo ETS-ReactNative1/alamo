@@ -15,8 +15,7 @@ const userSchema = new Schema({
     rooms: {type: [String]},
     email_verified: {type: Boolean, default: false},
     account_setup: {type: Boolean, default: false},
-    resetPasswordToken: {type: String, required: false},
-    resetPasswordExpires: {type: Date, required: false}
+    resetPasswordToken: {type: String, required: false}
 }, {collection: 'users'})
 
 const User = mongoose.model('User', userSchema);

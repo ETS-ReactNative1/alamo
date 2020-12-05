@@ -145,7 +145,7 @@ class AccountSettings extends React.Component {
 
     render() {
         return (
-          <div className="container">
+          <div className="container-fluid px-4">
               <div className="row margin-bottom-50">
                   <div className="col">
                       <div className="room-headings">

@@ -27,15 +27,16 @@ class SearchResults extends React.Component {
     }
 
     vote = (event) => {
-        const channel = event.currentTarget.id;
+        const channelId = event.currentTarget.id;
+        const channel = event.currentTarget.getAttribute('data-username')
         const gameId = event.currentTarget.getAttribute('data-gameid');
         const thumbnail = event.currentTarget.getAttribute('data-image');
-        const avatar = event.currentTarget.getAttribute('data-channel-image');
+        const avatar = event.currentTarget.getAttribute('data-avatar');
         const title = event.currentTarget.getAttribute('data-stream-title');
-        const stream = {gameId : gameId, channel: channel, thumbnail: thumbnail, avatar: avatar, title: title};
+        const stream = {gameId : gameId, channelId: channelId, channel: channel, thumbnail: thumbnail, avatar: avatar, title: title};
+        console.log(stream)
 
-        if (!this.state.vote) 
-            this.props.socket.emit('start-vote', this.props.activeRoom, localStorage.getItem('userId'), stream)
+        this.props.socket.emit('start-vote', this.props.activeRoom, localStorage.getItem('userId'), stream)
 
         if (this.state.vote)
             alert('Vote already in progress')
@@ -56,15 +57,29 @@ class SearchResults extends React.Component {
                             //Limit this to max 5 channels
                             if (index <= this.state.channelIndex && index <= 4)
                                 return(
-                                    <ChannelResults activeRoom={this.props.activeRoom} channels={channel} changeStream={this.changeStream} vote={this.vote}/>
+                                    <ChannelResults 
+                                        activeRoom={this.props.activeRoom} 
+                                        createRoomFromStream={this.props.createRoomFromStream}
+                                        channels={channel} 
+                                        changeStream={this.changeStream} 
+                                        vote={this.vote}
+                                        clear={this.props.clear}
+                                    />
                                 )
                         }) 
                 : null}
                 {this.props.channels.length > 0 && this.state.channelIndex < 4 ? <div onClick={this.viewMore} className="view-more font-color thin">View More Channels</div> : null}
 
                 {this.props.streamResults.map((stream) => {
+                    let image = stream.thumbnail_url.replace('{width}', '347').replace('{height}', '195')
                     return(
-                        <ResultsCard loaded={this.props.loaded} stream={stream}/>
+                        <ResultsCard 
+                            createRoomFromStream={this.props.createRoomFromStream}
+                            loaded={this.props.loaded}
+                            stream={stream}
+                            image={image}
+                            clear={this.props.clear}
+                        />
                     )
                 })}
             </div>

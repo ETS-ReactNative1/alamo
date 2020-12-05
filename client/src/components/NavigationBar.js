@@ -25,7 +25,13 @@ const NavigationBar = (props) => {
                 </div>
                 : null
             }
-            <SearchBar socket={props.socket} closeSearch={props.closeSearch} activeRoom={props.activeRoom} searchActive={(status) => hideBurger(status)} matches={props.matches}/>
+            <SearchBar 
+                socket={props.socket} 
+                closeSearch={props.closeSearch} 
+                createRoomFromStream={props.createRoomFromStream}
+                activeRoom={props.activeRoom} 
+                searchActive={(status) => hideBurger(status)} 
+                matches={props.matches}/>
             <CreateRoomBtn/>
         </nav>
     )

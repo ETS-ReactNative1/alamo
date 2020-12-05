@@ -68,16 +68,24 @@ const CreateRoom = (props) => {
         }
     }
 
+    React.useEffect(() => {
+        if (Object.keys(props.createRoomStream).length > 0) {
+            setSelectedStream(props.createRoomStream.user_id)
+        }
+    })
+
     return(
-        <div className="container margin-bottom-50">
+        <div className="container-fluid px-4 margin-bottom-50">
             <h1 className="setup-heading thin">Create Room</h1>
             <form action="post" onSubmit={handleCreateRoom}>
                 <label htmlFor="roomTitle">Room Title</label>
                 <input name="roomTitle" autoFocus required minlength="3" />
                 <label htmlFor="stream">Stream</label>
                 <AddStream
+                    createRoomStream={props.createRoomStream}
                     handleClick={(event) => handleClick(event)}
                     selected={selected}
+                    clearRoomStream={props.clearRoomStream}
                 />
                 <label htmlFor="roomTitle"></label>
                 <InviteFriends 

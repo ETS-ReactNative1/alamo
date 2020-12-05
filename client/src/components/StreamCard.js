@@ -25,15 +25,16 @@ class StreamCard extends React.Component {
     }
 
     handleMouseOver = () => {
-        if (this.props.type === 'room')
-            this.setState({showOptions: true})
+        this.setState({showOptions: true})
     }
 
     handleMouseLeave = () => {
-        if (this.props.type === 'room')
-            this.setState({showOptions: false})
+        this.setState({showOptions: false})
     }
 
+    createRoomFromStreamHandler = (event) => {
+        this.props.createRoomFromStream()
+    }
 
     streamCardOptions = (userId) => {
         if (this.state.showOptions && this.props.type === 'room') {
@@ -41,10 +42,58 @@ class StreamCard extends React.Component {
                 <div className="stream-card-options">
                     <div className="row" style={{height: '100%'}}>
                         <div className="col-6">
-                            <i className={this.state.admins.includes(localStorage.getItem('userId')) ? "fas fa-3x stream-card-options-icons font-color fa-tv" : "fas fa-3x stream-card-options-icons font-color disabled fa-tv"} data-gameid={this.props.stream.game_id} data-channel={this.props.stream.user_name} data-userid={this.props.stream.user_id} data-image={this.props.image} data-channel-image={this.state.channelImage} data-stream-title={this.props.stream.title} data-username={this.props.stream.user_name} title="Change Stream" id={this.props.stream.user_id} onClick={this.props.changeStream}></i>
+                            <i 
+                                className={this.state.admins.includes(localStorage.getItem('userId')) ? 
+                                    "fas fa-3x stream-card-options-icons font-color fa-tv" : 
+                                    "fas fa-3x stream-card-options-icons font-color disabled fa-tv"} 
+                                data-gameid={this.props.stream.game_id} 
+                                data-channel={this.props.stream.user_name} 
+                                data-userid={this.props.stream.user_id} 
+                                data-image={this.props.image} 
+                                data-channel-image={this.state.channelImage} 
+                                data-stream-title={this.props.stream.title} 
+                                data-username={this.props.stream.user_name} 
+                                title="Change Stream" 
+                                id={this.props.stream.user_id} 
+                                onClick={this.props.changeStream}></i>
                         </div>
                         <div className="col-6">
-                            <i className="fas fa-3x stream-card-options-icons font-color fa-poll" title="Vote" id={this.props.stream.user_id} data-userid={this.props.stream.user_id} data-image={this.props.image} data-gameid={this.props.stream.game_id} data-channel={this.props.stream.user_name} data-channel-image={this.state.channelImage} data-stream-title={this.props.stream.title} data-username={this.props.stream.user_name} onClick={this.props.vote}></i>
+                            <i 
+                                className="fas fa-3x stream-card-options-icons font-color fa-poll" 
+                                title="Vote" id={this.props.stream.user_id} 
+                                data-userid={this.props.stream.user_id} 
+                                data-image={this.props.image} 
+                                data-gameid={this.props.stream.game_id} 
+                                data-channel={this.props.stream.user_name} 
+                                data-channel-image={this.state.channelImage} 
+                                data-stream-title={this.props.stream.title}
+                                data-username={this.props.stream.user_name} 
+                                onClick={this.props.vote}></i>
+                        </div>
+                    </div>
+                </div>
+            )
+        }
+
+        if (this.state.showOptions && this.props.type === 'create') {
+            return(
+                <div className="stream-card-options">
+                    <div className="row" style={{height: '100%'}}>
+                        <div className="col-12">
+                            <i 
+                                className={this.state.admins.includes(localStorage.getItem('userId')) ? 
+                                    "fas fa-3x stream-card-options-icons font-color fa-plus-square" : 
+                                    "fas fa-3x stream-card-options-icons font-color disabled fa-plus-square"} 
+                                style={{paddingRight: '25px'}}
+                                data-gameid={this.props.stream.game_id} 
+                                data-channel={this.props.stream.user_name} 
+                                data-userid={this.props.stream.user_id} 
+                                data-image={this.props.image} 
+                                data-channel-image={this.state.channelImage} 
+                                data-stream-title={this.props.stream.title} 
+                                data-username={this.props.stream.user_name} 
+                                title="Change Stream" id={this.props.stream.user_id} 
+                                onClick={this.props.createRoomFromStream}></i>
                         </div>
                     </div>
                 </div>

@@ -17,6 +17,17 @@ router.get('/channels', (req, res) => {
         .catch((err) => console.log(err))
 })
 
+router.get('/channels-info/:id', (req, res) => {
+    let id = req.params.id;
+    let token = req.app.locals.access_token;
+    let client_id = req.app.locals.client_id;
+    let headers = {'client-id': client_id, 'Authorization': `Bearer ${token}`}
+
+    axios.get('https://api.twitch.tv/helix/channels', {params: {broadcaster_id: id}, headers: headers})
+        .then((response) => res.json(response.data.data))
+        .catch((err) => console.log(err))
+})
+
 router.get('/query-twitch', (req, res) => {
     let token = req.app.locals.access_token;
     let client_id = req.app.locals.client_id;

@@ -13,6 +13,8 @@ import Dashboard from './components/Dashboard';
 import ErrorBoundary from './components/ErrorBoundary';
 import Room from './components/Room';
 import Loading from './components/Loading';
+import ResetPassword from './components/ResetPassword';
+import ForgotPassword from './components/ForgotPassword';
 
 const socket = io('https://alamo-d19124355.herokuapp.com/', {
     reconnection: true,
@@ -105,6 +107,8 @@ function App(props) {
                     <Switch>
                         <Route path="/login" component={Login} exact/>
                         <Route path="/sign-up" component={Signup} exact/>
+                        <Route path="/reset-password" component={ForgotPassword} exact/>
+                        <Route path="/reset" component={ResetPassword}/>
                         <Home/>
                     </Switch>
                 </Router>

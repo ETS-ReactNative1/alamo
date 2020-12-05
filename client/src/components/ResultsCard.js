@@ -10,13 +10,60 @@ class ResultsCard extends React.Component {
             this.props.loaded();
     }
 
+    createRoomFromStreamHandler = (event) => {
+        this.props.createRoomFromStream(event);
+        this.props.clear();
+    }
+
+    cardOptions = () => {
+        if (this.props.activeRoom != null)
+            return(
+                <React.Fragment>
+                    <i 
+                        className="fas fa-2x results-icons primary-color fa-tv" 
+                        title="Change Stream"
+                        data-gameid={this.props.stream.game_id} 
+                        data-channel={this.props.stream.user_name} 
+                        data-userid={this.props.stream.user_id} 
+                        data-image={this.props.image} 
+                        data-stream-title={this.props.stream.title} 
+                        data-username={this.props.stream.user_name} 
+                    ></i>
+                    <i 
+                        className="fas fa-2x results-icons vote-icon primary-color fa-poll" 
+                        title="Vote"
+                        data-gameid={this.props.stream.game_id} 
+                        data-channel={this.props.stream.user_name} 
+                        data-userid={this.props.stream.user_id} 
+                        data-image={this.props.image} 
+                        data-stream-title={this.props.stream.title} 
+                        data-username={this.props.stream.user_name} 
+                        id={this.props.stream.user_id} 
+                    ></i>
+                </React.Fragment>
+            )
+        else 
+            return(
+                <i 
+                    className="fas fa-2x results-icons primary-color fa-plus-square"
+                    style={{paddingRight: '25px'}}
+                    data-gameid={this.props.stream.game_id} 
+                    data-channel={this.props.stream.user_name} 
+                    data-userid={this.props.stream.user_id} 
+                    data-image={this.props.image} 
+                    data-stream-title={this.props.stream.title} 
+                    data-username={this.props.stream.user_name} 
+                    title="Change Stream" id={this.props.stream.user_id} 
+                    onClick={(event) => this.createRoomFromStreamHandler(event)}></i>
+            )
+    }
+
     render() {
-        const image = this.props.stream.thumbnail_url.replace('{width}', '120').replace('{height}', '67')
         return(
             <div className="container-fluid d-flex stream-results-card">
                 <div className="row align-items-center" style={{width: '100%'}}>
                     <div className="col-6">
-                        <img className="stream-results-img" src={image} alt="" />
+                        <img className="stream-results-img" src={this.props.image} alt="" />
                     </div>
                     <div className="col">
                         <div className="row">
@@ -27,8 +74,7 @@ class ResultsCard extends React.Component {
                         </div>
                         <div className="row">
                             <div className="col">
-                                <i className="fas fa-2x results-icons primary-color fa-tv" title="Change Stream"></i>
-                                <i className="fas fa-2x results-icons vote-icon primary-color fa-poll" title="Vote"></i>
+                                {this.cardOptions()}
                             </div>
                         </div>
                     </div>

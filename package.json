@@ -26,12 +26,14 @@
     "mongodb": "^3.6.2",
     "mongoose": "^5.10.10",
     "morgan": "~1.9.1",
+    "node-time-uuid": "^0.1.5",
     "nodemailer": "^6.4.16",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
     "peer": "^0.5.3",
     "react-flip-move": "^3.0.4",
     "socket.io": "^2.3.0",
-    "uuid": "^8.3.1"
+    "uuid": "^8.3.1",
+    "uuid-time": "^1.0.0"
   }
 }

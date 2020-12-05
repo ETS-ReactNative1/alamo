@@ -6,8 +6,12 @@ import StreamCard from './StreamCard';
 class PopularStreams extends React.Component {
     constructor(props) {
         super(props);
-
-        this.state = {streams: [], game: '', showStreams: false}
+        this.state = {
+            streams: [], 
+            game: '', 
+            showStreams: false,
+            cardType: 'create'
+        }
     }
 
     componentDidMount() {
@@ -32,7 +36,16 @@ class PopularStreams extends React.Component {
                             {this.state.streams.map((stream, index) => {
                                 let image = stream.thumbnail_url.replace('{width}', '347').replace('{height}', '195')
                                 return(
-                                    <StreamCard type={'room'} key={index} gameId={this.props.gameId} admins={this.props.admins} stream={stream} image={image} changeStream={this.props.changeStream} vote={this.props.vote}/>
+                                    <StreamCard 
+                                        type={this.props.cardType} 
+                                        key={index} 
+                                        gameId={this.props.gameId} 
+                                        admins={this.props.admins} 
+                                        stream={stream} 
+                                        image={image} 
+                                        changeStream={this.props.changeStream} 
+                                        createRoomFromStream={this.props.createRoomFromStream}
+                                        vote={this.props.vote}/>
                                 )                                
                             })}
                     </div>

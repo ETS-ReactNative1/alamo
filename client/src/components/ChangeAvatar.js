@@ -81,7 +81,7 @@ class ProfileSetup extends React.Component {
 
     render() {
         return (
-            <div className="container" style={{paddingBottom: '50px'}}>
+            <div className="container-fluid px-4" style={{paddingBottom: '50px'}}>
               <div className="row">
                   <div className="col">
                       <div className="room-headings">
