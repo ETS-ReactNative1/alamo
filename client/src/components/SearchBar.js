@@ -80,7 +80,7 @@ class SearchBar extends React.Component {
                         ref={this.searchInput}
                         className={this.state.query.length > 2 ? "main-search-input rm-bottom-border" : "main-search-input"} 
                         type="search-query" 
-                        placeholder="Find Stream or paste Twitch url" 
+                        placeholder="Find Stream" 
                         onInput={this.handleInputChange}
                     />
                     {this.state.query.length > 2 ? <i className="fas fa-1x font-color search-bar-close fa-times" onClick={this.clear}></i> : null}

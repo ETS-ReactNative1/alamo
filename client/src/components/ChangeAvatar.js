@@ -22,11 +22,9 @@ class ProfileSetup extends React.Component {
 
     updateAvatar = (event) => {
         this.setState({avatarSelected: event.currentTarget.id})
-        console.log(this.state.avatarSelected)
     }
 
     onDrop(pictureFiles, pictureDataURLs) {
-        console.log(pictureFiles, pictureDataURLs, 'UPLOAD')
         this.setState({
             pictures: this.state.pictures.concat(pictureFiles)
         });

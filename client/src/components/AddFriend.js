@@ -102,7 +102,6 @@ class AddFriend extends React.Component {
     }
 
     handleClick = () => {
-        console.log('clicked')
     }
 
     render() {

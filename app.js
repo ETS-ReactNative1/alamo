@@ -74,7 +74,6 @@ io.on('connection', (socket) => {
 
     socket.on('leave-room', (roomId, userId) => {
         //On disconnect remove peer from list of connected peers
-        console.log(roomId, userId, 'has left this room')
         let updateRoomPeers;
         updateRoomPeers = rooms[roomId];
         updateRoomPeers = updateRoomPeers.filter(item => item !== userId)
@@ -111,7 +110,6 @@ io.on('connection', (socket) => {
             }
         }
 
-        console.log(rooms)
         //Broadcast to anyone that may have this room favourited that a user has joined and update room size
         socket.broadcast.emit('user-joined-room', roomId, rooms[roomId])
         socket.emit('user-joined-room', roomId, rooms[roomId])
@@ -159,9 +157,6 @@ io.on('connection', (socket) => {
     })
 
     socket.on('room-invite', (inviter, invitee, roomId) => {
-        console.log('room invite', inviter, invitee, roomId)
-        console.log(clients[invitee], 'INVITE CLIENTS ')
-        console.log(clients, 'ALL CLIENTS')
         if (typeof clients[invitee] !== 'undefined')
             io.to(clients[invitee].socketId).emit('inc-room-invite', invitee, inviter, roomId)
     })
@@ -192,7 +187,6 @@ io.on('connection', (socket) => {
 
     socket.on('start-vote', (roomId, userId, stream) => {
         const peers = Object.keys(io.sockets.adapter.rooms[roomId].sockets).length
-        console.log(peers, 'users in room')
         io.in(roomId).emit('vote', userId, stream, peers);
     })
 
@@ -205,13 +199,11 @@ io.on('connection', (socket) => {
     })
 
     socket.on('change-stream', (roomId, stream) => {
-        console.log('CHANGE STREAM', roomId, stream)
         io.in(roomId).emit('update-stream', stream);
     })
 
 
     socket.on('add-friend', (senderId, receiverId) => {
-        console.log(senderId, 'would like to add', receiverId, 'as a friend')
         socket.broadcast.emit('pending-invitation', senderId, receiverId);
     })
 
@@ -225,10 +217,6 @@ io.on('connection', (socket) => {
 
 })
 
-
-io.on('disconnect', (socket) => {
-    console.log('user disconnect', socket.id)
-})
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -274,10 +262,7 @@ mongoose.connect(url, {useNewUrlParser: true});
 console.log(mongoose.connection.readyState);
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function() {
-    console.log('connected')
-  // we're connected!
-});
+db.once('open', function() {});
 
 const SESSION_SECRET = process.env.SESSION_SECRET;
 app.use(session({
@@ -296,7 +281,6 @@ app.use('/auth', auth);
 //Routes
 const isAuthenticated = (req, res, next) => {
     if (req.isAuthenticated()) {
-        console.log('is auth')
         return next();
     }
     else {
@@ -314,12 +298,9 @@ app.use('/twitchapi', isAuthenticated, twitchApi);
 const whitelist = ['http://localhost:3000', 'http://localhost:8080', 'https://alamo-d19124355.herokuapp.com/']
 const corsOptions = {
   origin: function (origin, callback) {
-    console.log("** Origin of request " + origin)
     if (whitelist.indexOf(origin) !== -1 || !origin) {
-      console.log("Origin acceptable")
       callback(null, true)
     } else {
-      console.log("Origin rejected")
       callback(new Error('Not allowed by CORS'))
     }
   }

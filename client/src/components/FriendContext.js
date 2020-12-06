@@ -14,6 +14,7 @@ const FriendContext = (props) => {
             .then((response) => {
                 props.fetchUserInformation()
             })
+        props.closeContextMenu();
     }
 
     const inviteFriend = (event, friend) => {
