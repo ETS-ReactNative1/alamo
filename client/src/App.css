@@ -976,6 +976,14 @@ a {
     height: 80px;
 }
 
+.sidebar-friend:hover {
+    background-color: #050505;
+}
+
+.sidebar-profile:hover {
+    background-color: #050505;
+}
+
 .sidebar-icon {
     display: none;
 }
