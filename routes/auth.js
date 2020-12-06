@@ -10,7 +10,7 @@ const transport = {
   host: 'smtp.gmail.com',
   auth: {
     user: 'alamonoreply@gmail.com',
-    pass: 'Kittylitter1'
+    pass: 'D19124355'
   }
 }
 
