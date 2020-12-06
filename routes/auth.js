@@ -88,13 +88,13 @@ router.post('/request-password-reset-token', (req, res) => {
         nsecs: 5678,
     };
 
-    const token = uuidv1(v1options) 
+    const token = uuidv1(v1options);
     User.updateOne({email: email}, {$set : {resetPasswordToken: token}})
         .then((response) => {
             if (response !== null) {
                 const mail = {
                     from: 'alamonoreply@gmail.com',
-                    to: 'andrew.gorman@live.ie',
+                    to: email,
                     subject: `Alamo - Password Reset`,
                     text: `To reset password, please following this link - http://localhost:3000/reset/${token}`
                 }
