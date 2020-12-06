@@ -40,6 +40,7 @@ class Dashboard extends React.Component {
             },
             onlineUsers: {},
             createRoomStream: {},
+            friendsToReceiveInvite: [],
             matches: window.matchMedia("(min-width: 1200px)").matches 
         }
     }
@@ -88,6 +89,11 @@ class Dashboard extends React.Component {
             if (type === 'invite') this.fetchUserInformation();
         })
     }
+
+    friendsToInvite = (friend) => {
+        console.log(friend)
+    }
+
 
     leaveRoom = () => {
         this.setState({...this.state, activeRoom: null, cardType: 'create', show: false}) 

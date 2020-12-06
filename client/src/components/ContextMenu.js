@@ -16,6 +16,7 @@ class ContextMenu extends React.Component {
     }
 
     profileMenu = (show, x, y) => {
+        console.log('profliel CONTEXT MEU')
         return (
             <ProfileContext socket={this.props.socket} show={show} x={x} y={y} closeContextMenu={this.props.closeContextMenu}/>
         )

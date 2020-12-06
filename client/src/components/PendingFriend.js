@@ -25,7 +25,7 @@ class PendingFriend extends React.Component {
         return(
             <div id={this.props.userPendingInvitation} className="row sidebar-friend align-items-center">
                 <div className="col-3">
-                    <img className="user-avatar rounded-circle w-15" src={'/images/avatars/' + this.state.avatar + '-avatar.png'} />
+                    <img className="user-avatar rounded-circle w-15" src={this.state.avatar} />
                 </div>
                 <div className="col-9">
                     <div className="row">

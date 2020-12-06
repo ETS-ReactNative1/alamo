@@ -30,6 +30,8 @@ const CreateRoom = (props) => {
         axios.post('/room/create-room', payload)
             .then(response => {
                 props.socket.emit('join-room', roomId, userId);
+            })
+            .then(() => {
                 InviteFriendsPromise(roomId)
                     .then(() => {
                         redirect(roomId);
@@ -95,6 +97,7 @@ const CreateRoom = (props) => {
                     friends={props.friends} 
                     onlineUsers={props.onlineUsers}
                     activeRoom={props.activeRoom}
+                    createRoom={true}
                 />
                 <button type="submit" className="primary-btn setup-btn">Create Room</button>
                 <button type="button" className="secondary-btn margin-left setup-btn" onClick={() => handleCancelRoom()}>Cancel</button>
