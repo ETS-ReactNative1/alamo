@@ -39,7 +39,7 @@ class AddStream extends React.Component {
                 </div>
 
                 {(this.state.showStreams) ? 
-                    <div className="row room-showcase-row" style={this.state.searchBarStatus ? {overflow: 'hidden'} : null}>
+                    <div className="row margin-auto room-showcase-row" style={this.state.searchBarStatus ? {overflow: 'hidden'} : null}>
                         {Object.keys(this.props.createRoomStream).length > 0 ? 
                             <React.Fragment>
                                 <i 

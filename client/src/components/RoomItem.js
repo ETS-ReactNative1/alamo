@@ -45,6 +45,11 @@ const RoomItem = (props) => {
         props.socket.on('user-disconnected', () => {
             roomParticipants();
         })        
+
+        props.socket.on('update-room', (roomId) => {
+            if (roomId === props.roomId)
+                getRoomInformation();
+        })
     }, [props.roomId])
 
     const handleContextClick = (event) => {

@@ -15,15 +15,15 @@ class EditRoom extends React.Component {
             admins: [],
             room: [],
             selected: '',
-            showSearchBar: false
-
+            showSearchBar: false,
+            friends: ['null']
         }
     }
 
     getRoomInformation = () =>  {
         axios.get('/room', {params: {roomId: window.location.pathname.substring(5)}})
             .then((response) => {
-                this.setState({room: response.data, admins: response.data.admins})
+                this.setState({room: response.data, admins: response.data.admins, selected: response.data.stream})
                 if (response.data.admins.includes(localStorage.getItem('userId'), 0)) {
                     this.setState({admin: true})
                     console.log(this.state.admins)
@@ -33,6 +33,21 @@ class EditRoom extends React.Component {
 
     componentDidMount() {
         this.getRoomInformation();
+        axios.get('/user', {params: {userId: localStorage.getItem('userId')}})
+            .then((response) => this.setState({friends: response.data[0].friends}))
+            .catch((err) => console.log(err))
+    }
+
+    handleUpdateRoom = (event) => {
+        event.preventDefault();
+        let roomTitle = event.target[0].value
+
+        axios.post('/room/update', {roomId: window.location.pathname.substring(5), roomTitle: roomTitle, stream: this.state.selected})
+            .then((response) => {
+                this.props.socket.emit('change-stream', window.location.pathname.substring(5), this.state.selected)
+                this.props.socket.emit('update-this-room', window.location.pathname.substring(5))
+            })
+            .catch((err) => console.log(err))
     }
 
     handleClick = (event) => {
@@ -49,7 +64,7 @@ class EditRoom extends React.Component {
 
     render() {
         return(
-            <div className="container-fluid px-4">
+            <div className="container-fluid margin-bottom px-4">
                 <div className="row">
                     <div className="col">
                         <div className="room-headings">
@@ -57,24 +72,30 @@ class EditRoom extends React.Component {
                             <h1 className="room-title">Edit Room</h1>
                         </div>
 
-                        {this.state.admin ? 
-                            <input name="roomName" autoFocus required minlength="3" defaultValue={this.state.room.room_title}/>
-                            :
-                            <input name="roomName" autoFocus required minlength="3" placeholder={this.state.room.room_title} disabled/>
-                        }
+                        <form action="post" onSubmit={this.handleUpdateRoom}>
 
-                        <label htmlFor="username">Stream</label>
-                        <AddStream
-                            createRoomStream={this.props.createRoomStream}
-                            handleClick={this.handleClick}
-                            selected={this.state.selected}
-                        />
+                            {this.state.admin ? 
+                                <input name="roomName" autoFocus required minlength="3" defaultValue={this.state.room.room_title}/>
+                                :
+                                <input name="roomName" autoFocus required minlength="3" placeholder={this.state.room.room_title} disabled/>
+                            }
 
 
+                            <label htmlFor="username">Stream</label>
+                            <AddStream
+                                createRoomStream={this.props.createRoomStream}
+                                handleClick={this.handleClick}
+                                selected={this.state.selected}
+                            />
 
-                        <Admins admins={this.state.admins} adminRights={this.state.admin}/>
-                        <button className={this.state.admin ? "primary-btn setup-btn" : "primary-btn setup-btn disabled"} onClick={() => this.props.history.push('/')} style={{marginRight: '25px'}}>Save</button>
-                        <button className="secondary-btn setup-btn" onClick={() => this.props.history.push('/')}>Cancel</button>
+                            {this.state.admin ?
+                                <Admins friends={this.state.friends} admins={this.state.admins} adminRights={this.state.admin}/>
+                                : null
+                            }
+
+                            <button type="submit" className={this.state.admin ? "primary-btn setup-btn" : "primary-btn setup-btn disabled"} style={{marginRight: '25px'}}>Save</button>
+                            <button type="button" className="secondary-btn setup-btn" onClick={() => this.props.history.push('/')}>Cancel</button>
+                        </form>
                     </div>
                 </div>
             </div>

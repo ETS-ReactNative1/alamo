@@ -47,12 +47,15 @@ class Room extends React.Component {
             })
     }
 
-    fetchRoomInformation = () => {
-        axios.get('/room', {params: {roomId: this.props.activeRoom}})
-            .then(response => {
-                this.setState({roomTitle: response.data.room_title, admins: response.data.admins, streamId: response.data.stream})
-                this.fetchStream(response.data.stream)
-            })
+    fetchRoomInformation = async () => {
+        return new Promise((resolve, reject) => {
+             axios.get('/room', {params: {roomId: this.props.activeRoom}})
+                .then(response => {
+                    this.setState({roomTitle: response.data.room_title, admins: response.data.admins, streamId: response.data.stream})
+                    this.props.declareAdminPermissions(response.data.admins);
+                    resolve(response.data.stream);
+               })
+        })
     }
 
     changeStream = (event) => {
@@ -101,14 +104,20 @@ class Room extends React.Component {
         this.props.socket.emit('join-room', this.props.activeRoom, localStorage.getItem('userId'));
 
         this.props.socket.on('update-stream', (stream) => {
-            console.log('UPDATE STREAM', stream)
             this.setState({streamId: stream}, () => {
-                this.fetchStream(stream);
-                axios.post('/room/change-stream', {roomId: this.props.activeRoom, channel: stream})
-                    .then((response) => {
-                    })
-                    .catch((err) => console.log(err))
+            console.log('UPDATE STREAM', stream, this.state.streamId)
+            this.fetchStream(stream);
+            axios.post('/room/change-stream', {roomId: this.props.activeRoom, channel: stream})
+                .then((response) => {
+                })
+                .catch((err) => console.log(err))
             })
+        })
+
+        this.props.socket.on('update-room', (roomId) => {
+            if (roomId === this.props.activeRoom) {
+                this.fetchRoomInformation();
+            }
         })
 
         this.props.socket.on('vote', (userId, stream, usersInRoom) => {
@@ -157,7 +166,8 @@ class Room extends React.Component {
             }
         })
 
-        this.fetchRoomInformation();
+        this.fetchRoomInformation()
+           .then((stream) => this.fetchStream(stream))
     }
 
     render() {

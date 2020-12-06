@@ -1,13 +1,24 @@
 import React from 'react';
+import axios from 'axios';
 
 class ResultsCard extends React.Component {
     constructor(props) {
         super(props);
+
+        this.state = {
+            avatar: ''
+        }
     }
 
     componentDidMount() {
         if (this.props.stream)
             this.props.loaded();
+
+        axios.get('/twitchapi/channels', {params: {channel: this.props.stream.user_name}})
+            .then((response) => {
+                this.setState({avatar: response.data[0].thumbnail_url})
+            })
+            .catch((error) => console.log(error))
     }
 
     createRoomFromStreamHandler = (event) => {
@@ -26,8 +37,11 @@ class ResultsCard extends React.Component {
                         data-channel={this.props.stream.user_name} 
                         data-userid={this.props.stream.user_id} 
                         data-image={this.props.image} 
+                        data-avatar={this.state.avatar}
                         data-stream-title={this.props.stream.title} 
                         data-username={this.props.stream.user_name} 
+                        id={this.props.stream.user_id} 
+                        onClick={this.props.changeStream}
                     ></i>
                     <i 
                         className="fas fa-2x results-icons vote-icon primary-color fa-poll" 
@@ -36,9 +50,11 @@ class ResultsCard extends React.Component {
                         data-channel={this.props.stream.user_name} 
                         data-userid={this.props.stream.user_id} 
                         data-image={this.props.image} 
+                        data-avatar={this.state.avatar}
                         data-stream-title={this.props.stream.title} 
                         data-username={this.props.stream.user_name} 
                         id={this.props.stream.user_id} 
+                        onClick={this.props.vote}
                     ></i>
                 </React.Fragment>
             )

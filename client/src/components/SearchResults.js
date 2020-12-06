@@ -2,23 +2,16 @@ import React from 'react';
 import axios from 'axios';
 
 import ResultsCard from './ResultsCard';
-import ChannelResults from './ChannelResults';
 
 class SearchResults extends React.Component {
     constructor(props) {
         super(props)
 
-        this.state = {
-            channelIndex : 0
-        }
-    }
-
-    viewMore = () => {
-        this.setState({channelIndex: this.state.channelIndex+1})
     }
 
     changeStream = (event) => {
         const streamId = event.currentTarget.id
+        console.log('change stream!!!!!!!!!', streamId)
         axios.post('/room/change-stream', {roomId: this.props.activeRoom, channel: streamId})
             .then((response) => {
                 this.props.socket.emit('change-stream', this.props.activeRoom, streamId)
@@ -27,6 +20,7 @@ class SearchResults extends React.Component {
     }
 
     vote = (event) => {
+        console.log('vote')
         const channelId = event.currentTarget.id;
         const channel = event.currentTarget.getAttribute('data-username')
         const gameId = event.currentTarget.getAttribute('data-gameid');
@@ -37,9 +31,6 @@ class SearchResults extends React.Component {
         console.log(stream)
 
         this.props.socket.emit('start-vote', this.props.activeRoom, localStorage.getItem('userId'), stream)
-
-        if (this.state.vote)
-            alert('Vote already in progress')
 
         this.voteTimer = setTimeout(() => {
             this.props.socket.emit('finish-vote', this.props.activeRoom, 'failed')
@@ -52,32 +43,17 @@ class SearchResults extends React.Component {
             <div className={this.props.loading === false ? "search-results-container" : "search-results-container hide-results" }>
                 {this.props.loading ? <div className="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div> : null }
 
-                {this.props.channels.length > 0 ?
-                        this.props.channels.map((channel, index) => {
-                            //Limit this to max 5 channels
-                            if (index <= this.state.channelIndex && index <= 4)
-                                return(
-                                    <ChannelResults 
-                                        activeRoom={this.props.activeRoom} 
-                                        createRoomFromStream={this.props.createRoomFromStream}
-                                        channels={channel} 
-                                        changeStream={this.changeStream} 
-                                        vote={this.vote}
-                                        clear={this.props.clear}
-                                    />
-                                )
-                        }) 
-                : null}
-                {this.props.channels.length > 0 && this.state.channelIndex < 4 ? <div onClick={this.viewMore} className="view-more font-color thin">View More Channels</div> : null}
-
                 {this.props.streamResults.map((stream) => {
                     let image = stream.thumbnail_url.replace('{width}', '347').replace('{height}', '195')
                     return(
                         <ResultsCard 
                             createRoomFromStream={this.props.createRoomFromStream}
+                            activeRoom={this.props.activeRoom}
                             loaded={this.props.loaded}
                             stream={stream}
                             image={image}
+                            vote={this.vote}
+                            changeStream={this.changeStream}
                             clear={this.props.clear}
                         />
                     )

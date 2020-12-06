@@ -24,7 +24,7 @@ class Dashboard extends React.Component {
 
         this.state = {
             user: [],
-            admins: ["5fbd007cd13e171ac9d8f331"],
+            admins: [],
             show: false,
             activeRoom: null,
             menuOpen: true,
@@ -49,6 +49,10 @@ class Dashboard extends React.Component {
             .then((response) => {
                 this.setState({user: response.data})
             })
+    }
+
+    declareAdminPermissions = (admins) => {
+        this.setState({...this.state, admins: admins})
     }
 
     componentDidMount() {
@@ -191,6 +195,7 @@ class Dashboard extends React.Component {
                             />
 
                             <Notification 
+                                friends={this.state.user.friends}
                                 socket={this.props.socket} 
                                 userId={this.state.user._id}
                             />
@@ -212,6 +217,7 @@ class Dashboard extends React.Component {
                                     show={this.state.show} 
                                     openMenu={this.state.openMenu}
                                     activeRoom={this.state.activeRoom} 
+                                    declareAdminPermissions={this.declareAdminPermissions}
                                     admins={this.props.admins} 
                                     matches={this.state.matches}
                                     rooms={this.props.user.rooms}
@@ -238,8 +244,10 @@ class Dashboard extends React.Component {
 
                             <Route path="/edit" render={(props) => (
                                 <EditRoom
+                                    socket={this.props.socket}
                                     createRoomStream={this.state.createRoomStream}
                                     activeRoom={this.state.activeRoom}
+                                    friends={this.state.user.friends}
                                     admins={this.state.admins}
                                 />
                             )}/>
@@ -254,6 +262,7 @@ class Dashboard extends React.Component {
                                         />
                                     : null}
                                     <PopularStreams 
+                                        socket={this.props.socket}
                                         activeRoom={this.state.activeRoom} 
                                         cardType={this.state.cardType}
                                         createRoomFromStream={this.createRoomFromStream}

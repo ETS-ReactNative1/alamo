@@ -39,7 +39,7 @@ class AddStreamCard extends React.Component {
                     {this.state.showSearch ? <i className="fas fa-2x fa-times font-color" onClick={this.closeSearch} style={{position: 'absolute', top: '20px', right: '30px', zIndex: '99999'}}></i> : null }
                     {this.state.showSearch ? <SearchBox results={this.handleResults}/> : null}
 
-                    <div className="container-fluid">
+                    <div className="container-fluid margin-auto">
                     {this.state.showSearch ?
                         <div className="row" style={{marginTop: '50px', marginLeft: 'auto', marginRight: 'auto'}}>
                             {this.state.results.map((stream, index) => {

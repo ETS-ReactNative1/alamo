@@ -17,7 +17,6 @@ class AccountSettings extends React.Component {
             isValid: false,
             changePasswordMessage: '',
             changePasswordSuccess: '',
-            deleteAccount: false
         }
     }
 
@@ -131,18 +130,6 @@ class AccountSettings extends React.Component {
         event.preventDefault();
     }
 
-    handleDeleteAccount = () => {
-        if (this.state.deleteAccount === true) {
-            return(
-                <form action="post" onSubmit={this.handleAccountDeleteSubmit}>
-                    <label for="confirmAccountDeletion" className="sub-label thin">Please type <strong>{this.props.userInformation.username}/alamo</strong> to confirm</label>
-                    <input name="confirmAccountDeletion" autoFocus required/>
-                    <button type="submit" className="primary-btn block" style={{backgroundColor: 'DarkRed'}}>Delete</button>
-                </form>
-            )
-        }
-    }
-
     render() {
         return (
           <div className="container-fluid px-4">
@@ -169,10 +156,6 @@ class AccountSettings extends React.Component {
                       {this.handleChangePassword()}
                       <h6 id="success-message">{this.state.changePasswordSuccess}</h6>
                       {this.state.changePassword ? null : <button className="alternative-btn" onClick={() => this.setState({changePassword: true})}>Edit</button> }
-
-                      <label htmlFor="username">Delete Account</label>
-                      {this.handleDeleteAccount()}
-                      {this.state.deleteAccount ? null : <button className="primary-btn block" style={{backgroundColor: 'DarkRed'}} onClick={() => this.setState({deleteAccount: true})}>Delete</button> }
 
                       <label htmlFor="username"></label>
                       <button className="secondary-btn margin-top margin-bottom setup-btn" onClick={this.handleCancelRoom}>Cancel</button>

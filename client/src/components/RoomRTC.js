@@ -19,7 +19,10 @@ class RoomRTC extends React.Component {
             speakingPeers: [],
             miniRTC: false,
             miniRTCPlacement: {x: null, y: null},
-            microphoneEnabled: true
+            microphoneEnabled: true,
+            bl_position: true,
+            status: '',
+            matches: window.matchMedia("(min-width: 1200px)").matches 
         }
     }
 
@@ -93,6 +96,9 @@ class RoomRTC extends React.Component {
 
         this.fetchRoomInformation();
 
+        const handler = e => this.setState({matches: e.matches, miniRTCPlacement: {x: null, y: null}});
+        window.matchMedia("(min-width: 1200px)").addListener(handler);
+
         this.peer = new Peer(clientId, {
             host: 'https://alamo-peerjs.herokuapp.com',
             secure: true,
@@ -161,6 +167,15 @@ class RoomRTC extends React.Component {
                 this.updatePeersInRoom(updatedPeersList);
             })
 
+            this.props.socket.on('update-status', (user, game) => {
+                if (user === localStorage.getItem('userId') && game !== null) {
+                    const message = 'Watching ' + game
+                    const x = message.substring(0, 16) + '...'
+                    this.setState({...this.state, status: x})
+                } else if (user === localStorage.getItem('userId') && game === null) {
+                    this.setState({...this.state, status: ''})
+                }
+            }) 
         })
     }
 
@@ -187,6 +202,18 @@ class RoomRTC extends React.Component {
 
     }
 
+    changePosition = (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        if (this.state.bl_position) {
+            const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
+            this.setState({bl_position: false, miniRTCPlacement: {x: (vw - 325)}})
+        } else {
+            const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
+            this.setState({bl_position: true, miniRTCPlacement: {x: 25}})
+        }
+    }
+
     render() {
         return(
             <React.Fragment>
@@ -196,15 +223,14 @@ class RoomRTC extends React.Component {
                     className={this.state.miniRTC ? "container web-rtc mini-rtc-active d-block" : "container web-rtc d-none"} 
                     style={{left: this.state.miniRTCPlacement.x, top: this.state.miniRTCPlacement.y}}
                     onClick={this.handleMiniRTCClick} 
-                    onTouchStart={this.handleTouchStart}
                     onTouchMove={this.handleTouchMove}
-                    onTouchEnd={this.handleTouchEnd}
                 >
+                    {!this.state.matches ? <i className="fas fa-2x fa-expand-arrows-alt font-color" style={{position: 'absolute', right: '8px', top: '8px'}} onClick={this.changePosition}></i> : null}
 
-                    <div className="row padding-top align-items-center">
+                    <div className="row padding-top align-items-center overflow-dots">
                         <div className="col-9">
-                            <h5>{this.state.roomTitle} <span className="rtc-room-size thin">{this.state.peers.length} / 6 </span></h5>
-                            <h6 className="thin">Watching Counter-Strike...</h6>
+                            <h5 className="">{this.state.roomTitle} <span className="rtc-room-size thin">{this.state.peers.length} / 6 </span></h5>
+                            <h6 className="thin">{this.state.status}</h6>
                             {this.state.peers.map((userId) => {
                                 return(
                                     <div data-userid={userId}>

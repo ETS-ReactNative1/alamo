@@ -17,17 +17,6 @@ router.get('/channels', (req, res) => {
         .catch((err) => console.log(err))
 })
 
-router.get('/channels-info/:id', (req, res) => {
-    let id = req.params.id;
-    let token = req.app.locals.access_token;
-    let client_id = req.app.locals.client_id;
-    let headers = {'client-id': client_id, 'Authorization': `Bearer ${token}`}
-
-    axios.get('https://api.twitch.tv/helix/channels', {params: {broadcaster_id: id}, headers: headers})
-        .then((response) => res.json(response.data.data))
-        .catch((err) => console.log(err))
-})
-
 router.get('/query-twitch', (req, res) => {
     let token = req.app.locals.access_token;
     let client_id = req.app.locals.client_id;
@@ -40,6 +29,7 @@ router.get('/query-twitch', (req, res) => {
     // So when a user types in the search bar, the query is trying to make channels to that query. This is good and these are returned and displayed separately
     // However if the user meant to query a title or game, then it wouldnt make sense to only send back a channel. So all possible games related to the list of channels are queried and returns the most popular active stream for that game.
     // This works well and is a work around for twitchs api design
+    // EDIT - There is no relationship between channels and streams, meaning if a user selects a channel, no value can be used to query the stream. This is down to the design of twitchs API. Channels have been removed from search results.
     axios.get('https://api.twitch.tv/helix/search/channels', {params: {query: channel}, headers: headers})
         .then((response) => {
             const channels = response.data.data
@@ -56,7 +46,7 @@ router.get('/query-twitch', (req, res) => {
             axios.get('https://api.twitch.tv/helix/streams', {params: params, headers: headers})
                 .then((streams) => {
                     //Send back collection of both channels and streams
-                    res.json({channels: response.data.data, streams: streams.data.data})
+                    res.json({streams: streams.data.data})
                 })
                 .catch((err) => console.log(err))
 

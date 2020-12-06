@@ -162,6 +162,10 @@ label {
     margin-right: 10px !important;
 }
 
+.margin-auto {
+    margin: 0 auto 0 auto;
+}
+
 .main-search-box {
     position: relative;
     width: 50%;
@@ -872,11 +876,12 @@ a {
 .toast {
     position: absolute;
     right: 25px;
-    bottom: 25px;
+    top: calc(100vh - 125px);
     height: 100px;
     min-width: 300px;
     background-color: #080808;
     color: #F2E7FE !important;
+    z-index: 99999999;
 }
 
 .toast-body {

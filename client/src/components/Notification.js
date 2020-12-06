@@ -15,7 +15,8 @@ class Notification extends React.Component {
             inviteRoomId: '',
             inviteStream: '',
             notification: null,
-            pendingInvitation: ''
+            pendingInvitation: '',
+            friends: []
         }
     }
 
@@ -25,12 +26,18 @@ class Notification extends React.Component {
         }, time)
     }
 
+    componentDidMount() {
+        axios.get('/user', {params: {userId: localStorage.getItem('userId')}})
+            .then((response) => this.setState({friends: response.data[0].friends}))
+            .catch((err) => console.log(err))
+    }
+
 
     componentWillMount() {
 
         this.props.socket.on('new-user-online', (userId) => {
             setTimeout(() => {
-                if (userId != this.props.userId) {
+                if (userId != this.props.userId && this.state.friends.includes(userId, 0)) {
                     axios.get('/user', {params: {userId: userId}})
                         .then(response => {
                             let message = response.data[0].user_metadata.username + ' is now online'
