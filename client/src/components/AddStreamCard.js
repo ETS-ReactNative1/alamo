@@ -36,7 +36,7 @@ class AddStreamCard extends React.Component {
         return(
             <React.Fragment>
                 <div className={this.state.showSearch ? "add-stream-card search-full-width" : "add-stream-card"} onClick={this.openSearch}>
-                    {this.state.showSearch ? <i className="fas fa-2x fa-times font-color" onClick={this.closeSearch} style={{position: 'absolute', top: '20px', right: '30px', zIndex: '99999'}}></i> : null }
+                    {this.state.showSearch ? <i className="fas fa-2x fa-times font-color" onClick={this.closeSearch} style={{position: 'absolute', top: '20px', right: '30px', zIndex: '99999', cursor: 'pointer'}}></i> : null }
                     {this.state.showSearch ? <SearchBox results={this.handleResults}/> : null}
 
                     <div className="container-fluid margin-auto">

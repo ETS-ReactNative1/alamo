@@ -81,9 +81,7 @@ class StreamCard extends React.Component {
                     <div className="row" style={{height: '100%'}}>
                         <div className="col-12">
                             <i 
-                                className={this.state.admins.includes(localStorage.getItem('userId')) ? 
-                                    "fas fa-3x stream-card-options-icons font-color fa-plus-square" : 
-                                    "fas fa-3x stream-card-options-icons font-color disabled fa-plus-square"} 
+                                className="fas fa-3x stream-card-options-icons font-color fa-plus-square" 
                                 style={{paddingRight: '25px'}}
                                 data-gameid={this.props.stream.game_id} 
                                 data-channel={this.props.stream.user_name} 
@@ -102,7 +100,7 @@ class StreamCard extends React.Component {
 
         if (this.props.selected === userId && this.props.type === 'select') {
             return(
-                <div className="stream-card-options" style={{width: '100%', padding: '0', marginRight: '15px'}}>
+                <div className="stream-card-options" style={{width: '100%', padding: '0', marginRight: '25px'}}>
                     <div className="row" style={{height: '100%'}}>
                         <div className="col-12" style={{padding: '0', right: '20px'}}>
                             <i className="far stream-card-options-icons fa-4x fa-check-circle font-color"></i>
@@ -116,7 +114,7 @@ class StreamCard extends React.Component {
 
     render() {
         return(
-            <div id={this.props.stream.user_id} className={this.props.small ? "col stream-card margin-right" : "col stream-card" } onClick={this.props.handleClick} onMouseOver={this.handleMouseOver} onMouseLeave={this.handleMouseLeave}>
+            <div id={this.props.stream.user_id} className={this.props.small ? "col stream-card" : "col stream-card" } onClick={this.props.handleClick} onMouseOver={this.handleMouseOver} onMouseLeave={this.handleMouseLeave}>
                 {this.streamCardOptions(this.props.stream.user_id)}
 
                 {this.state.thumbnailLoading ? <div style={{transform: 'scale(0.4) translate(-50%, -50%)', top: '35%', left: '45%'}} className="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div> : null}

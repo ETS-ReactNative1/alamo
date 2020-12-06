@@ -14,11 +14,12 @@ const ProfileCard = (props) => {
             props.handleContextMenu(event.currentTarget.id, 'profile', x_pos, y_pos)
         } else {
             event.preventDefault();
+            event.stopPropagation();
             const x_pos = event.pageX.toString() + 'px';
             const y_pos = event.pageY.toString() + 'px';
             const online = event.currentTarget.getAttribute('data-online');
+            console.log(event.currentTarget.id, x_pos, y_pos)
             props.handleContextMenu(event.currentTarget.id, 'profile', x_pos, y_pos)
-
         }
     }
 
@@ -35,7 +36,7 @@ const ProfileCard = (props) => {
 
 
     return(
-        <div id={props.userId} className="row sidebar-profile align-items-center" onContextMenu={(event) => handleContextClick(event)} onTouchStart={(event) => handleContextClick(event)} onClick={(event) => event.stopPropagation()}> 
+        <div id={props.userId} className="row sidebar-profile align-items-center" onClick={(event) => handleContextClick(event)} onTouchStart={(event) => handleContextClick(event)}> 
             <div className="col-3">
                 <UserAvatar avatar={props.avatar}/>
             </div>
@@ -43,6 +44,7 @@ const ProfileCard = (props) => {
                 <div className="row">
                     <div className="col">
                         <h3 className="username bold">{props.username}</h3>
+                        <i className="fas fa-pen font-color" style={{position: 'absolute', right: '35px', top: '50%', transform: 'translateY(-50%)'}}></i>
                     </div>
                 </div>
                 <div className="row">

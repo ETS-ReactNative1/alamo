@@ -99,14 +99,17 @@ class Notification extends React.Component {
         return(
             <React.Fragment>
                 {this.state.showInvite ? <InviteAlert inviteeId={this.state.inviteeId} inviterId={this.state.inviterId} roomId={this.state.inviteRoomId} declineVote={this.declineVote}/> : null}
-                <div update={this.state.pendingInvitation} className={(this.state.show) ? "toast show" : "toast"} role="alert" aria-live="assertive" aria-atomic="true">
-                    <div className="toast-body bold">
-                        <button type="button" className="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                        </button>
-                        <h6 className="toast-message">{this.state.notification}</h6>
+
+                {this.state.show ?
+                    <div update={this.state.pendingInvitation} className={(this.state.show) ? "toast show" : "toast"} role="alert" aria-live="assertive" aria-atomic="true">
+                        <div className="toast-body bold">
+                            <button type="button" className="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                            <h6 className="toast-message">{this.state.notification}</h6>
+                        </div>
                     </div>
-                </div>
+                : null}
             </React.Fragment>
         )
     }
