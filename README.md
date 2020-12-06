@@ -5,7 +5,7 @@ Alamo is a real-time communications web application that combines the strengths 
 Full repository available - [https://github.com/kangadrewie/alamo](https://github.com/kangadrewie/alamo)
 
 ## How it works
-Alamo is a concept that places a massive ammount of emphasis on collaboration. Using Alamo Rooms, users simply create their room, put on their favourite Twitch streamer, invite their friends and hang out, talk and watch show together. 
+Alamo is a concept that places a massive amount of emphasis on collaboration. Using Alamo Rooms, users simply create their room, put on their favourite Twitch streamer, invite their friends and hang out, talk and watch show together. 
 
 ## Installation
 To install alamo locally, simply run the following command in the alamo working directory.
@@ -52,7 +52,7 @@ Alamos implements a session based authentication strategy and uses PassportJS mi
 PassportJS, along with `BCrypt` is used to handle all sensitive information. All passwords are hashed and salted using the `BCrypt` library before being stored in the database.
 
 ## Error Handling
-Error Handling is handled using Reacts Error Boundary. This is simply set up to catch and major errors and report back to the user that something has gone wrong. Initially, the idea what to allow users to report issues to a dedicated mailbox. However, due to time contraints this was not completed in time. 
+Error Handling is handled using Reacts Error Boundary. This is simply set up to catch and major errors and report back to the user that something has gone wrong. Initially, the idea what to allow users to report issues to a dedicated mailbox. However, due to time constraints this was not completed in time. 
 
 ## Third Party API's
 Alamos Third Party API integration consists primarily of [Twitch.tv](https://twitch.tv) public API. 
@@ -61,7 +61,7 @@ Alamos Third Party API integration consists primarily of [Twitch.tv](https://twi
 Unfortunetly, Twitch's API is quite limited in what is can do. This limitation was unknown at the start of the project. For example, there is no relationship between Twitch.tv channels and streams. As a result, if a user wishes to query a channel, that channels stream cannot be identified. However, one potential work around may be to allow users to simply copy and paste a URL of a choosen stream. 
 
 ### Twitch Authentication
-Twitch provides its access tokens with an expiration. As a result, authencation for twitches API is set on a `setTimeout` and recursively calls itself to ensure alamo has a valid access token at all time.
+Twitch provides its access tokens with an expiration. As a result, authentication for Twitches API is set on a `setTimeout` and recursively calls itself to ensure alamo has a valid access token at all time.
 
         authTwitch = () => {
             axios.post(twitchUrl)
@@ -81,7 +81,7 @@ Twitch provides its access tokens with an expiration. As a result, authencation 
 File uploading is handled using [Cloudinary](https://cloudinary.com). As file uploading is not necessarily a key feature of alamo, besides allowing users to upload their own custom avatar image, outsourcing file handling to a cloud hosting service made sense. All uploads are performed on the clients side using Cloudinary's API and upon a successful upload, a url is then stored in the users metadata object. Cloudinary allows for custom presets to be configured, meaning all images uploaded are resized to a fixed width and height of `128x128px`. Similiarly, files uploaded are checked for appropriate file formats and a max file size of `5MB`, thanks to [react-image-upload](https://www.npmjs.com/package/react-images-uploading).
 
 ## Password Reset
-Password resets and forgotten passwords are handled using a token based system. In the event a user forget the accounts password, users can reset it. On reset request, a email is sent to the user along with a timestamped UUID V1 token. This token is store in the users document in MongoDB. When a user follows the url to reset password, the token is checked to see if valid. A token is only valid if it is the most recent token created and is less than an hour old. The new passport is checked to ensure its level of security is appropriate (must container uppercase letter & number), and then passed through `PassportJS`, where it is hashed, salted and updated in the datebase. All emails for password reset are handled using `Nodemailer`.
+Password resets and forgotten passwords are handled using a token based system. In the event a user forget the accounts password, users can reset it. On reset request, a email is sent to the user along with a timestamped UUID V1 token. This token is store in the users document in MongoDB. When a user follows the url to reset password, the token is checked to see if valid. A token is only valid if it is the most recent token created and is less than an hour old. The new passport is checked to ensure its level of security is appropriate (must container uppercase letter & number), and then passed through `PassportJS`, where it is hashed, salted and updated in the database. All emails for password reset are handled using `Nodemailer`.
 
 ## Web RTC
 Alamo's WebRTC is faciliated using [[PeerJS](https://peerjs.com/) and [socket.io](https://socket.io/). Both libraries provide fantastic documentation and stream line WebRTC signalling and peer-to-peer communications. 
@@ -113,7 +113,7 @@ Upon the client successfully establishing a WebSocket connection, the clients us
         })
 
 ### Room System
-Alamo rooms provide the necessary means of establishing a WebRTC connection between users. When a user enters an alamo room, that users emits to join a `socket.io` room also. Upon joining the `socket.io` room, other sockets in the rooms are notified and all parties are able to communicate freely. However, users in the room do not neccessary now who else may be in there with them, only the server knows this information. As a result, the server keeps other users informed of the current state of the room.
+Alamo rooms provide the necessary means of establishing a WebRTC connection between users. When a user enters an alamo room, that users emits to join a `socket.io` room also. Upon joining the `socket.io` room, other sockets in the rooms are notified and all parties are able to communicate freely. However, users in the room do not necessary now who else may be in there with them, only the server knows this information. As a result, the server keeps other users informed of the current state of the room.
 
         socket.on('join-room', (roomId, userId) => {
 
@@ -154,8 +154,8 @@ Alamo rooms provide the necessary means of establishing a WebRTC connection betw
             })
         })
         
-###Dynmically Create Audio Elements
-One of the biggest challenges was dynmically creating audio elements for each user. User audio elements are created and managed using React.Refs. Upon joining a user requests a update list of current peers in a room. This is necessary to happen before any WebRTC takes places, as a audio element must be exist in order for a WebRTC connection. 
+### Dynamically Create Audio Elements
+One of the biggest challenges was dynamically creating audio elements for each user. User audio elements are created and managed using React.Refs. Upon joining a user requests a update list of current peers in a room. This is necessary to happen before any WebRTC takes places, as a audio element must be exist in order for a WebRTC connection. 
        
     //Request updated peers list before routing call
     this.props.socket.emit('request-peers', this.props.activeRoom, (peers) => {
@@ -194,7 +194,7 @@ The client then generates a list of audio elements with Refs linked to each peer
         })}
         
 ### Establishing PeerJS WebRTC
-Once joined, a client then receive a PeerJS call from each user in the room, along with their audio stream. Thankfully, `PeerJS` allow for `peer.ids` to be defined, which allowed for users UUID to be used as a primary means of identifing and calling other users. 
+Once joined, a client then receive a PeerJS call from each user in the room, along with their audio stream. Thankfully, `PeerJS` allow for `peer.ids` to be defined, which allowed for users UUID to be used as a primary means of identifying and calling other users. 
 
             this.peer.on('call', call => {
                 call.answer(stream);
@@ -223,7 +223,7 @@ Upon receiving a call, a user answers by returning their own audio stream. At th
         }
         
 ### Uniquely Identifying Rooms
-On creation, a unique UUID (Universally Unique Identifier) is generated and stored in a MongoDB database. This UUID is the primary means of room identification and is used as a primary key of each room document. The decision to overwrite MongoDB native ObjectId was made to distungish between users and rooms. Each room Id would begin with `room` followed by a verison 4 UUID number. For example, `/room/0e446e3d-8dd2-4e0b-886b-5b5f3c8fb182`. Using a UUID library ensures all rooms generated have a unique primary key. 
+On creation, a unique UUID (Universally Unique Identifier) is generated and stored in a MongoDB database. This UUID is the primary means of room identification and is used as a primary key of each room document. The decision to overwrite MongoDB native ObjectId was made to distungish between users and rooms. Each room Id would begin with `room` followed by a version 4 UUID number. For example, `/room/0e446e3d-8dd2-4e0b-886b-5b5f3c8fb182`. Using a UUID library ensures all rooms generated have a unique primary key. 
 
 Once a user has created a room and navigated to the room UUID URI, they essentially broadcast or emit that they would like to join a socket.io room. Socket.io rooms are no different than alamo rooms. They are a named space that sockets can join and leave. As a result, this allows for easy bi directional communication back and forth between each users in the room and between Alamo's Node server.
 
