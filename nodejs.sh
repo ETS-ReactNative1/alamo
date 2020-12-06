@@ -1,2 +1,2 @@
-    #!/usr/bin/env bash
-open -a Terminal.app nodejs.sh 
+#!/usr/bin/env bash
+npm start
