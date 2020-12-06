@@ -94,9 +94,9 @@ router.post('/request-password-reset-token', (req, res) => {
             if (response !== null) {
                 const mail = {
                     from: 'alamonoreply@gmail.com',
-                    to: 'andrew.gorman@live.ie',
+                    to: response.data.email,
                     subject: `Alamo - Password Reset`,
-                    text: `To reset password, please following this link - http://localhost:3000/reset/${token}`
+                    text: `To reset password, please following this link - https://alamo-d19124355.herokuapp.com/reset/${token}`
                 }
 
                 transporter.sendMail(mail, (err, data) => {
