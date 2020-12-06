@@ -2,19 +2,11 @@ import React from 'react';
 import axios from 'axios';
 
 import ResultsCard from './ResultsCard';
-import ChannelResults from './ChannelResults';
 
 class SearchResults extends React.Component {
     constructor(props) {
         super(props)
 
-        this.state = {
-            channelIndex : 0
-        }
-    }
-
-    viewMore = () => {
-        this.setState({channelIndex: this.state.channelIndex+1})
     }
 
     changeStream = (event) => {
@@ -51,24 +43,6 @@ class SearchResults extends React.Component {
         return(
             <div className={this.props.loading === false ? "search-results-container" : "search-results-container hide-results" }>
                 {this.props.loading ? <div className="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div> : null }
-
-                {this.props.channels.length > 0 ?
-                        this.props.channels.map((channel, index) => {
-                            //Limit this to max 5 channels
-                            if (index <= this.state.channelIndex && index <= 4)
-                                return(
-                                    <ChannelResults 
-                                        activeRoom={this.props.activeRoom} 
-                                        createRoomFromStream={this.props.createRoomFromStream}
-                                        channels={channel} 
-                                        changeStream={this.changeStream} 
-                                        vote={this.vote}
-                                        clear={this.props.clear}
-                                    />
-                                )
-                        }) 
-                : null}
-                {this.props.channels.length > 0 && this.state.channelIndex < 4 ? <div onClick={this.viewMore} className="view-more font-color thin">View More Channels</div> : null}
 
                 {this.props.streamResults.map((stream) => {
                     let image = stream.thumbnail_url.replace('{width}', '347').replace('{height}', '195')
