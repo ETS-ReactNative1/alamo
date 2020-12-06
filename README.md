@@ -2,43 +2,45 @@
 ## Introduction
 Alamo is a real-time communications web application that combines the strengths of two very popular web applications currently available today, Discord and Twitch. Alamo provides gaming enthusiasts with a platform to share and experience their favourite online video games together - without missing a moment.  
 
+Full repository available - [https://github.com/kangadrewie/alamo](https://github.com/kangadrewie/alamo)
+
 ## How it works
 Alamo is a concept that places a massive ammount of emphasis on collaboration. Using Alamo Rooms, users simply create their room, put on their favourite Twitch streamer, invite their friends and hang out, talk and watch show together. 
 
 ## Installation
 To install alamo locally, simply run the following command in the alamo working directory.
 
-    `chmod +x build.sh; ./build.sh`
+    chmod +x build.sh; ./build.sh
 
 In the event this fails, users can install using the following:
 
     ### Node / Express
     
-     `npm install --save && npm start`
+     npm install --save && npm start
      
     ### PeerJS 
 
-     `npm install --save peerjs && peerjs --port 8081`
+     npm install --save peerjs && peerjs --port 8081
      
     ### React
     
-     `cd client && npm install --save && npm run dev`
+     cd client && npm install --save && npm run dev
     
-##Heroku
+## Heroku
 Alternatively, alamo can be viewed from its Heroku domain.
 
-    https://alamo-d19124355.herokuapp.com/
+    [https://alamo-d19124355.herokuapp.com/](https://alamo-d19124355.herokuapp.com/)
 
     
 ### Account Access
     
-####Email
+#### Email
 
-    `alamo-user-1@gmail.com`
+    alamo-user-1@gmail.com
     
-####Password
+#### Password
 
-    `D19124355`
+    D19124355
     
 ## Technical Design
 Alamo is built upon the popular MERN stack - MongoDB, Express, React and Node.js. 
