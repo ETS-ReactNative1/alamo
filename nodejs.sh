@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-npm start
+node ./bin/www
