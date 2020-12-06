@@ -37,7 +37,6 @@ class Room extends React.Component {
     }
 
     fetchStream = (streamId) => {
-        console.log(streamId, "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
         axios.get('/twitchapi/streams', {params : {user_id: streamId}})
             .then((response) => {
                     if (response.data.length > 0) {
@@ -53,7 +52,8 @@ class Room extends React.Component {
              axios.get('/room', {params: {roomId: this.props.activeRoom}})
                 .then(response => {
                     this.setState({roomTitle: response.data.room_title, admins: response.data.admins, streamId: response.data.stream})
-                    resolve(response.data.stream)
+                    this.props.declareAdminPermissions(response.data.admins);
+                    resolve(response.data.stream);
                })
         })
     }

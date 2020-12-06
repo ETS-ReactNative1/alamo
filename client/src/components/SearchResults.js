@@ -11,6 +11,7 @@ class SearchResults extends React.Component {
 
     changeStream = (event) => {
         const streamId = event.currentTarget.id
+        console.log('change stream!!!!!!!!!', streamId)
         axios.post('/room/change-stream', {roomId: this.props.activeRoom, channel: streamId})
             .then((response) => {
                 this.props.socket.emit('change-stream', this.props.activeRoom, streamId)
@@ -19,6 +20,7 @@ class SearchResults extends React.Component {
     }
 
     vote = (event) => {
+        console.log('vote')
         const channelId = event.currentTarget.id;
         const channel = event.currentTarget.getAttribute('data-username')
         const gameId = event.currentTarget.getAttribute('data-gameid');
@@ -29,9 +31,6 @@ class SearchResults extends React.Component {
         console.log(stream)
 
         this.props.socket.emit('start-vote', this.props.activeRoom, localStorage.getItem('userId'), stream)
-
-        if (this.state.vote)
-            alert('Vote already in progress')
 
         this.voteTimer = setTimeout(() => {
             this.props.socket.emit('finish-vote', this.props.activeRoom, 'failed')
@@ -49,9 +48,12 @@ class SearchResults extends React.Component {
                     return(
                         <ResultsCard 
                             createRoomFromStream={this.props.createRoomFromStream}
+                            activeRoom={this.props.activeRoom}
                             loaded={this.props.loaded}
                             stream={stream}
                             image={image}
+                            vote={this.vote}
+                            changeStream={this.changeStream}
                             clear={this.props.clear}
                         />
                     )

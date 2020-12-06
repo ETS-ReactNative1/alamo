@@ -25,7 +25,7 @@ class Dashboard extends React.Component {
 
         this.state = {
             user: [],
-            admins: ["5fbd007cd13e171ac9d8f331"],
+            admins: [],
             show: false,
             activeRoom: null,
             menuOpen: true,
@@ -50,6 +50,10 @@ class Dashboard extends React.Component {
             .then((response) => {
                 this.setState({user: response.data})
             })
+    }
+
+    declareAdminPermissions = (admins) => {
+        this.setState({...this.state, admins: admins})
     }
 
     componentDidMount() {
@@ -213,6 +217,7 @@ class Dashboard extends React.Component {
                                     show={this.state.show} 
                                     openMenu={this.state.openMenu}
                                     activeRoom={this.state.activeRoom} 
+                                    declareAdminPermissions={this.declareAdminPermissions}
                                     admins={this.props.admins} 
                                     matches={this.state.matches}
                                     rooms={this.props.user.rooms}
