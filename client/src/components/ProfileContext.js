@@ -6,6 +6,7 @@ import LogoutItem from './LogoutItem';
 const ProfileContext = (props) => {
     const redirect = (path) => {
         props.history.push(path);
+        props.closeContextMenu();
     }
 
     return(

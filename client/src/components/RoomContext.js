@@ -5,6 +5,7 @@ import { withRouter } from 'react-router-dom';
 const RoomContext = (props) => {
     const redirect = (path) => {
         props.history.push(path);
+        props.closeContextMenu();
     }
 
     const handleDeleteRoom = () => {
@@ -13,12 +14,14 @@ const RoomContext = (props) => {
             .then((response) => {
                 props.fetchUserInformation()
             })
+        props.closeContextMenu();
     }
 
     const handleLeave = () => {
         props.socket.emit('now-watching', localStorage.getItem('userId'), null, () => {
             window.location.assign('/');
         })
+        props.closeContextMenu();
     }
 
     return(

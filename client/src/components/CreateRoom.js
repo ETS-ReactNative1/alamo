@@ -79,7 +79,7 @@ const CreateRoom = (props) => {
             <h1 className="setup-heading thin">Create Room</h1>
             <form action="post" onSubmit={handleCreateRoom}>
                 <label htmlFor="roomTitle">Room Title</label>
-                <input name="roomTitle" autoFocus required minlength="3" />
+                <input name="roomTitle" autoFocus required minLength="3" maxLength="20"/>
                 <label htmlFor="stream">Stream</label>
                 <AddStream
                     createRoomStream={props.createRoomStream}

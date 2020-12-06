@@ -72,6 +72,7 @@ function App(props) {
         window.addEventListener("beforeunload", function(event) { 
             socket.emit('user-offline', localStorage.getItem('userId'))
         });
+
         checkAuth()
     }, [])
 
