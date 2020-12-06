@@ -33,6 +33,38 @@ router.post('/create-room', (req, res) => {
     .catch(error => console.error(error));
 });
 
+//Create new room
+router.post('/update-room', (req, res) => {
+    const roomId = req.body.roomId
+    const userId = req.body.userId
+    const roomTitle = req.body.roomTitle
+    const admins = req.body.admins
+    const streamId = req.body.streamId
+
+    console.log(roomId, userId, roomTitle, admins, streamId)
+
+});
+
+router.post('/admin', (req, res) => {
+    const roomId = req.body.roomId
+    const admin = req.body.adminId
+    Room.updateOne({roomId: roomId}, {$push: {admins: admin}}, (err, object) => {
+        if (!err)
+            res.status(200).json({status: 'New admin added'})
+    })
+
+})
+
+router.delete('/admin', (req, res) => {
+    const roomId = req.body.roomId
+    const admin = req.body.adminId
+    console.log(admin, roomId)
+    Room.updateOne({roomId: roomId}, {$pull: {admins: admin}})
+        .then((response) => res.status(200).json({status: 'Admin removed'}))
+
+})
+
+
 //Get room information
 router.post('/change-stream', (req, res) => {
     const roomId = req.body.roomId;

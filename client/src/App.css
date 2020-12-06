@@ -162,6 +162,10 @@ label {
     margin-right: 10px !important;
 }
 
+.margin-auto {
+    margin: 0 auto 0 auto;
+}
+
 .main-search-box {
     position: relative;
     width: 50%;

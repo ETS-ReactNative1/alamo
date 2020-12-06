@@ -15,8 +15,8 @@ class EditRoom extends React.Component {
             admins: [],
             room: [],
             selected: '',
-            showSearchBar: false
-
+            showSearchBar: false,
+            friends: ['null']
         }
     }
 
@@ -33,6 +33,9 @@ class EditRoom extends React.Component {
 
     componentDidMount() {
         this.getRoomInformation();
+        axios.get('/user', {params: {userId: localStorage.getItem('userId')}})
+            .then((response) => this.setState({friends: response.data[0].friends}))
+            .catch((err) => console.log(err))
     }
 
     handleClick = (event) => {
@@ -70,9 +73,8 @@ class EditRoom extends React.Component {
                             selected={this.state.selected}
                         />
 
+                        <Admins friends={this.state.friends} admins={this.state.admins} adminRights={this.state.admin}/>
 
-
-                        <Admins admins={this.state.admins} adminRights={this.state.admin}/>
                         <button className={this.state.admin ? "primary-btn setup-btn" : "primary-btn setup-btn disabled"} onClick={() => this.props.history.push('/')} style={{marginRight: '25px'}}>Save</button>
                         <button className="secondary-btn setup-btn" onClick={() => this.props.history.push('/')}>Cancel</button>
                     </div>

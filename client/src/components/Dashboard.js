@@ -241,6 +241,7 @@ class Dashboard extends React.Component {
                                 <EditRoom
                                     createRoomStream={this.state.createRoomStream}
                                     activeRoom={this.state.activeRoom}
+                                    friends={this.state.user.friends}
                                     admins={this.state.admins}
                                 />
                             )}/>
@@ -255,6 +256,7 @@ class Dashboard extends React.Component {
                                         />
                                     : null}
                                     <PopularStreams 
+                                        socket={this.props.socket}
                                         activeRoom={this.state.activeRoom} 
                                         cardType={this.state.cardType}
                                         createRoomFromStream={this.createRoomFromStream}
