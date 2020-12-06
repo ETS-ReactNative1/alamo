@@ -239,6 +239,7 @@ class Dashboard extends React.Component {
 
                             <Route path="/edit" render={(props) => (
                                 <EditRoom
+                                    socket={this.props.socket}
                                     createRoomStream={this.state.createRoomStream}
                                     activeRoom={this.state.activeRoom}
                                     friends={this.state.user.friends}

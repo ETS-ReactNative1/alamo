@@ -34,15 +34,15 @@ router.post('/create-room', (req, res) => {
 });
 
 //Create new room
-router.post('/update-room', (req, res) => {
+router.post('/update', (req, res) => {
     const roomId = req.body.roomId
-    const userId = req.body.userId
     const roomTitle = req.body.roomTitle
-    const admins = req.body.admins
     const streamId = req.body.streamId
 
-    console.log(roomId, userId, roomTitle, admins, streamId)
-
+    Room.updateOne({roomId: roomId}, {room_title: roomTitle, stream: streamId}, (err, object) => {
+        if (!err)
+            res.status(200).json({status: 'New admin added'})
+    })
 });
 
 router.post('/admin', (req, res) => {
