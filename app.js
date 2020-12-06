@@ -277,7 +277,7 @@ db.once('open', function() {
 
 const SESSION_SECRET = process.env.SESSION_SECRET;
 app.use(session({
-    secret: SESSION_SECRET,
+    secret: 'thisisasecret',
     cookie: { maxAge: 24 * 60 * 60 * 1000 },
     saveUninitialized: true,
     resave: true,
