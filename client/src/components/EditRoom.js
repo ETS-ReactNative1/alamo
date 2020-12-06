@@ -75,9 +75,9 @@ class EditRoom extends React.Component {
                         <form action="post" onSubmit={this.handleUpdateRoom}>
 
                             {this.state.admin ? 
-                                <input name="roomName" autoFocus required minlength="3" defaultValue={this.state.room.room_title}/>
+                                <input name="roomName" autoFocus required minLength="3" maxLength="20" defaultValue={this.state.room.room_title}/>
                                 :
-                                <input name="roomName" autoFocus required minlength="3" placeholder={this.state.room.room_title} disabled/>
+                                <input name="roomName" autoFocus required minLength="3" maxLength="20" placeholder={this.state.room.room_title} disabled/>
                             }
 
 

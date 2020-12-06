@@ -17,13 +17,13 @@ class ContextMenu extends React.Component {
 
     profileMenu = (show, x, y) => {
         return (
-            <ProfileContext socket={this.props.socket} show={show} x={x} y={y} />
+            <ProfileContext socket={this.props.socket} show={show} x={x} y={y} closeContextMenu={this.props.closeContextMenu}/>
         )
     }
 
     roomMenu = (show, id,  x, y) => {
         return (
-            <RoomContext show={show} socket={this.props.socket} activeRoom={this.props.activeRoom} id={id} x={x} y={y} fetchUserInformation={this.props.fetchUserInformation} />
+            <RoomContext show={show} socket={this.props.socket} closeContextMenu={this.props.closeContextMenu} activeRoom={this.props.activeRoom} id={id} x={x} y={y} fetchUserInformation={this.props.fetchUserInformation} />
         )
     }
 

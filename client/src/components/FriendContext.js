@@ -5,6 +5,7 @@ import { withRouter } from 'react-router-dom';
 const FriendContext = (props) => {
     const redirect = (path) => {
         props.history.push(path);
+        props.closeContextMenu();
     }
 
     const handleDeleteRoom = () => {

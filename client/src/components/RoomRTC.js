@@ -88,7 +88,12 @@ class RoomRTC extends React.Component {
     fetchRoomInformation = () => {
         axios.get('/room', {params: {roomId: this.props.activeRoom}})
             .then(response => {
-                this.setState({roomTitle: response.data.room_title, admins: response.data.admins, channel: response.data.stream_channel})
+                if (response.data.room_title.length > 18) {
+                    let title = response.data.room_title.substring(0, 18) + '...'
+                    this.setState({roomTitle: title, admins: response.data.admins, channel: response.data.stream_channel})
+                } else {
+                    this.setState({roomTitle: response.data.room_title, admins: response.data.admins, channel: response.data.stream_channel})
+                }
             })
     }
 
@@ -226,9 +231,12 @@ class RoomRTC extends React.Component {
                     {!this.state.matches ? <i className="fas fa-2x fa-expand-arrows-alt font-color" style={{position: 'absolute', right: '8px', top: '8px'}} onClick={this.changePosition}></i> : null}
 
                     <div className="row padding-top align-items-center overflow-dots">
-                        <div className="col-9">
-                            <h5 className="">{this.state.roomTitle} <span className="rtc-room-size thin">{this.state.peers.length} / 6 </span></h5>
+                        <div className="col-10">
+
+                            <h5>{this.state.roomTitle} <span className="rtc-room-size thin">{this.state.peers.length} / 6 </span></h5>
+
                             <h6 className="thin">{this.state.status}</h6>
+
                             {this.state.peers.map((userId) => {
                                 return(
                                     <div data-userid={userId}>
@@ -237,7 +245,7 @@ class RoomRTC extends React.Component {
                                 )
                             })}
                         </div>
-                        <div className="col-3" style={{borderLeft: '1px solid white'}}>
+                        <div className="col-2" style={{borderLeft: '1px solid white'}}>
                             <i className="hangup-room fas fa-3x font-color fa-phone-slash" onClick={this.closeCall}></i>
                         </div>
                     </div>
