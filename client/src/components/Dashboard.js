@@ -196,6 +196,7 @@ class Dashboard extends React.Component {
                             />
 
                             <Notification 
+                                friends={this.state.user.friends}
                                 socket={this.props.socket} 
                                 userId={this.state.user._id}
                             />
