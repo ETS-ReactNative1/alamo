@@ -11,7 +11,7 @@ class SearchUserCard extends React.Component  {
         return(
             <div id={this.props.userId} className="row sidebar-friend align-items-center">
                 <div className="col-3">
-                    <img className="user-avatar rounded-circle w-15" src={'/images/avatars/' + this.props.avatar + '-avatar.png'} />
+                    <img className="user-avatar rounded-circle w-15" src={this.props.avatar} />
                 </div>
                 <div className="col-9">
                     <i className={(this.props.friendStatus === true) ? "friend-add-icon fas fa-1x fa-check-circle" : null}></i>

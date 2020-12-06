@@ -27,6 +27,7 @@ class FriendCard extends React.Component {
             this.props.handleContextMenu(event.currentTarget.id, 'friend', x_pos, y_pos, online)
         } else {
             event.preventDefault();
+            event.stopPropagation();
             const x_pos = event.pageX.toString() + 'px';
             const y_pos = event.pageY.toString() + 'px';
             const online = event.currentTarget.getAttribute('data-online');
@@ -84,7 +85,7 @@ class FriendCard extends React.Component {
 
     render() {
         return(
-            <div id={this.props.userId} key={this.props.userId} data-online={this.state.online} className="row sidebar-friend align-items-center" onTouchStart={this.handleContextClick} onContextMenu={this.handleContextClick} onClick={(event) => event.stopPropagation()}>
+            <div id={this.props.userId} key={this.props.userId} data-online={this.state.online} className="row sidebar-friend align-items-center" onTouchStart={this.handleContextClick} onClick={this.handleContextClick}>
                 <div className="col-3 friend-card-avatar">
                     {this.state.online ? <i className="fas fa-circle online"></i> : null }
                     <UserAvatar avatar={this.state.user.avatar}/>
