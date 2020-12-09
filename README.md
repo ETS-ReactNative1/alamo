@@ -86,7 +86,7 @@ File uploading is handled using [Cloudinary](https://cloudinary.com). As file up
 Password resets and forgotten passwords are handled using a token based system. In the event a user forget the accounts password, users can reset it. On reset request, a email is sent to the user along with a timestamped UUID V1 token. This token is store in the users document in MongoDB. When a user follows the url to reset password, the token is checked to see if valid. A token is only valid if it is the most recent token created and is less than an hour old. The new passport is checked to ensure its level of security is appropriate (must container uppercase letter & number), and then passed through `PassportJS`, where it is hashed, salted and updated in the database. All emails for password reset are handled using `Nodemailer`.
 
 ## Web RTC
-Alamo's WebRTC is faciliated using [[PeerJS](https://peerjs.com/) and [socket.io](https://socket.io/). Both libraries provide fantastic documentation and stream line WebRTC signalling and peer-to-peer communications. 
+Alamo's WebRTC is faciliated using [PeerJS](https://peerjs.com/) and [socket.io](https://socket.io/). Both libraries provide fantastic documentation and stream line WebRTC signalling and peer-to-peer communications. 
 
 ## WebRTC Signalling
 The first challenge to acheive WebRTC was to configure and implement a web signalling protocol. All WebRTC signalling is handled using socket.io's websocket library.
@@ -165,7 +165,7 @@ One of the biggest challenges was dynamically creating audio elements for each u
             })
     })
     
-The client then generates a list of audio elements with Refs linked to each peer or user in the room. This allows for audio elements to be create and removed based upon the current state of the room.
+The client then generates a list of audio elements with Refs linked to each peer or user in the room. This allows for audio elements to be created and removed based upon the current state of the room.
 
         updatePeersInRoom = async (peers) => {
             const updatePeers = new Promise((resolve, reject) => {
