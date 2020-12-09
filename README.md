@@ -1,5 +1,5 @@
 # Alamo
-![Alamo](https://i.imgur.com/rIhuag5.png)
+![Alamo](https://i.imgur.com/rIhuag5.png "alamo rooms")
 
 ## Introduction
 Alamo is a real-time communications web application that combines the strengths of two very popular web applications currently available today, Discord and Twitch. Alamo provides gaming enthusiasts with a platform to share and experience their favourite online video games together - without missing a moment.  
