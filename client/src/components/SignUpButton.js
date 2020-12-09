@@ -1,6 +1,6 @@
 import React from 'react';
 
-const SignUpButton = () => {
+const SignUpButton = (props) => {
 
     const redirect = (path) => {
         props.history.push(path);
