@@ -1,4 +1,6 @@
 # Alamo
+![Alamo](https://i.imgur.com/rIhuag5.png)
+
 ## Introduction
 Alamo is a real-time communications web application that combines the strengths of two very popular web applications currently available today, Discord and Twitch. Alamo provides gaming enthusiasts with a platform to share and experience their favourite online video games together - without missing a moment.  
 
@@ -14,22 +16,22 @@ To install alamo locally, simply run the following command in the alamo working 
 
 In the event this fails, users can install using the following:
 
-    ### Node / Express
+    **Node / Express**
     
      npm install --save && npm start
      
-    ### PeerJS 
+    **PeerJS** 
 
      npm install --save peerjs && peerjs --port 8081
      
-    ### React
+    **React**
     
      cd client && npm install --save && npm run dev
     
 ## Heroku
 Alternatively, alamo can be viewed from its Heroku domain.
 
-    [https://alamo-d19124355.herokuapp.com/](https://alamo-d19124355.herokuapp.com/)
+[https://alamo-d19124355.herokuapp.com](https://alamo-d19124355.herokuapp.com)
 
     
 ### Account Access
@@ -49,7 +51,7 @@ Alamo is built upon the popular MERN stack - MongoDB, Express, React and Node.js
 Alamos implements a session based authentication strategy and uses PassportJS middleware. The decision to go with PassportJS as a authentication library was easy, it provides excellent documentation and supports various login types that can be easily plugged in at a later date, allowing users to sign in using their Google, Facebook or Twitch credentials. However for now, alamo uses PassportJS's `local-strategy` as a primary means of authentication. 
 
 ### PassportJS
-PassportJS, along with `BCrypt` is used to handle all sensitive information. All passwords are hashed and salted using the `BCrypt` library before being stored in the database.
+[PassportJS](http://www.passportjs.org), along with `BCrypt` is used to handle all sensitive information. All passwords are hashed and salted using the `BCrypt` library before being stored in the database.
 
 ## Error Handling
 Error Handling is handled using Reacts Error Boundary. This is simply set up to catch and major errors and report back to the user that something has gone wrong. Initially, the idea what to allow users to report issues to a dedicated mailbox. However, due to time constraints this was not completed in time. 
@@ -58,7 +60,7 @@ Error Handling is handled using Reacts Error Boundary. This is simply set up to 
 Alamos Third Party API integration consists primarily of [Twitch.tv](https://twitch.tv) public API. 
 
 ### Twitch
-Unfortunetly, Twitch's API is quite limited in what is can do. This limitation was unknown at the start of the project. For example, there is no relationship between Twitch.tv channels and streams. As a result, if a user wishes to query a channel, that channels stream cannot be identified. However, one potential work around may be to allow users to simply copy and paste a URL of a choosen stream. 
+Unfortunately, Twitch's API is quite limited in what is can do. This limitation was unknown at the start of the project. For example, there is no relationship between Twitch.tv channels and streams. As a result, if a user wishes to query a channel, that channels stream cannot be identified. However, one potential work around may be to allow users to simply copy and paste a URL of a choosen stream. 
 
 ### Twitch Authentication
 Twitch provides its access tokens with an expiration. As a result, authentication for Twitches API is set on a `setTimeout` and recursively calls itself to ensure alamo has a valid access token at all time.
