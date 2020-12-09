@@ -106,8 +106,6 @@ Upon the client successfully establishing a WebSocket connection, the clients us
                     //Update socket id but do not broadcast new user online
                     clients[userId] = {socketId: socket.id }
                 }
-                //Emit updated connected clients to users 
-                io.sockets.emit('new-user-online', userId, clients);
 
                 //Send back list of active clients when user logs on
                 callback(clients)
@@ -161,7 +159,6 @@ One of the biggest challenges was dynamically creating audio elements for each u
        
     //Request updated peers list before routing call
     this.props.socket.emit('request-peers', this.props.activeRoom, (peers) => {
-        console.log(peers)
         this.updatePeersInRoom(peers)
             .then(() => {
                 this.playUserAudio(call.peer, userAudioStream)
@@ -203,7 +200,6 @@ Once joined, a client then receive a PeerJS call from each user in the room, alo
                 call.on('stream', userAudioStream => {
                     //Request updated peers list before routing call
                     this.props.socket.emit('request-peers', this.props.activeRoom, (peers) => {
-                        console.log(peers)
                         this.updatePeersInRoom(peers)
                             .then(() => {
                                 this.playUserAudio(call.peer, userAudioStream)
