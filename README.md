@@ -60,7 +60,7 @@ Error Handling is handled using Reacts Error Boundary. This is simply set up to 
 Alamos Third Party API integration consists primarily of [Twitch.tv](https://twitch.tv) public API. 
 
 ### Twitch
-Unfortunately, Twitch's API is quite limited in what is can do. This limitation was unknown at the start of the project. For example, there is no relationship between Twitch.tv channels and streams. As a result, if a user wishes to query a channel, that channels stream cannot be identified. However, one potential work around may be to allow users to simply copy and paste a URL of a choosen stream. 
+Unfortunately, Twitch's API is quite limited in what it can do. This limitation was unknown at the start of the project. For example, there is no relationship between Twitch.tv channels and streams. As a result, if a user wishes to query a channel, that channels stream cannot be easyily identified. However, one potential work around may be to allow users to simply copy and paste a URL of a choosen stream. 
 
 ### Twitch Authentication
 Twitch provides its access tokens with an expiration. As a result, authentication for Twitches API is set on a `setTimeout` and recursively calls itself to ensure alamo has a valid access token at all time.
