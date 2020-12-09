@@ -155,7 +155,7 @@ Alamo rooms provide the necessary means of establishing a WebRTC connection betw
         })
         
 ### Dynamically Create Audio Elements
-One of the biggest challenges was dynamically creating audio elements for each user. User audio elements are created and managed using React.Refs. Upon joining a user requests a update list of current peers in a room. This is necessary to happen before any WebRTC takes places, as a audio element must be exist in order for a WebRTC connection. 
+One of the biggest challenges was dynamically creating audio elements for each user. User audio elements are created and managed using React.Refs. Upon joining a user requests a update list of current peers in a room. This is necessary to happen before any WebRTC takes places, as a audio element must exist in order for a WebRTC connection. 
        
     //Request updated peers list before routing call
     this.props.socket.emit('request-peers', this.props.activeRoom, (peers) => {
