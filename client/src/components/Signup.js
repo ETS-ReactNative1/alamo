@@ -90,6 +90,10 @@ class Signup extends React.Component {
                                     validator: /.*[0-9].*/,
                                 },
                                 {
+                                    descriptionLabel: '1 lowercase letter',
+                                    validator: /.*[a-z].*/,
+                                },
+                                {
                                     descriptionLabel: '1 uppercase letter',
                                     validator: /.*[A-Z].*/,
                                 },
