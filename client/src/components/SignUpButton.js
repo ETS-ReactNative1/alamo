@@ -1,11 +1,13 @@
 import React from 'react';
-import { useAuth0 } from '@auth0/auth0-react';
 
 const SignUpButton = () => {
-    const { loginWithRedirect } = useAuth0();
+
+    const redirect = (path) => {
+        props.history.push(path);
+    }
 
     return (
-        <button onClick={() => loginWithRedirect({screen_hint: 'signup'})} class="btn secondary-btn my-2 my-sm-0">Sign Up</button>                
+        <button onClick={() => redirect('/sign-up')} class="btn secondary-btn my-2 my-sm-0">Sign Up</button>                
     );
 }
 
