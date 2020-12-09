@@ -16,15 +16,15 @@ To install alamo locally, simply run the following command in the alamo working 
 
 In the event this fails, users can install using the following:
 
-    **Node / Express**
+**Node / Express**
     
      npm install --save && npm start
      
-    **PeerJS** 
+**PeerJS** 
 
      npm install --save peerjs && peerjs --port 8081
      
-    **React**
+**React**
     
      cd client && npm install --save && npm run dev
     
