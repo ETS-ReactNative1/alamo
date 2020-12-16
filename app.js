@@ -143,7 +143,8 @@ io.on('connection', (socket) => {
     })
 
     socket.on('update-this-room', (roomId) => {
-        io.in(roomId).emit('update-room', roomId);
+        socket.emit('update-room', roomId);
+        socket.broadcast.emit('update-room', roomId);
     })
 
     //Listen for users watching streams and broadcast to their friends
