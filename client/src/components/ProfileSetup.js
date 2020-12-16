@@ -20,12 +20,11 @@ class ProfileSetup extends React.Component {
 
     handleSubmit =  (event) => {
         event.preventDefault();
-        console.log(event.target[0].value, this.state.avatarSelected, this.props.user.email)
-
+        const avatar = `/images/avatars/${this.state.avatarSelected}-avatar.png`
         if (this.state.avatarSelected.length === 0) {
             this.setState({selectAvatar: 'Please selected an avatar.'})
         } else {
-            let payload = {username: event.target[0].value, avatar: this.state.avatarSelected, email: this.props.user.email}
+            let payload = {username: event.target[0].value, avatar: avatar, email: this.props.user.email}
 
             axios.post('/user/complete-profile', payload)
                 .then(response => {
