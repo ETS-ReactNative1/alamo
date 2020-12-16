@@ -35,8 +35,6 @@ const rooms = {}
 io.on('connection', (socket) => {
     //Add user to list of connected clients and broadcast that user is online
     socket.on('online', (userId, callback) => {
-        console.log('ONLINE SOCKET !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
-
         if (!(userId in clients)) {
             clients[userId] = {socketId: socket.id, status: ''}
             io.sockets.emit('new-user-online', userId, clients);
