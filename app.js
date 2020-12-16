@@ -35,6 +35,8 @@ const rooms = {}
 io.on('connection', (socket) => {
     //Add user to list of connected clients and broadcast that user is online
     socket.on('online', (userId, callback) => {
+        console.log('ONLINE SOCKET !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+
         if (!(userId in clients)) {
             clients[userId] = {socketId: socket.id, status: ''}
             io.sockets.emit('new-user-online', userId, clients);
@@ -143,7 +145,8 @@ io.on('connection', (socket) => {
     })
 
     socket.on('update-this-room', (roomId) => {
-        io.in(roomId).emit('update-room', roomId);
+        socket.emit('update-room', roomId);
+        socket.broadcast.emit('update-room', roomId);
     })
 
     //Listen for users watching streams and broadcast to their friends
