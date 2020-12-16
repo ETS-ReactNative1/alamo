@@ -1,4 +1,5 @@
 import React from 'react';
+import { withRouter } from 'react-router-dom';
 
 const SignUpButton = (props) => {
 
@@ -11,4 +12,4 @@ const SignUpButton = (props) => {
     );
 }
 
-export default SignUpButton;
+export default withRouter(SignUpButton);
