@@ -125,7 +125,6 @@ class RoomRTC extends React.Component {
             })
 
             this.peer.on('call', call => {
-                console.log(call)
                 call.answer(stream);
                 call.on('stream', userAudioStream => {
                     //Request updated peers list before routing call
@@ -137,6 +136,15 @@ class RoomRTC extends React.Component {
                             })
                     })
                 })
+            })
+
+            this.props.socket.on('user-connected', (userId, updatedPeersList) => {
+                this.updatePeersInRoom(updatedPeersList)
+                    .then(() => {
+                        //Connect user
+                        this.connectToNewUser(userId, stream)
+                    })
+
             })
 
             this.peer.on('close', () => {
@@ -154,16 +162,6 @@ class RoomRTC extends React.Component {
             this.peer.on('disconnected', () => {
                 console.log('CALL DISCONNECTED')
                 this.peer.reconnect();
-            })
-
-            this.props.socket.on('user-connected', (userId, updatedPeersList) => {
-                console.log('user connection', userId)
-                this.updatePeersInRoom(updatedPeersList)
-                    .then(() => {
-                        //Connect user
-                        this.connectToNewUser(userId, stream)
-                    })
-
             })
 
             this.props.socket.on('user-disconnected', (userId, updatedPeersList) => {

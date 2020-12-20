@@ -5,6 +5,8 @@ const LocalStrategy = require("passport-local").Strategy;
 
 const User = require('../models/UserSchema') || mongoose.model('users');
 
+// Reference - http://www.passportjs.org/docs/username-password/
+
 passport.serializeUser((user, done) => {
     done(null, user.id);
 });

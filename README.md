@@ -9,6 +9,14 @@ Full repository available - [https://github.com/kangadrewie/alamo](https://githu
 ## How it works
 Alamo is a concept that places a massive amount of emphasis on collaboration. Using Alamo Rooms, users simply create their room, put on their favourite Twitch streamer, invite their friends and hang out, talk and watch show together. 
 
+### Some of alamo's features
+
+* Create an alamo room and invite up to 5 friends of your friends
+* Use alamo's peer to peer webRTC voice chat
+* Browse twitch.tv using alamo search
+* Trust your friends taste in streams? Allow them to call the shots by making them a room admin
+* Prefer democracy over authoritarianism? Cast an alamo vote to change to your favourite streamer
+
 ## Installation
 To install alamo locally, simply run the following command in the alamo working directory.
 
