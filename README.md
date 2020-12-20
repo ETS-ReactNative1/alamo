@@ -4,15 +4,13 @@
 ## Introduction
 Alamo is a real-time communications web application that combines the strengths of two very popular web applications currently available today, Discord and Twitch. Alamo provides gaming enthusiasts with a platform to share and experience their favourite online video games together.  
 
-Full repository available - [https://github.com/kangadrewie/alamo](https://github.com/kangadrewie/alamo)
-
 ## How it works
 Alamo is a concept that places a massive amount of emphasis on collaboration. Using Alamo Rooms, users simply create their room, put on their favourite Twitch streamer, invite their friends and hang out, talk and watch show together. 
 
 ### Some of alamo's features
 
-* Create an alamo room and invite up to 5 friends of your friends
-* Use alamo's peer to peer webRTC voice chat
+* Create an alamo room and invite up to 5 friends friends
+* Use alamo's WebRTC voice chat
 * Browse twitch.tv using alamo search
 * Trust your friends taste in streams? Allow them to call the shots by making them a room admin
 * Prefer democracy over authoritarianism? Cast an alamo vote to change to your favourite streamer
