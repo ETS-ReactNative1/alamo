@@ -12,6 +12,7 @@ const mongoose = require('mongoose');
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
 const axios = require('axios');
+const sslRedirect = require('heroku-ssl-redirect');jk
 
 const passport = require('./passport/setup');
 const auth = require('./routes/auth');
@@ -307,7 +308,9 @@ const corsOptions = {
   }
 }
 
-app.use(cors(corsOptions))
+app.use(sslRedirect());
+
+app.use(cors(corsOptions));
 
 // Serve any static files
 app.use(express.static(path.join(__dirname, 'client/build')));
