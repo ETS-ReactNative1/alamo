@@ -310,6 +310,11 @@ const corsOptions = {
 
 app.use(sslRedirect());
 
+app.use((req, res, next) => {
+    if ( !req.headers.host || req.headers.host === 'www.alamo.click' ) return next() 
+    res.redirect('https://www.alamo.click/', 301)
+})
+
 app.use(cors(corsOptions));
 
 // Serve any static files
