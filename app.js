@@ -12,7 +12,7 @@ const mongoose = require('mongoose');
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
 const axios = require('axios');
-const sslRedirect = require('heroku-ssl-redirect');jk
+const sslRedirect = require('heroku-ssl-redirect').default
 
 const passport = require('./passport/setup');
 const auth = require('./routes/auth');
