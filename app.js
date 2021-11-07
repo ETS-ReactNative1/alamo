@@ -220,7 +220,7 @@ app.use(
         format: winston.format.combine(winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }), winston.format.colorize(), winston.format.json()),
         name: 'file',
         level: 'info',
-        filename: path.join(__dirname, 'bin/logs', '%DATE%__log_file.json'),
+        filename: path.join(__dirname, 'logs', '%DATE%__log_file.json'),
         handleExceptions: true,
         json: true,
         maxsize: 5242880, //5MB

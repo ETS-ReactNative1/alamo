@@ -1,0 +1,14 @@
+{
+    "keep": {
+        "days": false,
+        "amount": 5
+    },
+    "auditLog": "/Users/agorman/Documents/MISC/alamo/logs/.98081c78aaf9f0eb024efd8f2b84facd894e5bf6-audit.json",
+    "files": [
+        {
+            "date": 1636303872397,
+            "name": "/Users/agorman/Documents/MISC/alamo/logs/log_file.json.2021-11-07",
+            "hash": "fe33313a25fadefe20dea88cd38eb6e9"
+        }
+    ]
+}
