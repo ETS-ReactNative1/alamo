@@ -217,11 +217,10 @@ app.use(
   expressWinston.logger({
     transports: [
       new winston.transports.DailyRotateFile({
-        format: winston.format.combine(winston.format.colorize(), winston.format.json()),
+        format: winston.format.combine(winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }), winston.format.colorize(), winston.format.json()),
         name: 'file',
-        datePattern: '.DD-MM-YYYY',
         level: 'info',
-        filename: path.join(__dirname, 'logs', 'log_file%DATE%.json'),
+        filename: path.join(__dirname, 'logs', '%DATE%__log_file.json'),
         handleExceptions: true,
         json: true,
         maxsize: 5242880, //5MB
@@ -229,7 +228,7 @@ app.use(
         timestamp: true,
         meta: true,
         msg: 'HTTP  ',
-        expressFormat: true,
+        expressFormat: true
       })
     ]
   })
