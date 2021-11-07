@@ -35,7 +35,7 @@ const uploadLogsToS3 = (() => {
   // Read content from the file
   console.log(path.resolve(__dirname))
   // const logfile = latestLogFile(path.resolve(__dirname, '../logs'))
-  const dynoLogs = fs.readFileSync(path.resolve(__dirname, `../logs/2021-11-07__log_file.json`))
+  const dynoLogs = fs.readFileSync(path.resolve(__dirname, `/logs/2021-11-07__log_file.json`))
 
   // Setting up S3 upload parameters
   const params = {
