@@ -219,21 +219,17 @@ app.use(
       new winston.transports.DailyRotateFile({
         format: winston.format.combine(winston.format.colorize(), winston.format.json()),
         name: 'file',
-        datePattern: '.yyyy-MM-ddTHH',
-        filename: path.join(__dirname, 'logs', 'log_file.log'),
+        datePattern: '.DD-MM-YYYY',
+        level: 'info',
+        filename: path.join(__dirname, 'logs', 'log_file%DATE%.json'),
         handleExceptions: true,
-        json: false,
+        json: true,
         maxsize: 5242880, //5MB
         maxFiles: 5,
-        colorize: false,
         timestamp: true,
         meta: true,
         msg: 'HTTP  ',
         expressFormat: true,
-        colorize: true,
-        ignoreRoute: function (req, res) {
-          return false
-        }
       })
     ]
   })
