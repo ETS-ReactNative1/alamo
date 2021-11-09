@@ -36,6 +36,8 @@ const uploadLogsToS3 = (() => {
   const logfile = latestLogFile(path.resolve(__dirname, '../logs'))
   const dynoLogs = fs.readFileSync(path.resolve(__dirname, `../logs/${logfile.file}`))
 
+  console.log(logfile, dynoLogs, '!!!!!!!!')
+
   // Setting up S3 upload parameters
   const params = {
     Bucket: BUCKET_NAME,
