@@ -34,7 +34,7 @@ const latestLogFile = (dir) => {
 const uploadLogsToS3 = (() => {
   // Read content from the file
   const logfile = latestLogFile(path.resolve(__dirname, '../logs'))
-  const dynoLogs = fs.readFileSync(path.resolve(__dirname, `../logs/2021-11-09__log_file.json`))
+  const dynoLogs = fs.readFileSync(path.resolve(__dirname, `../logs/2021-11-10__log_file.json`))
 
   console.log(logfile, dynoLogs, '!!!!!!!!')
 
