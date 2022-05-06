@@ -34,21 +34,6 @@ In the event this fails, users can install using the following:
     
      cd client && npm install --save && npm run dev
     
-## Heroku
-Alternatively, alamo can be viewed from its Heroku domain.
-
-[https://alamo-d19124355.herokuapp.com](https://alamo-d19124355.herokuapp.com)
-
-    
-### Account Access
-    
-#### Email
-
-    alamo-user-1@gmail.com
-    
-#### Password
-
-    D19124355
     
 ## Technical Design
 Alamo is built upon the popular MERN stack - MongoDB, Express, React and Node.js. 
